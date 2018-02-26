@@ -86,6 +86,19 @@ AppAsset::register($this);
 
                                                         </ul>
                                                 </li>
+                                                <li>
+                                                        <a href="">
+                                                                <i class="fa fa-bell-slash-o"></i>
+                                                                <span class="title">E-PIN</span>
+                                                        </a>
+                                                        <ul>
+
+                                                                <li>
+                                                                        <?= Html::a('E-PIN Request', ['/epin/epin-request/index'], ['class' => 'title']) ?>
+                                                                </li>
+
+                                                        </ul>
+                                                </li>
                                         </ul>
 
                                 </div>

@@ -31,6 +31,9 @@ return [
         'masters' => [
             'class' => 'backend\modules\masters\Module',
         ],
+        'epin' => [
+            'class' => 'backend\modules\epin\Module',
+        ],
     ],
     'components' => [
         'request' => [
