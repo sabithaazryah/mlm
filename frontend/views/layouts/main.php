@@ -37,7 +37,7 @@ AppAsset::register($this);
                         $menuItems = [
                                 ['label' => 'Home', 'url' => ['/site/index']],
                                 ['label' => 'E-PIN', 'url' => ['/epin-request/create']],
-                                ['label' => 'Contact', 'url' => ['/site/contact']],
+                                ['label' => 'Customer Register', 'url' => ['/employee/index']],
                         ];
                         if (Yii::$app->user->isGuest) {
                                 $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
@@ -59,11 +59,11 @@ AppAsset::register($this);
                         ?>
 
                         <div class="container">
-<?=
-Breadcrumbs::widget([
-    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-])
-?>
+                                <?=
+                                Breadcrumbs::widget([
+                                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                                ])
+                                ?>
                                 <?= Alert::widget() ?>
                                 <?= $content ?>
                         </div>

@@ -7,182 +7,209 @@ use yii\web\IdentityInterface;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "admin_users".
+ * This is the model class for table "employee".
  *
- * @property integer $id
- * @property integer $post_id
- * @property string $employee_code
- * @property string $user_name
- * @property string $password
- * @property string $name
+ * @property int $id
+ * @property string $placement_name
+ * @property string $placement_id
+ * @property string $distributor_name
+ * @property int $placement
+ * @property int $epin
+ * @property string $epin_number
+ * @property string $pin_price
+ * @property int $bv
+ * @property int $referal_id
+ * @property string $father_name
+ * @property string $dob
+ * @property int $gender
+ * @property string $mobile_number
+ * @property int $pincode
+ * @property string $post_office
+ * @property int $state
+ * @property string $city
+ * @property string $house_name
+ * @property string $taluk
+ * @property string $address
  * @property string $email
- * @property string $phone_number
- * @property integer $CB
- * @property integer $UB
- * @property string $DOC
- * @property string $DOU
- *
- * @property AdminPosts $post
+ * @property string $nominee_name
+ * @property int $nominee_relation
+ * @property string $ifsc_code
+ * @property string $account_no
+ * @property string $bank_name
+ * @property string $branch
+ * @property string $pan_number
+ * @property string $password
+ * @property string $user_name
+ * @property int $status
+ * @property int $CB
+ * @property int $UB
+ * @property int $DOC
+ * @property int $DOU
  */
 class Employee extends ActiveRecord implements IdentityInterface {
 
-    private $_user;
-    public $rememberMe = true;
-    public $created_at;
-    public $updated_at;
+        private $_user;
+        public $rememberMe = true;
+        public $created_at;
+        public $updated_at;
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName() {
-        return 'employee';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules() {
-        return [
-            [['user_name', 'password', 'name', 'email', 'branch', 'department', 'designation', 'recommender', 'approver', 'working_hours', 'date_of_birth', 'hired_date', 'job_grade', 'employee_code'], 'required', 'on' => 'create'],
-            [['user_name', 'password', 'name', 'email', 'branch', 'department', 'designation', 'recommender', 'approver', 'working_hours', 'date_of_birth', 'hired_date', 'job_grade', 'employee_code'], 'required', 'on' => 'update'],
-            [['phone'], 'number'],
-            [['user_name'], 'unique', 'message' => 'Username must be unique.', 'on' => 'create'],
-            [['user_name'], 'unique', 'message' => 'Username must be unique.', 'on' => 'update'],
-            [['photo'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
-            [['email'], 'email'],
-            [['post_id', 'status', 'CB', 'UB'], 'integer'],
-            [['DOC', 'DOU', 'phone', 'address'], 'safe'],
-            [['user_name'], 'string', 'max' => 30],
-            [['password'], 'string', 'max' => 300],
-            [['phone'], 'string', 'max' => 15],
-            [['name', 'email', 'full_name', 'employee_code'], 'string', 'max' => 100],
-            [['job_grade'], 'string', 'max' => 50],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => AdminPost::className(), 'targetAttribute' => ['post_id' => 'id']],
-            [['user_name', 'password'], 'required', 'on' => 'login'],
-            [['password'], 'validatePassword', 'on' => 'login'],
-        ];
-    }
-
-    public function validatePassword($attribute, $params) {
-
-        if (!$this->hasErrors()) {
-
-            $user = $this->getUser();
-            if (!$user || !Yii::$app->security->validatePassword($this->password, $user->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
-            }
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels() {
-        return [
-            'id' => 'ID',
-            'post_id' => 'Post Name',
-            'employee_code' => 'Employee Code',
-            'full_name' => 'Full Name',
-            'date_of_birth' => 'Date Of Birth',
-            'branch' => 'Country(Branch)',
-            'department' => 'Department',
-            'designation' => 'Designation',
-            'hired_date' => 'Hired Date',
-            'recommender' => 'Recommender',
-            'approver' => 'Approver',
-            'job_grade' => 'Job Grade',
-            'working_hours' => 'Working Hours',
-            'user_name' => 'User Name',
-            'password' => 'Password',
-            'name' => 'Name(E-Leave)',
-            'phone' => 'Phone',
-            'email' => 'Email',
-            'CB' => 'Cb',
-            'UB' => 'Ub',
-            'DOC' => 'Doc',
-            'DOU' => 'Dou',
-        ];
-    }
-
-    public function login() {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), /* $this->rememberMe ? 3600 * 24 * 30 : */ 0);
-        } else {
-            return false;
-        }
-    }
-
-    public function loginn() {
-
-        $user = static::find()->where('post_id = :post and status = :stat', ['post' => 1, 'stat' => '1'])->one();
-
-        $this->_user = static::find()->where('user_name = :uname and status = :stat', ['uname' => $user->user_name, 'stat' => '1'])->one();
-
-        return Yii::$app->user->login($this->getUser(), /* $this->rememberMe ? 3600 * 24 * 30 : */ 0);
-    }
-
-    protected function getUser() {
-        if ($this->_user === null) {
-            $this->_user = static::find()->where('user_name = :uname and status = :stat', ['uname' => $this->user_name, 'stat' => '1'])->one();
+        /**
+         * {@inheritdoc}
+         */
+        public static function tableName() {
+                return 'employee';
         }
 
-        return $this->_user;
-    }
-
-    public function validatedata($data) {
-        if ($data == '') {
-            $this->addError('password', 'Incorrect username or password');
-            return true;
+        /**
+         * {@inheritdoc}
+         */
+        public function rules() {
+                return [
+                        [['placement', 'epin', 'bv', 'referal_id', 'gender', 'pincode', 'state', 'nominee_relation', 'status', 'CB', 'UB'], 'integer'],
+                        [['pin_price'], 'number'],
+                        [['dob'], 'safe'],
+                        [['DOC', 'DOU'], 'safe'],
+                        [['address'], 'string'],
+                        [['placement_name', 'distributor_name', 'epin_number', 'father_name', 'post_office', 'taluk', 'email', 'nominee_name', 'ifsc_code', 'account_no', 'bank_name', 'branch', 'pan_number', 'user_name'], 'string', 'max' => 200],
+                        [['placement_id', 'city', 'house_name'], 'string', 'max' => 100],
+                        [['mobile_number'], 'string', 'max' => 15],
+                        [['password'], 'string', 'max' => 300],
+                        [['user_name', 'password'], 'required', 'on' => 'login'],
+                        [['password'], 'validatePassword', 'on' => 'login'],
+                        //  [['distributor_name'], 'required'],
+                ];
         }
-    }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username) {
-        return static::findOne(['user_name' => $username, 'status' => 1]);
-    }
+        /**
+         * {@inheritdoc}
+         */
+        public function attributeLabels() {
+                return [
+                    'id' => 'ID',
+                    'placement_name' => 'Placement Name',
+                    'placement_id' => 'Placement ID',
+                    'distributor_name' => 'Distributor Name',
+                    'placement' => 'Placement',
+                    'epin' => 'Epin',
+                    'epin_number' => 'Epin Number',
+                    'pin_price' => 'Pin Price',
+                    'bv' => 'Bv',
+                    'referal_id' => 'Referal ID',
+                    'father_name' => 'Father Name',
+                    'dob' => 'Dob',
+                    'gender' => 'Gender',
+                    'mobile_number' => 'Mobile Number',
+                    'pincode' => 'Pincode',
+                    'post_office' => 'Post Office',
+                    'state' => 'State',
+                    'city' => 'City',
+                    'house_name' => 'House Name',
+                    'taluk' => 'Taluk',
+                    'address' => 'Address',
+                    'email' => 'Email',
+                    'nominee_name' => 'Nominee Name',
+                    'nominee_relation' => 'Nominee Relation',
+                    'ifsc_code' => 'IFSC Code',
+                    'account_no' => 'Account No',
+                    'bank_name' => 'Bank Name',
+                    'branch' => 'Branch',
+                    'pan_number' => 'Pan Number',
+                    'password' => 'Password',
+                    'user_name' => 'User Name',
+                    'status' => 'Status',
+                    'CB' => 'Cb',
+                    'UB' => 'Ub',
+                    'DOC' => 'Doc',
+                    'DOU' => 'Dou',
+                ];
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id) {
-        return static::findOne(['id' => $id, 'status' => 1]);
-    }
+        public function validatePassword($attribute, $params) {
 
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null) {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-    }
+                if (!$this->hasErrors()) {
 
-    public function getId() {
-        return $this->getPrimaryKey();
-    }
+                        $user = $this->getUser();
+                        if (!$user || !Yii::$app->security->validatePassword($this->password, $user->password)) {
+                                $this->addError($attribute, 'Incorrect username or password.');
+                        }
+                }
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey() {
-        return $this->auth_key;
-    }
+        public function login() {
+                if ($this->validate()) {
+                        return Yii::$app->user->login($this->getUser(), /* $this->rememberMe ? 3600 * 24 * 30 : */ 0);
+                } else {
+                        return false;
+                }
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey) {
-        return $this->getAuthKey() === $authKey;
-    }
+        public function loginn() {
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPost() {
-        return $this->hasOne(AdminPost::className(), ['id' => 'post_id']);
-    }
+                $user = static::find()->where('post_id = :post and status = :stat', ['post' => 1, 'stat' => '1'])->one();
 
+                $this->_user = static::find()->where('user_name = :uname and status = :stat', ['uname' => $user->user_name, 'stat' => '1'])->one();
+
+                return Yii::$app->user->login($this->getUser(), /* $this->rememberMe ? 3600 * 24 * 30 : */ 0);
+        }
+
+        protected function getUser() {
+                if ($this->_user === null) {
+                        $this->_user = static::find()->where('user_name = :uname and status = :stat', ['uname' => $this->user_name, 'stat' => '1'])->one();
+                }
+
+                return $this->_user;
+        }
+
+        public function validatedata($data) {
+                if ($data == '') {
+                        $this->addError('password', 'Incorrect username or password');
+                        return true;
+                }
+        }
+
+        /**
+         * Finds user by username
+         *
+         * @param string $username
+         * @return static|null
+         */
+        public static function findByUsername($username) {
+                return static::findOne(['user_name' => $username, 'status' => 1]);
+        }
+
+        /**
+         * @inheritdoc
+         */
+        public static function findIdentity($id) {
+                return static::findOne(['id' => $id, 'status' => 1]);
+        }
+
+        /**
+         * @inheritdoc
+         */
+        public static function findIdentityByAccessToken($token, $type = null) {
+                throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        }
+
+        public function getId() {
+                return $this->getPrimaryKey();
+        }
+
+        /**
+         * @inheritdoc
+         */
+        public function getAuthKey() {
+                return $this->auth_key;
+        }
+
+        /**
+         * @inheritdoc
+         */
+        public function validateAuthKey($authKey) {
+                return $this->getAuthKey() === $authKey;
+        }
+
+        /**
+         * @return \yii\db\ActiveQuery
+         */
 }
