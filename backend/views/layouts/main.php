@@ -72,26 +72,7 @@ AppAsset::register($this);
                                         </header>
 
                                         <ul id="main-menu" class="main-menu">
-                                                <?php
-                                                if (Yii::$app->session['post']['admin'] == 1) {
-                                                        ?>
-                                                        <li>
-                                                                <a href="">
-                                                                        <i class="fa fa-users"></i>
-                                                                        <span class="title">Employees</span>
-                                                                </a>
-                                                                <ul>
-                                                                        <!--                                    <li>
-                                                                        <?php // Html::a('Access Powers', ['/admin/admin-post/index'], ['class' => 'title']) ?>
-                                                                                                            </li>-->
-                                                                        <li>
-                                                                                <?= Html::a('Employee Details', ['/admin/employee/index'], ['class' => 'title']) ?>
-                                                                        </li>
-                                                                </ul>
-                                                        </li>
-                                                        <?php
-                                                }
-                                                ?>
+
                                                 <li>
                                                         <a href="">
                                                                 <i class="fa fa-database"></i>
@@ -100,7 +81,7 @@ AppAsset::register($this);
                                                         <ul>
 
                                                                 <li>
-                                                                        <?= Html::a('Branch', ['/masters/branch/index'], ['class' => 'title']) ?>
+                                                                        <?= Html::a('Packages', ['/masters/packages/index'], ['class' => 'title']) ?>
                                                                 </li>
 
                                                         </ul>
