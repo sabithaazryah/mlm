@@ -47,11 +47,11 @@ AppAsset::register($this);
                                                 <!-- logo -->
                                                 <div class="logo">
                                                         <a href="" class="logo-expanded">
-                                                                <img width="100" height="50" src="<?= Yii::$app->homeUrl ?>images/logo.png"/>
+                                                                <img width="140" height="48" src="<?= Yii::$app->homeUrl ?>images/logo.png"/>
                                                         </a>
 
                                                         <a href="" class="logo-collapsed">
-                                                                <img width="60" height="" src="<?= Yii::$app->homeUrl ?>images/logo.png"/>
+                                                                <img width="60" height="40" src="<?= Yii::$app->homeUrl ?>images/logo.png"/>
                                                         </a>
                                                 </div>
                                                 <!-- This will toggle the mobile menu and will be visible only on mobile devices -->

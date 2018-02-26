@@ -270,6 +270,7 @@ form .form-group .form-control{
 .sidebar-menu .logo-env {
     padding: 0px 30px;
     border-bottom: 1px solid #a1a5a9;
+    background: white;
 }
 .sidebar-menu .logo-env .logo-collapsed h2{
     margin: 5px 0px;
