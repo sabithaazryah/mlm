@@ -86,16 +86,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'approve' => function ($url, $model) {
                                         if ($model->status == 0) {
                                             return Html::a('<span>Approve</span>', $url, [
-                                                        'title' => Yii::t('app', 'delete'),
+                                                        'title' => Yii::t('app', 'Approve'),
                                                         'class' => 'btn btn-info btn-block',
+                                                        'style' => 'border-radius: 5px;padding: 3px 6px;',
+                                            ]);
+                                        } else {
+                                            return Html::a('<span>Approved</span>', $url, [
+                                                        'title' => Yii::t('app', ''),
+                                                        'class' => 'btn btn-success btn-sm',
+                                                        'style' => 'border-radius: 5px;',
                                             ]);
                                         }
                                     },
                                 ],
                                 'urlCreator' => function ($action, $model) {
-                                    if ($action === 'approve') {
-                                        $url = Url::to(['approve', 'id' => $model->id]);
-                                        return $url;
+                                    if ($model->status == 0) {
+                                        if ($action === 'approve') {
+                                            $url = Url::to(['approve', 'id' => $model->id]);
+                                            return $url;
+                                        }
                                     }
                                 }
                             ],
