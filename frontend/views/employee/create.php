@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div><div class="col-md-4">
                         <?= $form->field($model, 'placement')->dropDownList(['1' => 'Right', '2' => 'Left']) ?>
                 </div><div class="col-md-2">
-                        <?php $epin = PinRequestDetails::find()->where(['parent_id' => Yii::$app->user->id, 'status' => 0, 'epin_status' => 0])->all() ?>
+                        <?php $epin = PinRequestDetails::find()->where(['parent_id' => Yii::$app->user->id, 'status' => 1, 'epin_status' => 0])->all() ?>
                         <?= $form->field($model, 'epin')->dropDownList(ArrayHelper::map($epin, 'id', 'epin'), ['prompt' => '--Select--']) ?>
                 </div><div class="col-md-2">
                         <?= $form->field($model, 'epin_number')->textInput(['style' => 'margin-top: 33px;'])->label(FALSE) ?>
