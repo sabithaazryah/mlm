@@ -76,7 +76,8 @@ class Employee extends ActiveRecord implements IdentityInterface {
                         [['password'], 'string', 'max' => 300],
                         [['user_name', 'password'], 'required', 'on' => 'login'],
                         [['password'], 'validatePassword', 'on' => 'login'],
-                        // [['distributor_name'], 'required'],
+                        [['pan_number'], 'unique', 'on' => 'create'],
+                        [['distributor_name', 'user_name', 'password'], 'required', 'on' => 'create'],
                 ];
         }
 
@@ -95,15 +96,15 @@ class Employee extends ActiveRecord implements IdentityInterface {
                     'pin_price' => 'Pin Price',
                     'bv' => 'Bv',
                     'referal_id' => 'Referal ID',
-                    'father_name' => 'Father Name',
-                    'dob' => 'Dob',
+                    'father_name' => 'Father/Husband Name',
+                    'dob' => 'Date of birth',
                     'gender' => 'Gender',
                     'mobile_number' => 'Mobile Number',
                     'pincode' => 'Pincode',
                     'post_office' => 'Post Office',
                     'state' => 'State',
                     'city' => 'City',
-                    'house_name' => 'House Name',
+                    'house_name' => 'Door No /House Name',
                     'taluk' => 'Taluk',
                     'address' => 'Address',
                     'email' => 'Email',

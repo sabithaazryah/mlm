@@ -36,6 +36,7 @@ class Packages extends \yii\db\ActiveRecord {
                         [['status', 'CB', 'UB'], 'integer'],
                         [['DOC', 'DOU'], 'safe'],
                         [['name'], 'string', 'max' => 200],
+                        [['name', 'amount', 'bv', 'ceiling'], 'required']
                 ];
         }
 

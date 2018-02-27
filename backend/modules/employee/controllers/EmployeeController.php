@@ -60,7 +60,7 @@ class EmployeeController extends Controller {
          */
         public function actionCreate() {
                 $model = new Employee();
-
+                $model->scenario = 'create';
                 if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model)) {
                         $model->dob = date('Y-m-d', strtotime($model->dob));
                         $model->password = Yii::$app->security->generatePasswordHash($model->password);
