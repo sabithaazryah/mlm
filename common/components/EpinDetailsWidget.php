@@ -19,9 +19,9 @@ use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\web\NotFoundHttpException;
-use common\models\DailyEntry;
+use common\models\EpinRequest;
 
-class DailyEntryWidget extends Widget {
+class EpinDetailsWidget extends Widget {
 
     public $id;
 
@@ -33,8 +33,8 @@ class DailyEntryWidget extends Widget {
     }
 
     public function run() {
-        $daily_entry = DailyEntry::findOne($this->id);
-        return $this->render('daily_entry', ['daily_entry' => $daily_entry]);
+        $model = EpinRequest::findOne($this->id);
+        return $this->render('epin_details', ['model' => $model]);
         //return Html::encode($this->message);
     }
 

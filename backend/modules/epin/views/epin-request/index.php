@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
+use common\models\BankDetails;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\EpinRequestSearch */
@@ -34,7 +36,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['class' => 'yii\grid\SerialColumn'],
 //                            'id',
                             'amount_deposited',
-                            'bank_name',
+                            [
+                                'attribute' => 'bank_name',
+                                'value' => function($data) {
+                                    if (isset($data->bank_name)) {
+                                        return BankDetails::findOne($data->bank_name)->bank_name;
+                                    } else {
+                                        return '';
+                                    }
+                                },
+                                'filter' => ArrayHelper::map(BankDetails::find()->asArray()->all(), 'id', 'bank_name'),
+                            ],
                             [
                                 'attribute' => 'type',
                                 'filter' => ['1' => 'RTGS', '2' => 'NEET', '3' => 'Cash Deposit', '4' => 'IMP'],
@@ -77,36 +89,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             // 'UB',
                             // 'DOC',
                             // 'DOU',
-                            [
-                                'class' => 'yii\grid\ActionColumn',
-//                                    'contentOptions' => ['style' => 'width:100px;'],
-                                'header' => 'Actions',
-                                'template' => '{approve}',
-                                'buttons' => [
-                                    'approve' => function ($url, $model) {
-                                        if ($model->status == 0) {
-                                            return Html::a('<span>Approve</span>', $url, [
-                                                        'title' => Yii::t('app', 'Approve'),
-                                                        'class' => 'btn btn-info btn-block',
-                                                        'style' => 'border-radius: 5px;padding: 3px 6px;',
-                                            ]);
-                                        } else {
-                                            return Html::a('<span>Approved</span>', $url, [
-                                                        'title' => Yii::t('app', ''),
-                                                        'class' => 'btn btn-success btn-sm',
-                                                        'style' => 'border-radius: 5px;',
-                                            ]);
-                                        }
-                                    },
-                                ],
-                                'urlCreator' => function ($action, $model) {
-                                    if ($model->status == 0) {
-                                        if ($action === 'approve') {
-                                            $url = Url::to(['approve', 'id' => $model->id]);
-                                            return $url;
-                                        }
-                                    }
-                                }
+                            ['class' => 'yii\grid\ActionColumn',
+                                'template' => '{view}',
                             ],
                         ],
                     ]);

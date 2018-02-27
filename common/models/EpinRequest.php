@@ -24,22 +24,21 @@ use Yii;
  * @property string $DOC
  * @property string $DOU
  */
-class EpinRequest extends \yii\db\ActiveRecord
-{
+class EpinRequest extends \yii\db\ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'epin_request';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
+            [['amount_deposited', 'bank_name', 'transaction_id', 'name', 'slip', 'type', 'number_of_pin', 'phone_number'], 'required'],
             [['customer_id', 'bank_name', 'type', 'number_of_pin', 'status', 'CB', 'UB'], 'integer'],
             [['amount_deposited'], 'number'],
             [['DOC', 'DOU'], 'safe'],
@@ -51,8 +50,7 @@ class EpinRequest extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'customer_id' => 'Customer ID',
@@ -72,4 +70,5 @@ class EpinRequest extends \yii\db\ActiveRecord
             'DOU' => 'Dou',
         ];
     }
+
 }

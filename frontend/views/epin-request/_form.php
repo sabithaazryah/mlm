@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use common\models\BankDetails;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\EpinRequest */
@@ -16,10 +18,11 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'amount_deposited')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-4">
-            <?= $form->field($model, 'bank_name')->textInput(['maxlength' => true]) ?>
+            <?php $banks = ArrayHelper::map(BankDetails::findAll(['status' => 1]), 'id', 'bank_name'); ?>
+            <?= $form->field($model, 'bank_name')->dropDownList($banks, ['prompt' => '-Choose a Bank-']) ?>
         </div>
         <div class="col-md-4">
-            <?= $form->field($model, 'type')->dropDownList(['1' => 'RTGS', '2' => 'NEET', '3' => 'Cash Deposit', '4' => 'IMP']) ?>
+            <?= $form->field($model, 'type')->dropDownList(['1' => 'RTGS', '2' => 'NEFT', '3' => 'Cash Deposit', '4' => 'IMPS']) ?>
         </div>
     </div>
     <div class="row">

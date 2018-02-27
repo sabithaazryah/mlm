@@ -8,6 +8,7 @@ use common\models\EpinRequestSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\PinRequestDetails;
 
 /**
  * EpinRequestController implements the CRUD actions for EpinRequest model.
@@ -48,8 +49,10 @@ class EpinRequestController extends Controller {
      * @return mixed
      */
     public function actionView($id) {
+        $pin_details = PinRequestDetails::find()->where(['master_id' => $id])->all();
         return $this->render('view', [
                     'model' => $this->findModel($id),
+                    'pin_details' => $pin_details,
         ]);
     }
 
@@ -119,12 +122,42 @@ class EpinRequestController extends Controller {
      * Approve Pin request.
      */
     public function actionApprove($id) {
-        $model = $this->findModel($id);
+        $e_pin = $this->RandomEpin();
+        $model = PinRequestDetails::findOne($id);
         if (!empty($model)) {
             $model->status = 1;
+            $model->epin = $e_pin;
             $model->update();
         }
-        return $this->redirect(['index']);
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * Generate Random E-PIN.
+     */
+    public function RandomEpin() {
+        $firstPart = 'Sw';
+        $digits = 4;
+        $nrRand = rand(pow(10, $digits - 1), pow(10, $digits) - 1);
+        $epin = trim($firstPart) . trim($nrRand);
+        $epin_exist = PinRequestDetails::find()->where(['epin' => $epin])->one();
+        if (empty($epin_exist)) {
+            return $epin;
+        } else {
+            return $this->RandomEpin();
+        }
+    }
+
+    /**
+     * Reject Pin request.
+     */
+    public function actionReject($id) {
+        $model = PinRequestDetails::findOne($id);
+        if (!empty($model)) {
+            $model->status = 2;
+            $model->update();
+        }
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
 }

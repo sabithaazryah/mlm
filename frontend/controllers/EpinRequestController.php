@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use common\models\Packages;
+use common\models\PinRequestDetails;
 
 /**
  * EpinRequestController implements the CRUD actions for EpinRequest model.
@@ -70,18 +71,55 @@ class EpinRequestController extends Controller {
             if (!empty($files)) {
                 $model->slip = $files->extension;
             }
-            if ($model->validate() && $model->save()) {
-                if (!empty($files)) {
-                    $this->upload($model, $files);
+            $model->customer_id = 1;
+            if ($model->validate()) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($model->save() && $this->SaveDetails($model, $data)) {
+                        $transaction->commit();
+                        if (!empty($files)) {
+                            $this->upload($model, $files);
+                        }
+                        Yii::$app->session->setFlash('success', "New E-PIN Request Send Successfully");
+                        $model = new EpinRequest();
+                    } else {
+                        $transaction->rollBack();
+                        Yii::$app->session->setFlash('error', "There was a problem creating new invoice. Please try again.");
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error', "There was a problem creating new invoice. Please try again.");
                 }
-                Yii::$app->session->setFlash('success', "New E-PIN Request Send Successfully");
-                $model = new EpinRequest();
             }
         }
 
         return $this->render('create', [
                     'model' => $model,
         ]);
+    }
+
+    /**
+     * Save Pin request details for each pin.
+     * @return mixed
+     */
+    public function SaveDetails($model, $data) {
+        $flag = 0;
+        foreach ($data['package'] as $value) {
+            $pin_details = new PinRequestDetails();
+            $pin_details->master_id = $model->id;
+            $pin_details->parent_id = $model->customer_id;
+            $pin_details->package_id = $value;
+            if ($pin_details->save()) {
+                $flag = 1;
+            } else {
+                $flag = 0;
+            }
+        }
+        if ($flag == 1) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     /**
