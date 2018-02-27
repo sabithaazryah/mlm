@@ -65,19 +65,20 @@ class Employee extends ActiveRecord implements IdentityInterface {
          */
         public function rules() {
                 return [
-                        [['placement', 'epin', 'bv', 'referal_id', 'gender', 'pincode', 'state', 'nominee_relation', 'status', 'CB', 'UB', 'prefered_dispatch', 'terms_conditions', 'language_terms'], 'integer'],
-                        [['pin_price', 'selected_price'], 'number'],
+                        [['placement', 'epin', 'bv', 'gender', 'pincode', 'state', 'nominee_relation', 'status', 'CB', 'UB', 'prefered_dispatch', 'terms_conditions', 'language_terms'], 'integer'],
+                        [['pin_price', 'selected_price', 'mobile_number'], 'number'],
                         [['dob'], 'safe'],
                         [['DOC', 'DOU'], 'safe'],
                         [['address'], 'string'],
+                        [['email'], 'email'],
                         [['placement_name', 'distributor_name', 'epin_number', 'father_name', 'post_office', 'taluk', 'email', 'nominee_name', 'ifsc_code', 'account_no', 'bank_name', 'branch', 'pan_number', 'user_name'], 'string', 'max' => 200],
                         [['placement_id', 'city', 'house_name'], 'string', 'max' => 100],
-                        [['mobile_number'], 'string', 'max' => 15],
-                        [['password'], 'string', 'max' => 300],
+                    //  [['mobile_number'], 'string', 'max' => 15],
+                    [['password', 'referal_id',], 'string', 'max' => 300],
                         [['user_name', 'password'], 'required', 'on' => 'login'],
                         [['password'], 'validatePassword', 'on' => 'login'],
                         [['pan_number'], 'unique', 'on' => 'create'],
-                        [['distributor_name', 'user_name', 'password'], 'required', 'on' => 'create'],
+                        [['distributor_name', 'password', 'placement_id', 'mobile_number', 'pincode', 'state', 'city', 'house_name', 'epin'], 'required', 'on' => 'create'],
                 ];
         }
 
@@ -213,4 +214,8 @@ class Employee extends ActiveRecord implements IdentityInterface {
         /**
          * @return \yii\db\ActiveQuery
          */
+        public function getEmpname() {
+                return $this->distributor_name . '( ' . $this->user_name . ' )';
+        }
+
 }

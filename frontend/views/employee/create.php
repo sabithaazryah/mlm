@@ -6,6 +6,10 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use kartik\date\DatePicker;
+use common\models\Employee;
+use common\models\PinRequestDetails;
+use yii\helpers\ArrayHelper;
+use common\models\State;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
@@ -19,15 +23,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
                 <div class="col-md-4">
-                        <?= $form->field($model, 'placement_name')->textInput(['autofocus' => true]) ?>
+                        <?php $users = Employee::find()->where(['status' => 1])->all(); ?>
+                        <?= $form->field($model, 'placement_name')->dropDownList(ArrayHelper::map($users, 'id', 'empname'), ['prompt' => '--Select--']) ?>
                 </div><div class="col-md-4">
-                        <?= $form->field($model, 'placement_id') ?>
+                        <?= $form->field($model, 'placement_id')->textInput(['readonly' => true]) ?>
                 </div><div class="col-md-4">
                         <?= $form->field($model, 'distributor_name')->textInput() ?>
                 </div><div class="col-md-4">
                         <?= $form->field($model, 'placement')->dropDownList(['1' => 'Right', '2' => 'Left']) ?>
-                </div><div class="col-md-4">
-                        <?= $form->field($model, 'epin')->textInput() ?>
+                </div><div class="col-md-2">
+                        <?php $epin = PinRequestDetails::find()->where(['parent_id' => Yii::$app->user->id, 'status' => 0, 'epin_status' => 0])->all() ?>
+                        <?= $form->field($model, 'epin')->dropDownList(ArrayHelper::map($epin, 'id', 'epin'), ['prompt' => '--Select--']) ?>
+                </div><div class="col-md-2">
+                        <?= $form->field($model, 'epin_number')->textInput(['style' => 'margin-top: 33px;'])->label(FALSE) ?>
                 </div><div class="col-md-4">
                         <?= $form->field($model, 'pin_price')->textInput() ?>
                 </div><div class="col-md-4">
@@ -56,7 +64,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div><div class="col-md-4">
                         <?= $form->field($model, 'post_office')->textInput() ?>
                 </div><div class="col-md-4">
-                        <?= $form->field($model, 'state')->textInput() ?>
+                        <?php $state = State::find()->where(['status' => 1])->all(); ?>
+                        <?= $form->field($model, 'state')->dropDownList(ArrayHelper::map($state, 'id', 'state'), ['prompt' => '--Select--']) ?>
                 </div><div class="col-md-4">
                         <?= $form->field($model, 'city')->textInput() ?>
                 </div><div class="col-md-4">
@@ -84,7 +93,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div><div class="col-md-4">
                         <?= $form->field($model, 'password')->passwordInput() ?>
                 </div><div class="col-md-4">
-                        <?= $form->field($model, 'user_name')->textInput() ?>
+                        <?= $form->field($model, 'prefered_dispatch')->dropDownList(['1' => 'Courier']) ?>
+                </div><div class="col-md-4">
+                        <?= $form->field($model, 'selected_price')->textInput(['readonly' => true]) ?>
                 </div>
         </div>
 
@@ -97,4 +108,34 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php ActiveForm::end(); ?>
         </div>
 </div>
-</div>
+
+
+<script>
+        $(document).ready(function () {
+                $('#employee-placement_name').change(function () {
+                        $.ajax({
+                                type: 'POST',
+                                cache: false,
+                                data: {employee: $(this).val()},
+                                url: homeUrl + 'employee/employeeid',
+                                success: function (data) {
+                                        $("#employee-placement_id").val(data);
+                                }
+                        });
+                });
+
+                $('#employee-epin').change(function () {
+                        $.ajax({
+                                type: 'POST',
+                                cache: false,
+                                data: {epin: $(this).val()},
+                                url: homeUrl + 'employee/epin',
+                                success: function (data) {
+                                        var res = $.parseJSON(data);
+                                        $("#employee-epin_number").val(res['amount']);
+                                        $("#employee-selected_price").val(res['amount']);
+                                }
+                        });
+                });
+        });
+</script>
