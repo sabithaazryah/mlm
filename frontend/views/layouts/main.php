@@ -37,7 +37,7 @@ AppAsset::register($this);
                         $menuItems = [
                                 ['label' => 'Home', 'url' => ['/site/index']],
                                 ['label' => 'E-PIN', 'url' => ['/epin-request/create']],
-                                ['label' => 'Customer Register', 'url' => ['/employee/index']],
+                                ['label' => 'Customer Register', 'url' => ['/employee/create']],
                         ];
                         if (Yii::$app->user->isGuest) {
                                 $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];

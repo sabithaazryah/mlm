@@ -34,6 +34,9 @@ return [
         'epin' => [
             'class' => 'backend\modules\epin\Module',
         ],
+        'employee' => [
+            'class' => 'backend\modules\employee\Module',
+        ],
     ],
     'components' => [
         'request' => [

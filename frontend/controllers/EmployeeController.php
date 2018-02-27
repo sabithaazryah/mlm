@@ -7,7 +7,7 @@ use common\models\Employee;
 
 class EmployeeController extends \yii\web\Controller {
 
-        public function actionIndex() {
+        public function actionCreate() {
                 $model = new Employee();
                 if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model)) {
                         $model->dob = date('Y-m-d', strtotime($model->dob));
@@ -17,7 +17,7 @@ class EmployeeController extends \yii\web\Controller {
                         }
                 }
 
-                return $this->render('index', ['model' => $model]);
+                return $this->render('create', ['model' => $model]);
         }
 
 }

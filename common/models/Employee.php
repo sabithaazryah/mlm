@@ -65,8 +65,8 @@ class Employee extends ActiveRecord implements IdentityInterface {
          */
         public function rules() {
                 return [
-                        [['placement', 'epin', 'bv', 'referal_id', 'gender', 'pincode', 'state', 'nominee_relation', 'status', 'CB', 'UB'], 'integer'],
-                        [['pin_price'], 'number'],
+                        [['placement', 'epin', 'bv', 'referal_id', 'gender', 'pincode', 'state', 'nominee_relation', 'status', 'CB', 'UB', 'prefered_dispatch', 'terms_conditions', 'language_terms'], 'integer'],
+                        [['pin_price', 'selected_price'], 'number'],
                         [['dob'], 'safe'],
                         [['DOC', 'DOU'], 'safe'],
                         [['address'], 'string'],
@@ -76,7 +76,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
                         [['password'], 'string', 'max' => 300],
                         [['user_name', 'password'], 'required', 'on' => 'login'],
                         [['password'], 'validatePassword', 'on' => 'login'],
-                        //  [['distributor_name'], 'required'],
+                        // [['distributor_name'], 'required'],
                 ];
         }
 
@@ -145,7 +145,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
 
         public function loginn() {
 
-                $user = static::find()->where('post_id = :post and status = :stat', ['post' => 1, 'stat' => '1'])->one();
+                //   $user = static::find()->where('post_id = :post and status = :stat', ['post' => 1, 'stat' => '1'])->one();
 
                 $this->_user = static::find()->where('user_name = :uname and status = :stat', ['uname' => $user->user_name, 'stat' => '1'])->one();
 
