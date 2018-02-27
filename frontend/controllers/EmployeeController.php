@@ -4,11 +4,13 @@ namespace frontend\controllers;
 
 use Yii;
 use common\models\Employee;
+use common\models\EmployeePackage;
 
 class EmployeeController extends \yii\web\Controller {
 
         public function actionCreate() {
                 $model = new Employee();
+                $package_history = new EmployeePackage();
                 $model->setScenario('create');
                 if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model)) {
                         $epin = \common\models\PinRequestDetails::findOne($model->epin);
@@ -18,7 +20,11 @@ class EmployeeController extends \yii\web\Controller {
                         if ($model->save()) {
                                 $epin->epin_status = 1;
                                 $epin->save();
-                                return $this->redirect(['purahse', 'id' => $model->id]);
+                                $package_history->employee_id = $model->id;
+                                $package_history->package_id = $epin->package_id;
+                                $package_history->package_date = date('Y-m-d');
+                                $package_history->save();
+                                return $this->redirect(['purchase', 'id' => $model->id]);
                         }
                 }
 
