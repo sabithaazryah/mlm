@@ -86,6 +86,20 @@ AppAsset::register($this);
 
                                                         </ul>
                                                 </li>
+
+                                                <li>
+                                                        <a href="">
+                                                                <i class="fa fa-user-o"></i>
+                                                                <span class="title">Customer Registration</span>
+                                                        </a>
+                                                        <ul>
+
+                                                                <li>
+                                                                        <?= Html::a('Customer Registration', ['/employee/employee/index'], ['class' => 'title']) ?>
+                                                                </li>
+
+                                                        </ul>
+                                                </li>
                                                 <li>
                                                         <a href="">
                                                                 <i class="fa fa-bell-slash-o"></i>
