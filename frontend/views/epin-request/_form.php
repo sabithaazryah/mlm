@@ -35,14 +35,16 @@ use yii\widgets\ActiveForm;
     </div>
     <div class="row">
         <div class="col-md-4">
-            <?= $form->field($model, 'number_of_pin')->textInput() ?>
-        </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'package_for_each_pin')->textInput(['maxlength' => true]) ?>
+            <?php
+            $numbers = Yii::$app->SetValues->Number();
+            ?>
+            <?= $form->field($model, 'number_of_pin')->dropDownList($numbers, ['prompt' => '- select -']) ?>
         </div>
         <div class="col-md-4">
             <?= $form->field($model, 'slip')->fileInput() ?>
         </div>
+    </div>
+    <div class="row" id="package-details-content" style="margin-bottom: 15px;">
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -54,3 +56,27 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+<script>
+    $(document).ready(function () {
+
+        /*
+         * on change of number of packages
+         * return number of select input for add package details
+         */
+
+        $(document).on('change', '#epinrequest-number_of_pin', function (e) {
+            var deposit_amount = $('#epinrequest-amount_deposited').val();
+            var no_of_pin = $(this).val();
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                async: false,
+                data: {deposit_amount: deposit_amount, no_of_pin: no_of_pin},
+                url: '<?= Yii::$app->homeUrl; ?>epin-request/add-package-details',
+                success: function (data) {
+                    $("#package-details-content").html(data);
+                }
+            });
+        });
+    });
+</script>

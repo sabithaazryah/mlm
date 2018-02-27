@@ -20,6 +20,7 @@ AppAsset::register($this);
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
+        <script src="<?= Yii::$app->homeUrl; ?>js/jquery-1.11.1.min.js"></script>
         <?php $this->head() ?>
     </head>
     <body>
@@ -71,9 +72,9 @@ AppAsset::register($this);
 
         <!--                <footer class="footer">
                                 <div class="container">
-                                        <p class="pull-left">&copy; <?php // Html::encode(Yii::$app->name)  ?> <?php // date('Y')  ?></p>
+                                        <p class="pull-left">&copy; <?php // Html::encode(Yii::$app->name)   ?> <?php // date('Y')   ?></p>
 
-                                        <p class="pull-right"><?php // Yii::powered()  ?></p>
+                                        <p class="pull-right"><?php // Yii::powered()   ?></p>
                                 </div>
                         </footer>-->
 

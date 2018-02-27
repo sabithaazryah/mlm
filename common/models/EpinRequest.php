@@ -8,8 +8,9 @@ use Yii;
  * This is the model class for table "epin_request".
  *
  * @property int $id
+ * @property int $customer_id
  * @property string $amount_deposited
- * @property string $bank_name
+ * @property int $bank_name
  * @property int $type
  * @property string $transaction_id
  * @property string $name
@@ -39,11 +40,10 @@ class EpinRequest extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['amount_deposited','bank_name', 'transaction_id', 'name','slip','type', 'number_of_pin','phone_number'], 'required'],
+            [['customer_id', 'bank_name', 'type', 'number_of_pin', 'status', 'CB', 'UB'], 'integer'],
             [['amount_deposited'], 'number'],
-            [['type', 'number_of_pin', 'status', 'CB', 'UB'], 'integer'],
             [['DOC', 'DOU'], 'safe'],
-            [['bank_name', 'transaction_id', 'name', 'package_for_each_pin', 'slip'], 'string', 'max' => 100],
+            [['transaction_id', 'name', 'package_for_each_pin', 'slip'], 'string', 'max' => 100],
             [['phone_number'], 'string', 'max' => 30],
         ];
     }
@@ -55,6 +55,7 @@ class EpinRequest extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'customer_id' => 'Customer ID',
             'amount_deposited' => 'Amount Deposited',
             'bank_name' => 'Bank Name',
             'type' => 'Type',

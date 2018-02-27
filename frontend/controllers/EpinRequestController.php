@@ -9,16 +9,17 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use common\models\Packages;
+
 /**
  * EpinRequestController implements the CRUD actions for EpinRequest model.
  */
-class EpinRequestController extends Controller
-{
+class EpinRequestController extends Controller {
+
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -33,14 +34,13 @@ class EpinRequestController extends Controller
      * Lists all EpinRequest models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new EpinRequestSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -50,10 +50,9 @@ class EpinRequestController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -62,11 +61,11 @@ class EpinRequestController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new EpinRequest();
 
         if ($model->load(Yii::$app->request->post())) {
+            $data = Yii::$app->request->post();
             $files = UploadedFile::getInstance($model, 'slip');
             if (!empty($files)) {
                 $model->slip = $files->extension;
@@ -81,10 +80,10 @@ class EpinRequestController extends Controller
         }
 
         return $this->render('create', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
-    
+
     /**
      * Upload Material photos.
      * @return mixed
@@ -103,8 +102,7 @@ class EpinRequestController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -112,7 +110,7 @@ class EpinRequestController extends Controller
         }
 
         return $this->render('update', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -123,8 +121,7 @@ class EpinRequestController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -137,12 +134,25 @@ class EpinRequestController extends Controller
      * @return EpinRequest the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = EpinRequest::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionAddPackageDetails() {
+        if (Yii::$app->request->isAjax) {
+            $deposit_amount = $_POST['deposit_amount'];
+            $number_of_pin = $_POST['no_of_pin'];
+            $packages = Packages::find()->all();
+            $data = $this->renderPartial('_form_packages', [
+                'number_of_pin' => $number_of_pin,
+                'packages' => $packages,
+            ]);
+            echo $data;
+        }
+    }
+
 }
