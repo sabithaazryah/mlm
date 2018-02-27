@@ -34,3 +34,13 @@ use yii\widgets\ActiveForm;
         <?php ActiveForm::end(); ?>
 
 </div>
+
+<script>
+        $(document).ready(function () {
+                $('#packages-amount').change(function () {
+                        var amount = $(this).val();
+                        var bv = (amount * 10) / 100;
+                        // $('#packages-bv').val(bv);
+                });
+        });
+</script>

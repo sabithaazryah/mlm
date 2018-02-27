@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use common\models\Employee;
 use common\models\EmployeePackage;
+use common\models\Products;
 
 class EmployeeController extends \yii\web\Controller {
 
@@ -32,7 +33,69 @@ class EmployeeController extends \yii\web\Controller {
         }
 
         public function actionPurchase($id = null) {
-                die('dds');
+                $employee = Employee::findOne($id);
+                $products = Products::find()->where(['status' => 1])->all();
+                if (Yii::$app->request->post()) {
+                        $data = Yii::$app->request->post();
+                        $employee_id = Yii::$app->request->post('employee');
+                        $this->Create($data, $employee_id);
+                        Yii::$app->getSession()->setFlash('success', 'Customer added successfully');
+
+                        return $this->redirect('create');
+                }
+                return $this->render('products', ['model' => $products, 'employee' => $id, 'employee_data' => $employee]);
+        }
+
+        public function Create($data, $employee_id) {
+
+                $arr = [];
+                $create = $data['create'];
+                $i = 0;
+
+                foreach ($create['product'] as $val) {
+                        $arr[$i]['product'] = $val;
+                        $i++;
+                }
+
+                $i = 0;
+                foreach ($create['price'] as $val) {
+                        $arr[$i]['price'] = $val;
+                        $i++;
+                }
+
+                $i = 0;
+                foreach ($create['qty'] as $val) {
+                        $arr[$i]['qty'] = $val;
+                        $i++;
+                }
+
+                $i = 0;
+                foreach ($create['amount'] as $val) {
+                        $arr[$i]['amount'] = $val;
+                        $i++;
+                }
+
+                $i = 0;
+                foreach ($create['bv'] as $val) {
+                        $arr[$i]['bv'] = $val;
+                        $i++;
+                }
+                $this->AddProductDetails($arr, $employee_id);
+        }
+
+        public function AddProductDetails($arr, $employee_id) {
+                foreach ($arr as $val) {
+                        if ($val['qty'] != '' && $val['amount'] != '') {
+                                $model = new \common\models\EmployeeProducts();
+                                $model->employee_id = $employee_id;
+                                $model->product_id = $val['product'];
+                                $model->price = $val['price'];
+                                $model->qty = $val['qty'];
+                                $model->total_amount = $val['amount'];
+                                $model->total_bv = $val['bv'];
+                                $model->save();
+                        }
+                }
         }
 
         public function actionEmployeeid() {
@@ -52,6 +115,20 @@ class EmployeeController extends \yii\web\Controller {
                         $package_detail = \common\models\Packages::findOne($epin_details->package_id);
                         if (!empty($package_detail)) {
                                 $data = ['amount' => $package_detail->amount, 'bv' => $package_detail->bv];
+                                echo json_encode($data);
+                        }
+                }
+        }
+
+        public function actionProductDetails() {
+                if (Yii::$app->request->isAjax) {
+                        $product = Yii::$app->request->post('product');
+                        $qty = Yii::$app->request->post('qty');
+                        $product_details = Products::findOne($product);
+                        if (!empty($product_details)) {
+                                $total_amount = $product_details->price * $qty;
+                                $total_bv = $product_details->bv * $qty;
+                                $data = ['amount' => $total_amount, 'bv' => $total_bv];
                                 echo json_encode($data);
                         }
                 }
