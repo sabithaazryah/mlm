@@ -1,4 +1,8 @@
-<?php ?>
+<?php
+
+use yii\helpers\Html;
+use common\models\Employee;
+?>
 <html>
     <head>
         <title>HTML &amp; CSS tree</title>
@@ -138,37 +142,152 @@
             p {
                 margin-top: 2em;
             }
+            .add-btns{
+                border: 2px solid #009cd9;
+                padding: 0px 4px;
+                border-radius: 50%;
+                color: white;
+                background: #009cd9;
+            }
+            .vacant-btns{
+                border: 2px solid #009cd9;
+                padding: 0px 6px;
+                border-radius: 50%;
+                color: #009cd9;
+                background: #009cd9;
+            }
+            .tree-child{
+                color: black !important;
+            }
+            .tree-child:hover{
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
         <div id="wrapper" style="margin-top: 100px;">
-            <h1 style="text-align: left;">Distributor ID : </h1>
+            <table style="margin-left:140px;margin-bottom: 25px;">
+                <tr>
+                    <td><h4 style="text-align: left;">Distributor ID : </h4></td>
+                    <td><input type="text" value="<?= $emp_details->user_name ?>" readonly="true" class="form-control" style="height:28px;"/></td>
+                </tr>
+            </table>
             <ul class="tree">
                 <li>
-                    <span>Root</span>
-                    <ul>
-                        <li>
-                            <span>Uncle</span>
-                            <ul>
-                                <li>
-                                    <span>Cousin</span>
-                                </li>
-                                <li>
-                                    <span>Cousin</span>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span>Aunt</span>
-                            <ul>
-                                <li>
-                                    <span>Cousin</span>
-                                </li>
-                                <li>
-                                    <span>Cousin</span>
-                                </li>
-                            </ul>
-                        </li>
+                    <?php
+                    $subchild1_right = 0;
+                    $subchild1_left = 0;
+                    if (!empty($emp_details)) {
+                        ?>
+                        <span><?= $emp_details->distributor_name ?><br/><?= $emp_details->user_name ?></span>
+                        <?php
+                        ?>
+                        <ul>
+                            <?php
+                            $emp_child1_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_details->id])->one();
+                            $emp_child1_left = Employee::find()->where(['placement' => 2, 'placement_name' => $emp_details->id])->one();
+                            ?>
+                            <li>
+                                <?php
+                                if (!empty($emp_child1_left)) {
+                                    $subchild1_left == 1;
+                                    ?>
+                                    <?= Html::a('<span>' . $emp_child1_left->distributor_name . '<br/>' . $emp_child1_left->user_name . '</span>', ['tree', 'id' => $emp_child1_left->id], ['class' => 'tree-child']) ?>
+                                    <ul>
+                                        <?php
+                                        $emp_subchild1_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_child1_left->id])->one();
+                                        $emp_subchild1_left = Employee::find()->where(['placement' => 2, 'placement_name' => $emp_child1_left->id])->one();
+                                        ?>
+                                        <li>
+                                            <?php
+                                            if (!empty($emp_subchild1_left)) {
+                                                ?>
+                                                <?= Html::a('<span>' . $emp_subchild1_left->distributor_name . '<br/>' . $emp_subchild1_left->user_name . '</span>', ['tree', 'id' => $emp_subchild1_left->id], ['class' => 'tree-child']) ?>
+                                            <?php } else {
+                                                ?>
+                                                <span><b class="add-btns">+</b><br/>Join Here</span>
+                                            <?php }
+                                            ?>
+                                        </li>
+                                        <li>
+                                            <?php
+                                            if (!empty($emp_subchild1_right)) {
+                                                ?>
+                                                <?= Html::a('<span>' . $emp_subchild1_right->distributor_name . '<br/>' . $emp_subchild1_right->user_name . '</span>', ['tree', 'id' => $emp_subchild1_right->id], ['class' => 'tree-child']) ?>
+                                            <?php } else {
+                                                ?>
+                                                <span><b class="add-btns">+</b><br/>Join Here</span>
+                                            <?php }
+                                            ?>
+                                        </li>
+                                    </ul>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <span><b class="add-btns">+</b><br/>Join Here</span>
+                                    <ul>
+                                        <li>
+                                            <span><b class="vacant-btns">.</b><br/>Vacant</span>
+                                        </li>
+                                        <li>
+                                            <span><b class="vacant-btns">.</b><br/>Vacant</span>
+                                        </li>
+                                    </ul>
+                                <?php }
+                                ?>
+                            </li>
+                            <li>
+                                <?php
+                                if (!empty($emp_child1_right)) {
+                                    $subchild1_right = 1;
+                                    ?>
+                                    <?= Html::a('<span>' . $emp_child1_right->distributor_name . '<br/>' . $emp_child1_right->user_name . '</span>', ['tree', 'id' => $emp_child1_right->id], ['class' => 'tree-child']) ?>
+                                    <ul>
+                                        <?php
+                                        $emp_subchild2_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_child1_right->id])->one();
+                                        $emp_subchild2_left = Employee::find()->where(['placement' => 2, 'placement_name' => $emp_child1_right->id])->one();
+                                        ?>
+                                        <li>
+                                            <?php
+                                            if (!empty($emp_subchild2_left)) {
+                                                ?>
+                                                <span><?= $emp_subchild2_left->distributor_name ?><br/><?= $emp_subchild2_left->user_name ?></span>
+                                            <?php } else {
+                                                ?>
+                                                <span><b class="add-btns">+</b><br/>Join Here</span>
+                                            <?php }
+                                            ?>
+                                        </li>
+                                        <li>
+                                            <?php
+                                            if (!empty($emp_subchild2_right)) {
+                                                ?>
+                                                <span><?= $emp_subchild2_right->distributor_name ?><br/><?= $emp_subchild2_right->user_name ?></span>
+                                            <?php } else {
+                                                ?>
+                                                <span><b class="add-btns">+</b><br/>Join Here</span>
+                                            <?php }
+                                            ?>
+                                        </li>
+                                    </ul>
+                                <?php } else {
+                                    ?>
+                                    <span><b class="add-btns">+</b><br/>Join Here</span>
+                                    <ul>
+                                        <li>
+                                            <span><b class="vacant-btns">.</b><br/>Vacant</span>
+                                        </li>
+                                        <li>
+                                            <span><b class="vacant-btns">.</b><br/>Vacant</span>
+                                        </li>
+                                    </ul>
+                                <?php }
+                                ?>
+                            </li>
+                        </ul>
+
+                    <?php }
+                    ?>
                 </li>
             </ul>
             <div class="clearer"></div>
