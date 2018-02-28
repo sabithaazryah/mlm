@@ -37,8 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div><div class="col-md-2">
                         <?= $form->field($model, 'epin_number')->textInput(['style' => 'margin-top: 33px;'])->label(FALSE) ?>
                 </div><div class="col-md-4">
-                        <?= $form->field($model, 'pin_price')->textInput() ?>
-                </div><div class="col-md-4">
                         <?= $form->field($model, 'referal_id')->textInput() ?>
                 </div><div class="col-md-4">
                         <?= $form->field($model, 'father_name')->textInput() ?>
