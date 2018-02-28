@@ -11,15 +11,17 @@ use common\models\PinRequestDetails;
 use yii\helpers\ArrayHelper;
 use common\models\State;
 
-$this->title = 'Signup';
+$this->title = 'Wallet Purchase';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-signup">
+
+        <h1><?= Html::encode($this->title) ?></h1>
         <?php $form = ActiveForm::begin(['id' => '']); ?>
         <input type="hidden" name="employee" value="<?= $employee ?>"/>
         <div class="row">
 
-                <label>Customer Id : </label><?= $employee_data->user_name ?>
+                <label>Customer Id : </label><?= $employee_data->user_name ?><br>
                 <label>Ref ID : </label><?= $employee_data->referal_id ?>
         </div>
 

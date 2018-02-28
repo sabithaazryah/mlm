@@ -17,6 +17,7 @@ class EmployeeController extends \yii\web\Controller {
                         $epin = \common\models\PinRequestDetails::findOne($model->epin);
                         $model->user_name = $epin->epin;
                         $model->dob = date('Y-m-d', strtotime($model->dob));
+                        $not_encrypted_password = $model->password;
                         $model->password = Yii::$app->security->generatePasswordHash($model->password);
                         if ($model->save()) {
                                 $epin->epin_status = 1;
@@ -25,6 +26,7 @@ class EmployeeController extends \yii\web\Controller {
                                 $package_history->package_id = $epin->package_id;
                                 $package_history->package_date = date('Y-m-d');
                                 $package_history->save();
+                                $this->sendMail($model, $not_encrypted_password);
                                 return $this->redirect(['purchase', 'id' => $model->id]);
                         }
                 }
@@ -95,6 +97,17 @@ class EmployeeController extends \yii\web\Controller {
                                 $model->total_bv = $val['bv'];
                                 $model->save();
                         }
+                }
+        }
+
+        public function sendMail($user, $not_encrypted_password) {
+                if ($user->email != '') {
+                        $message = Yii::$app->mailer->compose('new-registration', ['model' => $user, 'user_password' => $not_encrypted_password])
+                                ->setFrom('no-replay@smartway.in')
+                                ->setTo($user->email)
+                                ->setSubject('Registration successfull');
+                        $message->send();
+                        return TRUE;
                 }
         }
 
