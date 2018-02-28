@@ -3,16 +3,16 @@
 namespace backend\modules\masters\controllers;
 
 use Yii;
-use common\models\Packages;
-use common\models\PackagesSearch;
+use common\models\Settings;
+use common\models\SettingsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PackagesController implements the CRUD actions for Packages model.
+ * SettingsController implements the CRUD actions for Settings model.
  */
-class PackagesController extends Controller {
+class SettingsController extends Controller {
 
         /**
          * @inheritdoc
@@ -29,11 +29,11 @@ class PackagesController extends Controller {
         }
 
         /**
-         * Lists all Packages models.
+         * Lists all Settings models.
          * @return mixed
          */
         public function actionIndex() {
-                $searchModel = new PackagesSearch();
+                $searchModel = new SettingsSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
                 return $this->render('index', [
@@ -43,7 +43,7 @@ class PackagesController extends Controller {
         }
 
         /**
-         * Displays a single Packages model.
+         * Displays a single Settings model.
          * @param integer $id
          * @return mixed
          */
@@ -54,24 +54,24 @@ class PackagesController extends Controller {
         }
 
         /**
-         * Creates a new Packages model.
+         * Creates a new Settings model.
          * If creation is successful, the browser will be redirected to the 'view' page.
          * @return mixed
          */
         public function actionCreate() {
-                $model = new Packages();
+                $model = new Settings();
 
-                if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model) && $model->save()) {
-                        Yii::$app->getSession()->setFlash('success', 'Package Added Successfully');
-                        return $this->redirect(['index']);
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                        return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                        return $this->render('create', [
+                                    'model' => $model,
+                        ]);
                 }
-                return $this->renderAjax('create', [
-                            'model' => $model,
-                ]);
         }
 
         /**
-         * Updates an existing Packages model.
+         * Updates an existing Settings model.
          * If update is successful, the browser will be redirected to the 'view' page.
          * @param integer $id
          * @return mixed
@@ -79,7 +79,7 @@ class PackagesController extends Controller {
         public function actionUpdate($id) {
                 $model = $this->findModel($id);
 
-                if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model) && $model->save()) {
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
                         Yii::$app->getSession()->setFlash('success', 'Updated Successfully');
                         return $this->redirect(['index']);
                 }
@@ -89,39 +89,29 @@ class PackagesController extends Controller {
         }
 
         /**
-         * Deletes an existing Packages model.
+         * Deletes an existing Settings model.
          * If deletion is successful, the browser will be redirected to the 'index' page.
          * @param integer $id
          * @return mixed
          */
-        public function actionDel($id) {
+        public function actionDelete($id) {
                 $this->findModel($id)->delete();
 
                 return $this->redirect(['index']);
         }
 
         /**
-         * Finds the Packages model based on its primary key value.
+         * Finds the Settings model based on its primary key value.
          * If the model is not found, a 404 HTTP exception will be thrown.
          * @param integer $id
-         * @return Packages the loaded model
+         * @return Settings the loaded model
          * @throws NotFoundHttpException if the model cannot be found
          */
         protected function findModel($id) {
-                if (($model = Packages::findOne($id)) !== null) {
+                if (($model = Settings::findOne($id)) !== null) {
                         return $model;
                 } else {
                         throw new NotFoundHttpException('The requested page does not exist.');
-                }
-        }
-
-        public function actionBv() {
-                if (Yii::$app->request->isAjax) {
-                        $amount = Yii::$app->request->post('amount');
-                        $settings = \common\models\Settings::findOne(1);
-
-                        $bv = ($amount * $settings->value) / 100;
-                        echo $bv;
                 }
         }
 

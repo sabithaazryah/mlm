@@ -36,7 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= $form->field($model, 'epin')->dropDownList(ArrayHelper::map($epin, 'id', 'epin'), ['prompt' => '--Select--']) ?>
                 </div><div class="col-md-2">
                         <?= $form->field($model, 'epin_number')->textInput(['style' => 'margin-top: 33px;'])->label(FALSE) ?>
-                </div><div class="col-md-4">
+                </div>
+                <?= $form->field($model, 'pin_price')->hiddenInput()->label(FALSE) ?>
+                <?= $form->field($model, 'bv')->hiddenInput()->label(FALSE) ?>
+                <div class="col-md-4">
                         <?= $form->field($model, 'referal_id')->textInput() ?>
                 </div><div class="col-md-4">
                         <?= $form->field($model, 'father_name')->textInput() ?>
@@ -132,6 +135,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         var res = $.parseJSON(data);
                                         $("#employee-epin_number").val(res['amount']);
                                         $("#employee-selected_price").val(res['amount']);
+                                        $("#employee-pin_price").val(res['amount']);
+                                        $("#employee-bv").val(res['bv']);
                                 }
                         });
                 });

@@ -39,8 +39,15 @@ use yii\widgets\ActiveForm;
         $(document).ready(function () {
                 $('#packages-amount').change(function () {
                         var amount = $(this).val();
-                        var bv = (amount * 10) / 100;
-                        // $('#packages-bv').val(bv);
+                        $.ajax({
+                                type: 'POST',
+                                cache: false,
+                                data: {amount: $(this).val()},
+                                url: homeUrl + 'masters/packages/bv',
+                                success: function (data) {
+                                        $('#packages-bv').val(data);
+                                }
+                        });
                 });
         });
 </script>
