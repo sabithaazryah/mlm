@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
+use common\components\ModalViewWidget;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\ProductsSearch */
@@ -22,9 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 </div>
                 <div class="panel-body">
-                    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-                    <?= Html::a('<i class="fa-th-list"></i><span> Create Products</span>', ['create'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
+                    <?= Html::button('<i class="fa-th-list"></i><span> Add Product</span>', ['value' => Url::to('create'), 'class' => 'btn btn-warning  btn-icon btn-icon-standalone modalButton']) ?>
+                    <?= \common\widgets\Alert::widget(); ?>
+                    <?= ModalViewWidget::widget(); ?>
                     <?=
                     GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -44,7 +46,31 @@ $this->params['breadcrumbs'][] = $this->title;
                             // 'UB',
                             // 'DOC',
                             // 'DOU',
-                            ['class' => 'yii\grid\ActionColumn'],
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'header' => 'Actions',
+                                'template' => '{update}{delete}',
+                                'buttons' => [
+                                    'update' => function ($url, $model) {
+                                        return Html::button('<i class="fa fa-pencil"></i>', ['value' => Url::to(['update', 'id' => $model->id]), 'class' => 'modalButton edit-btn']);
+                                    },
+                                    'delete' => function ($url, $model) {
+                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                                    'title' => Yii::t('app', 'delete'),
+                                                    'class' => '',
+                                                    'data' => [
+                                                        'confirm' => 'Are you sure you want to delete this item?',
+                                                    ],
+                                        ]);
+                                    },
+                                ],
+                                'urlCreator' => function ($action, $model) {
+                                    if ($action === 'delete') {
+                                        $url = Url::to(['del', 'id' => $model->id]);
+                                        return $url;
+                                    }
+                                }
+                            ],
                         ],
                     ]);
                     ?>

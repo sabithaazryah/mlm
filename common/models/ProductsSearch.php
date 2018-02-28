@@ -18,9 +18,9 @@ class ProductsSearch extends Products
     public function rules()
     {
         return [
-            [['id', 'product_name', 'canonical_name', 'status', 'CB', 'UB'], 'integer'],
+            [['id', 'status', 'CB', 'UB'], 'integer'],
+            [['product_name', 'canonical_name', 'photo', 'field1', 'DOC', 'DOU'], 'safe'],
             [['price', 'bv'], 'number'],
-            [['photo', 'field1', 'DOC', 'DOU'], 'safe'],
         ];
     }
 
@@ -61,8 +61,6 @@ class ProductsSearch extends Products
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'product_name' => $this->product_name,
-            'canonical_name' => $this->canonical_name,
             'price' => $this->price,
             'bv' => $this->bv,
             'status' => $this->status,
@@ -72,7 +70,9 @@ class ProductsSearch extends Products
             'DOU' => $this->DOU,
         ]);
 
-        $query->andFilterWhere(['like', 'photo', $this->photo])
+        $query->andFilterWhere(['like', 'product_name', $this->product_name])
+            ->andFilterWhere(['like', 'canonical_name', $this->canonical_name])
+            ->andFilterWhere(['like', 'photo', $this->photo])
             ->andFilterWhere(['like', 'field1', $this->field1]);
 
         return $dataProvider;

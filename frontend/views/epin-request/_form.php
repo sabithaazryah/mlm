@@ -12,7 +12,7 @@ use common\models\BankDetails;
 
 <div class="epin-request-form">
     <?= \common\widgets\Alert::widget(); ?>
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'epin-submit']); ?>
     <div class="row">
         <div class="col-md-4">
             <?= $form->field($model, 'amount_deposited')->textInput(['maxlength' => true]) ?>
@@ -81,5 +81,36 @@ use common\models\BankDetails;
                 }
             });
         });
+
+        /*
+         * on change of packages set amount to data-val attribute
+         */
+
+        $(document).on('change', '.package-detail', function (e) {
+            var current_id = $(this).attr('id');
+            var data_val = $('option:selected', this).attr('data-val');
+            $('#' + current_id).attr('data-amount', data_val);
+        });
+
+        /*
+         * on submit of form check deposited amount and packages selected
+         */
+
+        $(document).on('submit', '#epin-submit', function (e) {
+            var deposit_amount = $('#epinrequest-amount_deposited').val();
+            var no_of_pin = $('#epinrequest-number_of_pin').val();
+            var tot_amount = 0;
+            for (i = 1; i <= no_of_pin; i++) {
+                var amt = parseFloat($('#package-' + i).attr('data-amount'));
+                tot_amount = tot_amount + amt;
+            }
+            if (tot_amount > deposit_amount) {
+                alert('Package amount and deposited amount does not match.')
+                return false;
+            } else {
+                return true;
+            }
+        });
+
     });
 </script>
