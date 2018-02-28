@@ -45,7 +45,7 @@ use yii\widgets\ActiveForm;
                                 data: {amount: $(this).val()},
                                 url: homeUrl + 'masters/packages/bv',
                                 success: function (data) {
-                                        $('#packages-bv').val(data);
+                                        $('#packages-bv').val(parseFloat(data));
                                 }
                         });
                 });
