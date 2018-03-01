@@ -24,17 +24,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="panel-body">
                                         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-                                        <?= Html::a('<i class="fa-th-list"></i><span> Create Employee</span>', ['create'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
                                         <?=
                                         GridView::widget([
                                             'dataProvider' => $dataProvider,
                                             'filterModel' => $searchModel,
                                             'columns' => [
                                                     ['class' => 'yii\grid\SerialColumn'],
-                                                'placement_name',
-                                                'placement_id',
+//                                                'placement_name',
+//                                                'placement_id',
                                                 'distributor_name',
-                                                'placement',
+//                                                'placement',
                                                 // 'epin',
                                                 // 'epin_number',
                                                 // 'pin_price',
@@ -60,13 +59,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 // 'branch',
                                                 // 'pan_number',
                                                 // 'password',
-                                                // 'user_name',
+                                                'user_name',
                                                 // 'status',
                                                 // 'CB',
                                                 // 'UB',
                                                 // 'DOC',
                                                 // 'DOU',
-                                                ['class' => 'yii\grid\ActionColumn'],
+                                                ['class' => 'yii\grid\ActionColumn',
+                                                    'template' => '{view}'],
                                             ],
                                         ]);
                                         ?>
