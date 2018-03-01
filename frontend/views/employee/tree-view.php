@@ -162,17 +162,27 @@ use common\models\Employee;
             .tree-child:hover{
                 text-decoration: none;
             }
+            .btn.btn-icon-standalone span {
+                padding: 0px;
+            }
+            .btn {
+                margin-left: 15px;
+                padding: 3px 12px;
+            }
         </style>
     </head>
     <body>
         <i class="fa fa-user" style="color:black;"></i>
         <div id="wrapper" style="margin-top: 100px;">
-            <table style="margin-left:140px;margin-bottom: 25px;">
+            <?= Html::beginForm(['employee/tree-search'], 'post') ?>
+            <table style="margin: 0 auto;margin-bottom: 30px;">
                 <tr>
                     <td><h4 style="text-align: left;">Distributor ID : </h4></td>
-                    <td><input type="text" value="<?= $emp_details->user_name ?>" readonly="true" class="form-control" style="height:28px;"/></td>
+                    <td><input type="text" value="<?= $emp_details->user_name ?>" name="distributor_name" class="form-control" style="height:28px;"/></td>
+                    <td> <?= Html::submitButton('<span>Search</span>', ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?></td>
                 </tr>
             </table>
+            <?= Html::endForm() ?>
             <ul class="tree">
                 <li>
                     <?php
@@ -197,7 +207,7 @@ use common\models\Employee;
                                 if (!empty($emp_child1_left)) {
                                     $subchild1_left = 1;
                                     ?>
-                                    <?= Html::a('<span>' . $emp_child1_left->distributor_name . '<br/>' . $emp_child1_left->user_name . '</span>', ['tree', 'id' => $emp_child1_left->id], ['class' => 'tree-child']) ?>
+                                    <?= Html::a('<span>' . $emp_child1_left->distributor_name . '<br/>' . $emp_child1_left->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_child1_left->id)], ['class' => 'tree-child']) ?>
                                     <ul>
                                         <?php
                                         $emp_subchild1_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_child1_left->id])->one();
@@ -208,7 +218,7 @@ use common\models\Employee;
                                             if (!empty($emp_subchild1_left)) {
                                                 $subchild2_left = 1;
                                                 ?>
-                                                <?= Html::a('<span>' . $emp_subchild1_left->distributor_name . '<br/>' . $emp_subchild1_left->user_name . '</span>', ['tree', 'id' => $emp_subchild1_left->id], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span>' . $emp_subchild1_left->distributor_name . '<br/>' . $emp_subchild1_left->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild1_left->id)], ['class' => 'tree-child']) ?>
                                                 <ul>
                                                     <?php
                                                     $emp_subchild3_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_subchild1_left->id])->one();
@@ -218,10 +228,10 @@ use common\models\Employee;
                                                         <?php
                                                         if (!empty($emp_subchild3_left)) {
                                                             ?>
-                                                            <?= Html::a('<span>' . $emp_subchild3_left->distributor_name . '<br/>' . $emp_subchild3_left->user_name . '</span>', ['tree', 'id' => $emp_subchild3_left->id], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span>' . $emp_subchild3_left->distributor_name . '<br/>' . $emp_subchild3_left->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild3_left->id)], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_left->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild1_left->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 2)], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
@@ -229,17 +239,17 @@ use common\models\Employee;
                                                         <?php
                                                         if (!empty($emp_subchild3_right)) {
                                                             ?>
-                                                            <?= Html::a('<span>' . $emp_subchild3_right->distributor_name . '<br/>' . $emp_subchild3_right->user_name . '</span>', ['tree', 'id' => $emp_subchild3_right->id], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span>' . $emp_subchild3_right->distributor_name . '<br/>' . $emp_subchild3_right->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild3_right->id)], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_left->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild1_left->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 1)], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
                                                 </ul>
                                             <?php } else {
                                                 ?>
-                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_left->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_child1_left->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 2)], ['class' => 'tree-child']) ?>
                                                 <ul>
                                                     <li>
                                                         <span><b class="vacant-btns">.</b><br/>Vacant</span>
@@ -256,7 +266,7 @@ use common\models\Employee;
                                             if (!empty($emp_subchild1_right)) {
                                                 $subchild2_right = 1;
                                                 ?>
-                                                <?= Html::a('<span>' . $emp_subchild1_right->distributor_name . '<br/>' . $emp_subchild1_right->user_name . '</span>', ['tree', 'id' => $emp_subchild1_right->id], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span>' . $emp_subchild1_right->distributor_name . '<br/>' . $emp_subchild1_right->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild1_right->id)], ['class' => 'tree-child']) ?>
                                                 <ul>
                                                     <?php
                                                     $emp_subchild4_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_subchild1_right->id])->one();
@@ -266,28 +276,36 @@ use common\models\Employee;
                                                         <?php
                                                         if (!empty($emp_subchild4_left)) {
                                                             ?>
-                                                            <?= Html::a('<span>' . $emp_subchild4_left->distributor_name . '<br/>' . $emp_subchild4_left->user_name . '</span>', ['tree', 'id' => $emp_subchild4_left->id], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span>' . $emp_subchild4_left->distributor_name . '<br/>' . $emp_subchild4_left->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild4_left->id)], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_right->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild1_right->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 2)], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
                                                     <li>
                                                         <?php
-                                                        if (!empty($emp_subchild4_left)) {
+                                                        if (!empty($emp_subchild4_right)) {
                                                             ?>
-                                                            <?= Html::a('<span>' . $emp_subchild4_left->distributor_name . '<br/>' . $emp_subchild4_left->user_name . '</span>', ['tree', 'id' => $emp_subchild4_left->id], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span>' . $emp_subchild4_right->distributor_name . '<br/>' . $emp_subchild4_right->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild4_right->id)], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_right->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild1_right->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 1)], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
                                                 </ul>
                                             <?php } else {
                                                 ?>
-                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_left->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_child1_left->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 1)], ['class' => 'tree-child']) ?>
+                                                <ul>
+                                                    <li>
+                                                        <span><b class="vacant-btns">.</b><br/>Vacant</span>
+                                                    </li>
+                                                    <li>
+                                                        <span><b class="vacant-btns">.</b><br/>Vacant</span>
+                                                    </li>
+                                                </ul>
                                             <?php }
                                             ?>
                                         </li>
@@ -295,7 +313,7 @@ use common\models\Employee;
                                     <?php
                                 } else {
                                     ?>
-                                    <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_details->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                    <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_details->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 2)], ['class' => 'tree-child']) ?>
                                     <ul>
                                         <li>
                                             <span><b class="vacant-btns">.</b><br/>Vacant</span>
@@ -334,7 +352,7 @@ use common\models\Employee;
                                 if (!empty($emp_child1_right)) {
                                     $subchild1_right = 1;
                                     ?>
-                                    <?= Html::a('<span>' . $emp_child1_right->distributor_name . '<br/>' . $emp_child1_right->user_name . '</span>', ['tree', 'id' => $emp_child1_right->id], ['class' => 'tree-child']) ?>
+                                    <?= Html::a('<span>' . $emp_child1_right->distributor_name . '<br/>' . $emp_child1_right->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_child1_right->id)], ['class' => 'tree-child']) ?>
                                     <ul>
                                         <?php
                                         $emp_subchild2_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_child1_right->id])->one();
@@ -345,7 +363,7 @@ use common\models\Employee;
                                             if (!empty($emp_subchild2_left)) {
                                                 $subchild3_left = 1;
                                                 ?>
-                                                <?= Html::a('<span>' . $emp_subchild2_left->distributor_name . '<br/>' . $emp_subchild2_left->user_name . '</span>', ['tree', 'id' => $emp_subchild2_left->id], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span>' . $emp_subchild2_left->distributor_name . '<br/>' . $emp_subchild2_left->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild2_left->id)], ['class' => 'tree-child']) ?>
                                                 <ul>
                                                     <?php
                                                     $emp_subchild5_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_subchild2_left->id])->one();
@@ -355,10 +373,10 @@ use common\models\Employee;
                                                         <?php
                                                         if (!empty($emp_subchild5_left)) {
                                                             ?>
-                                                            <?= Html::a('<span>' . $emp_subchild5_left->distributor_name . '<br/>' . $emp_subchild5_left->user_name . '</span>', ['tree', 'id' => $emp_subchild5_left->id], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span>' . $emp_subchild5_left->distributor_name . '<br/>' . $emp_subchild5_left->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild5_left->id)], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild2_left->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild2_left->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 2)], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
@@ -366,17 +384,17 @@ use common\models\Employee;
                                                         <?php
                                                         if (!empty($emp_subchild5_right)) {
                                                             ?>
-                                                            <?= Html::a('<span>' . $emp_subchild5_right->distributor_name . '<br/>' . $emp_subchild5_right->user_name . '</span>', ['tree', 'id' => $emp_subchild5_right->id], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span>' . $emp_subchild5_right->distributor_name . '<br/>' . $emp_subchild5_right->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild5_right->id)], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild2_right->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild2_right->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 1)], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
                                                 </ul>
                                             <?php } else {
                                                 ?>
-                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_right->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_child1_right->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 2)], ['class' => 'tree-child']) ?>
                                                 <?php if ($subchild3_left == 0) { ?>
                                                     <ul>
                                                         <li>
@@ -396,20 +414,20 @@ use common\models\Employee;
                                             if (!empty($emp_subchild2_right)) {
                                                 $subchild3_right = 1;
                                                 ?>
-                                                <?= Html::a('<span>' . $emp_subchild1_right->distributor_name . '<br/>' . $emp_subchild1_right->user_name . '</span>', ['tree', 'id' => $emp_subchild1_right->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span>' . $emp_subchild2_right->distributor_name . '<br/>' . $emp_subchild2_right->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild2_right->id)], ['class' => 'tree-child']) ?>
                                                 <ul>
                                                     <?php
-                                                    $emp_subchild6_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_subchild1_right->id])->one();
-                                                    $emp_subchild6_left = Employee::find()->where(['placement' => 2, 'placement_name' => $emp_subchild1_right->id])->one();
+                                                    $emp_subchild6_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_subchild2_right->id])->one();
+                                                    $emp_subchild6_left = Employee::find()->where(['placement' => 2, 'placement_name' => $emp_subchild2_right->id])->one();
                                                     ?>
                                                     <li>
                                                         <?php
                                                         if (!empty($emp_subchild6_left)) {
                                                             ?>
-                                                            <?= Html::a('<span>' . $emp_subchild6_left->distributor_name . '<br/>' . $emp_subchild6_left->user_name . '</span>', ['tree', 'id' => $emp_subchild6_left->id], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span>' . $emp_subchild6_left->distributor_name . '<br/>' . $emp_subchild6_left->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild6_left->id)], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild3_left->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild3_left->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 2)], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
@@ -417,17 +435,17 @@ use common\models\Employee;
                                                         <?php
                                                         if (!empty($emp_subchild6_right)) {
                                                             ?>
-                                                            <?= Html::a('<span>' . $emp_subchild6_right->distributor_name . '<br/>' . $emp_subchild6_right->user_name . '</span>', ['tree', 'id' => $emp_subchild6_right->id], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span>' . $emp_subchild6_right->distributor_name . '<br/>' . $emp_subchild6_right->user_name . '</span>', ['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild6_right->id)], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild3_right->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_subchild3_right->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 1)], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
                                                 </ul>
                                             <?php } else {
                                                 ?>
-                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_right->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_child1_right->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 1)], ['class' => 'tree-child']) ?>
                                                 <?php if ($subchild3_right == 0) { ?>
                                                     <ul>
                                                         <li>
@@ -445,7 +463,7 @@ use common\models\Employee;
                                     </ul>
                                 <?php } else {
                                     ?>
-                                    <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_details->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                    <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_details->id), 'type' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', 1)], ['class' => 'tree-child']) ?>
                                     <ul>
                                         <li>
                                             <span><b class="vacant-btns">.</b><br/>Vacant</span>

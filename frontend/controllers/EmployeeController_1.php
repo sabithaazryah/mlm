@@ -6,8 +6,6 @@ use Yii;
 use common\models\Employee;
 use common\models\EmployeePackage;
 use common\models\Products;
-use yii\db\Expression;
-use common\models\EmployeeTree;
 
 class EmployeeController extends \yii\web\Controller {
 
@@ -28,6 +26,7 @@ class EmployeeController extends \yii\web\Controller {
         } else {
             $placement_details = Employee::find()->where(['id' => Yii::$app->user->identity->id])->one();
         }
+        $model = new Employee();
         $package_history = new EmployeePackage();
         $model->setScenario('create');
         if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model)) {
@@ -44,13 +43,16 @@ class EmployeeController extends \yii\web\Controller {
                 $package_history->package_date = date('Y-m-d');
                 $package_history->save();
                 $this->sendMail($model, $not_encrypted_password);
-                $this->EmployeeTree($model);
-                return $this->redirect(['site/index']);
-                //  return $this->redirect(['purchase', 'id' => $model->id]);
+                return $this->redirect(['purchase', 'id' => $model->id]);
             }
         }
 
-        return $this->render('create', ['model' => $model]);
+        return $this->render('create', [
+                    'model' => $model,
+                    'placement_details' => $placement_details,
+                    'placement_arr' => $placement_arr,
+                        ]
+        );
     }
 
     public function actionPurchase($id = null) {
@@ -128,40 +130,6 @@ class EmployeeController extends \yii\web\Controller {
             $message->send();
             return TRUE;
         }
-    }
-
-    public function EmployeeTree($model) {
-
-        $employee_tree = new EmployeeTree;
-        $employee_tree->employee_id = $model->id;
-        $employee_tree->save();
-
-
-        $parent_details = EmployeeTree::find()->where(['employee_id' => $model->placement_name])->one(); /* new employee parent row exists */
-        if (!empty($parent_details)) {
-            if ($model->placement == 1) { /* if new employee is parent right child */
-                $parent_details->right_child = $parent_details->right_child . ',' . $model->id;
-            } else if ($model->placement == 2) { /* left child */
-                $parent_details->left_child = $parent_details->left_child . ',' . $model->id;
-            }
-            $parent_details->save();
-        } else {
-
-            $parentemployee_tree = new EmployeeTree;
-            $parentemployee_tree->employee_id = $model->placement_name;
-            if ($model->placement == 1) {
-                $parentemployee_tree->right_child = $model->id;
-            } else if ($model->placement == 2) {
-                $parentemployee_tree->left_child = $model->id;
-            }
-            $parentemployee_tree->save();
-        }
-        \Yii::$app->db->createCommand("update employee_tree set left_child = concat(left_child, ', ', '$model->id') WHERE FIND_IN_SET('$model->placement_name', left_child)")->execute();
-        \Yii::$app->db->createCommand("update employee_tree set right_child = concat(right_child, ', ', '$model->id') WHERE FIND_IN_SET('$model->placement_name', right_child)")->execute();
-    }
-
-    public function actionTest() {
-
     }
 
     public function actionEmployeeid() {
