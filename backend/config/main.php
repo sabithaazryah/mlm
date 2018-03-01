@@ -40,6 +40,9 @@ return [
         'products' => [
             'class' => 'backend\modules\products\Module',
         ],
+        'treeview' => [
+            'class' => 'backend\modules\treeview\Module',
+        ],
     ],
     'components' => [
         'request' => [

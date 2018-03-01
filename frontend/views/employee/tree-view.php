@@ -172,7 +172,6 @@ use common\models\Employee;
         </style>
     </head>
     <body>
-        <i class="fa fa-user" style="color:black;"></i>
         <div id="wrapper" style="margin-top: 100px;">
             <?= Html::beginForm(['employee/tree-search'], 'post') ?>
             <table style="margin: 0 auto;margin-bottom: 30px;">

@@ -34,7 +34,23 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 //                                                            'id',
-                            'photo',
+                            [
+                                'attribute' => 'photo',
+                                'format' => 'raw',
+                                'value' => function ($data) {
+                                    if ($data->photo != '') {
+                                        $dirPath = Yii::getAlias(Yii::$app->params['uploadPath']) . '/../uploads/products/' . $data->id . '/small.' . $data->photo;
+                                        if (file_exists($dirPath)) {
+                                            $img = '<img width="120px" src="' . Yii::$app->homeUrl . '../uploads/products/' . $data->id . '/small.' . $data->photo . '"/>';
+                                        } else {
+                                            $img = 'No Image';
+                                        }
+                                    } else {
+                                        $img = 'No Image';
+                                    }
+                                    return $img;
+                                },
+                            ],
                             'product_name',
 //                            'canonical_name',
                             'price',
