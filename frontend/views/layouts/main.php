@@ -21,6 +21,9 @@ AppAsset::register($this);
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <script src="<?= Yii::$app->homeUrl; ?>js/jquery-1.11.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <script type="text/javascript">
             var homeUrl = '<?= Yii::$app->homeUrl; ?>';
         </script>
@@ -78,9 +81,9 @@ AppAsset::register($this);
 
         <!--                <footer class="footer">
                                 <div class="container">
-                                        <p class="pull-left">&copy; <?php // Html::encode(Yii::$app->name)         ?> <?php // date('Y')         ?></p>
+                                        <p class="pull-left">&copy; <?php // Html::encode(Yii::$app->name)             ?> <?php // date('Y')             ?></p>
 
-                                        <p class="pull-right"><?php // Yii::powered()         ?></p>
+                                        <p class="pull-right"><?php // Yii::powered()             ?></p>
                                 </div>
                         </footer>-->
 

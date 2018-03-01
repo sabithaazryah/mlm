@@ -165,7 +165,7 @@ use common\models\Employee;
         </style>
     </head>
     <body>
-        <i class="fa fa-user" style="color:black;"></i>
+        <i class="fa fa-user"></i>
         <div id="wrapper" style="margin-top: 100px;">
             <table style="margin-left:140px;margin-bottom: 25px;">
                 <tr>
@@ -221,7 +221,7 @@ use common\models\Employee;
                                                             <?= Html::a('<span>' . $emp_subchild3_left->distributor_name . '<br/>' . $emp_subchild3_left->user_name . '</span>', ['tree', 'id' => $emp_subchild3_left->id], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_left->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_left->id], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
@@ -232,14 +232,14 @@ use common\models\Employee;
                                                             <?= Html::a('<span>' . $emp_subchild3_right->distributor_name . '<br/>' . $emp_subchild3_right->user_name . '</span>', ['tree', 'id' => $emp_subchild3_right->id], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_left->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_left->id], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
                                                 </ul>
                                             <?php } else {
                                                 ?>
-                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_left->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_left->id], ['class' => 'tree-child']) ?>
                                                 <ul>
                                                     <li>
                                                         <span><b class="vacant-btns">.</b><br/>Vacant</span>
@@ -269,7 +269,7 @@ use common\models\Employee;
                                                             <?= Html::a('<span>' . $emp_subchild4_left->distributor_name . '<br/>' . $emp_subchild4_left->user_name . '</span>', ['tree', 'id' => $emp_subchild4_left->id], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_right->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_right->id], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
@@ -280,14 +280,14 @@ use common\models\Employee;
                                                             <?= Html::a('<span>' . $emp_subchild4_left->distributor_name . '<br/>' . $emp_subchild4_left->user_name . '</span>', ['tree', 'id' => $emp_subchild4_left->id], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_right->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild1_right->id], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
                                                 </ul>
                                             <?php } else {
                                                 ?>
-                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_left->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_left->id], ['class' => 'tree-child']) ?>
                                             <?php }
                                             ?>
                                         </li>
@@ -295,7 +295,7 @@ use common\models\Employee;
                                     <?php
                                 } else {
                                     ?>
-                                    <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_details->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                    <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_details->id], ['class' => 'tree-child']) ?>
                                     <ul>
                                         <li>
                                             <span><b class="vacant-btns">.</b><br/>Vacant</span>
@@ -358,7 +358,7 @@ use common\models\Employee;
                                                             <?= Html::a('<span>' . $emp_subchild5_left->distributor_name . '<br/>' . $emp_subchild5_left->user_name . '</span>', ['tree', 'id' => $emp_subchild5_left->id], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild2_left->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild2_left->id], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
@@ -369,14 +369,14 @@ use common\models\Employee;
                                                             <?= Html::a('<span>' . $emp_subchild5_right->distributor_name . '<br/>' . $emp_subchild5_right->user_name . '</span>', ['tree', 'id' => $emp_subchild5_right->id], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild2_right->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild2_right->id], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
                                                 </ul>
                                             <?php } else {
                                                 ?>
-                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_right->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_right->id], ['class' => 'tree-child']) ?>
                                                 <?php if ($subchild3_left == 0) { ?>
                                                     <ul>
                                                         <li>
@@ -396,7 +396,7 @@ use common\models\Employee;
                                             if (!empty($emp_subchild2_right)) {
                                                 $subchild3_right = 1;
                                                 ?>
-                                                <?= Html::a('<span>' . $emp_subchild1_right->distributor_name . '<br/>' . $emp_subchild1_right->user_name . '</span>', ['tree', 'id' => $emp_subchild1_right->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span>' . $emp_subchild1_right->distributor_name . '<br/>' . $emp_subchild1_right->user_name . '</span>', ['tree', 'id' => $emp_subchild1_right->id], ['class' => 'tree-child']) ?>
                                                 <ul>
                                                     <?php
                                                     $emp_subchild6_right = Employee::find()->where(['placement' => 1, 'placement_name' => $emp_subchild1_right->id])->one();
@@ -409,7 +409,7 @@ use common\models\Employee;
                                                             <?= Html::a('<span>' . $emp_subchild6_left->distributor_name . '<br/>' . $emp_subchild6_left->user_name . '</span>', ['tree', 'id' => $emp_subchild6_left->id], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild3_left->id, 'type' => 2], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild3_left->id], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
@@ -420,14 +420,14 @@ use common\models\Employee;
                                                             <?= Html::a('<span>' . $emp_subchild6_right->distributor_name . '<br/>' . $emp_subchild6_right->user_name . '</span>', ['tree', 'id' => $emp_subchild6_right->id], ['class' => 'tree-child']) ?>
                                                         <?php } else {
                                                             ?>
-                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild3_right->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                            <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_subchild3_right->id], ['class' => 'tree-child']) ?>
                                                         <?php }
                                                         ?>
                                                     </li>
                                                 </ul>
                                             <?php } else {
                                                 ?>
-                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_right->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                                <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_child1_right->id], ['class' => 'tree-child']) ?>
                                                 <?php if ($subchild3_right == 0) { ?>
                                                     <ul>
                                                         <li>
@@ -445,7 +445,7 @@ use common\models\Employee;
                                     </ul>
                                 <?php } else {
                                     ?>
-                                    <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_details->id, 'type' => 1], ['class' => 'tree-child']) ?>
+                                    <?= Html::a('<span><b class="add-btns">+</b><br/>Join Here</span>', ['create', 'id' => $emp_details->id], ['class' => 'tree-child']) ?>
                                     <ul>
                                         <li>
                                             <span><b class="vacant-btns">.</b><br/>Vacant</span>

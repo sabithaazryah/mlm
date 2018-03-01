@@ -9,7 +9,19 @@ use common\models\Products;
 
 class EmployeeController extends \yii\web\Controller {
 
-    public function actionCreate() {
+    public function actionCreate($id = NULL, $type = NULL) {
+        if ($type == 1) {
+            $placement_arr = array('1' => 'Right');
+        } elseif ($type == 2) {
+            $placement_arr = array('2' => 'Left');
+        } else {
+            $placement_arr = array('1' => 'Right', '2' => 'Left');
+        }
+        if ($id != '') {
+            $placement_details = Employee::find()->where(['id' => $id])->one();
+        } else {
+            $placement_details = Employee::find()->where(['id' => Yii::$app->user->identity->id])->one();
+        }
         $model = new Employee();
         $package_history = new EmployeePackage();
         $model->setScenario('create');
@@ -31,7 +43,12 @@ class EmployeeController extends \yii\web\Controller {
             }
         }
 
-        return $this->render('create', ['model' => $model]);
+        return $this->render('create', [
+                    'model' => $model,
+                    'placement_details' => $placement_details,
+                    'placement_arr' => $placement_arr,
+                        ]
+        );
     }
 
     public function actionPurchase($id = null) {
