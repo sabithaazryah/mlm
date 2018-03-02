@@ -1,13 +1,4 @@
 <?php
-
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
-/* @var $this yii\web\View */
-/* @var $model common\models\EpinRequest */
-/* @var $form yii\widgets\ActiveForm */
-?>
-<?php
 for ($i = 1; $i <= $number_of_pin; $i++) {
     ?>
     <div class="col-md-4">

@@ -1,47 +1,43 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+Use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\EpinRequestSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Epin Requests';
+$this->title = 'Epin Requests History';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="epin-request-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="row">
+        <div class="col-md-12">
 
-    <p>
-        <?= Html::a('Create Epin Request', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'amount_deposited',
-            'bank_name',
-            'type',
-            'transaction_id',
-            //'name',
-            //'phone_number',
-            //'number_of_pin',
-            //'package_for_each_pin',
-            //'slip',
-            //'status',
-            //'CB',
-            //'UB',
-            //'DOC',
-            //'DOU',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="text-transform: uppercase;padding-top: 13px;"><?= Html::encode($this->title) ?></h3>
+                    <?= Html::a('<i class="fa fa-plus"></i><span> New Epin Request</span>', ['create'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone', 'style' => 'float: right']) ?>
+                </div>
+                <div class="panel-body">
+                    <?=
+                    ListView::widget([
+                        'dataProvider' => $dataProvider,
+                        'itemView' => '_list',
+                        'pager' => [
+                            'firstPageLabel' => 'first',
+                            'lastPageLabel' => 'last',
+                            'prevPageLabel' => '<',
+                            'nextPageLabel' => '>',
+                            'maxButtonCount' => 3,
+                        ],
+                    ]);
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+

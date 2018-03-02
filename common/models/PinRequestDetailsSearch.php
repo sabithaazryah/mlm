@@ -5,26 +5,25 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\EpinRequest;
+use common\models\PinRequestDetails;
 
 /**
- * EpinRequestSearch represents the model behind the search form of `common\models\EpinRequest`.
+ * PinRequestDetailsSearch represents the model behind the search form about `common\models\PinRequestDetails`.
  */
-class EpinRequestSearch extends EpinRequest {
+class PinRequestDetailsSearch extends PinRequestDetails {
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function rules() {
         return [
-            [['id', 'type', 'number_of_pin', 'status', 'CB', 'UB', 'customer_id'], 'integer'],
-            [['amount_deposited'], 'number'],
-            [['bank_name', 'transaction_id', 'name', 'phone_number', 'package_for_each_pin', 'slip', 'DOC', 'DOU'], 'safe'],
+            [['id', 'master_id', 'parent_id', 'package_id', 'status', 'epin_status', 'CB', 'UB'], 'integer'],
+            [['epin', 'DOC', 'DOU'], 'safe'],
         ];
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function scenarios() {
         // bypass scenarios() implementation in the parent class
@@ -39,7 +38,7 @@ class EpinRequestSearch extends EpinRequest {
      * @return ActiveDataProvider
      */
     public function search($params) {
-        $query = EpinRequest::find()->orderBy(['id' => SORT_DESC]);
+        $query = PinRequestDetails::find()->orderBy(['id' => SORT_DESC]);
 
         // add conditions that should always apply here
 
@@ -58,22 +57,18 @@ class EpinRequestSearch extends EpinRequest {
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'amount_deposited' => $this->amount_deposited,
-            'type' => $this->type,
-            'number_of_pin' => $this->number_of_pin,
+            'master_id' => $this->master_id,
+            'parent_id' => $this->parent_id,
+            'package_id' => $this->package_id,
             'status' => $this->status,
+            'epin_status' => $this->epin_status,
             'CB' => $this->CB,
             'UB' => $this->UB,
             'DOC' => $this->DOC,
             'DOU' => $this->DOU,
         ]);
 
-        $query->andFilterWhere(['like', 'bank_name', $this->bank_name])
-                ->andFilterWhere(['like', 'transaction_id', $this->transaction_id])
-                ->andFilterWhere(['like', 'name', $this->name])
-                ->andFilterWhere(['like', 'phone_number', $this->phone_number])
-                ->andFilterWhere(['like', 'package_for_each_pin', $this->package_for_each_pin])
-                ->andFilterWhere(['like', 'slip', $this->slip]);
+        $query->andFilterWhere(['like', 'epin', $this->epin]);
 
         return $dataProvider;
     }

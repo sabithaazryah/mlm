@@ -14,8 +14,6 @@ class AppAsset extends AssetBundle {
     public $css = [
         'http://fonts.googleapis.com/css?family=Arimo:400,700,400italic',
         'css/fonts/linecons/css/linecons.css',
-        'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
-        'css/bootstrap.css',
         'css/xenon-core.css',
         'css/xenon-forms.css',
         'css/xenon-components.css',
@@ -25,7 +23,6 @@ class AppAsset extends AssetBundle {
         'js/select2/select2-bootstrap.css',
     ];
     public $js = [
-        'js/bootstrap.min.js',
         'js/TweenMax.min.js',
         'js/resizeable.js',
         'js/joinable.js',

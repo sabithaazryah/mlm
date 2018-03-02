@@ -43,7 +43,14 @@ AppAsset::register($this);
             ]);
             if (isset(Yii::$app->user->id)) {
                 $menuItems = [
-                    ['label' => 'E-PIN', 'url' => ['/epin-request/create']],
+                    [
+                        'label' => 'E-PIN',
+                        'items' => [
+                            ['label' => 'E-Pin History', 'url' => ['/epin-request/index']],
+                            ['label' => 'New E-Pin Request', 'url' => ['/epin-request/create']],
+                            ['label' => 'E-Pin Transfer', 'url' => ['/epin-request/epin-transfer']],
+                        ],
+                    ],
                     ['label' => 'Customer Register', 'url' => ['/employee/create']],
                     ['label' => 'Tree', 'url' => ['/employee/tree']],
                 ];
@@ -81,9 +88,9 @@ AppAsset::register($this);
 
         <!--                <footer class="footer">
                                 <div class="container">
-                                        <p class="pull-left">&copy; <?php // Html::encode(Yii::$app->name)             ?> <?php // date('Y')             ?></p>
+                                        <p class="pull-left">&copy; <?php // Html::encode(Yii::$app->name)                         ?> <?php // date('Y')                         ?></p>
 
-                                        <p class="pull-right"><?php // Yii::powered()             ?></p>
+                                        <p class="pull-right"><?php // Yii::powered()                         ?></p>
                                 </div>
                         </footer>-->
 
