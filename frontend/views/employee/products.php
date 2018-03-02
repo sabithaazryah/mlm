@@ -14,6 +14,7 @@ use common\models\State;
 $this->title = 'Wallet Purchase';
 $this->params['breadcrumbs'][] = $this->title;
 $count = count($model);
+$employee_package = \common\models\EmployeePackage::find()->where(['employee_id' => $employee_data->id])->orderBy(['id' => SORT_DESC])->one();
 ?>
 <div class="site-signup">
 
@@ -21,8 +22,8 @@ $count = count($model);
         <?php $form = ActiveForm::begin(['id' => 'employee-wallet']); ?>
 
         <input type="hidden" name="employee" value="<?= $employee ?>"/>
-        <input type="hidden" name="employee_total_price" id="employee_total_price" value="<?= $employee_data->pin_price ?>"/>
-        <input type="hidden" name="employee_total_bv" id="employee_total_bv" value="<?= $employee_data->bv ?>"/>
+        <input type="hidden" name="employee_total_price" id="employee_total_price" value="<?= $employee_package->price ?>"/>
+        <input type="hidden" name="employee_total_bv" id="employee_total_bv" value="<?= $employee_package->bv ?>"/>
         <input type="hidden" name="product_count" id="product_count" value="<?= $count ?>"/>
         <div class="row">
 

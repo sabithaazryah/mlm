@@ -8,10 +8,13 @@ use common\models\EmployeePackage;
 use common\models\Products;
 use yii\db\Expression;
 use common\models\EmployeeTree;
+use common\models\EmployeeDetails;
 
 class EmployeeController extends \yii\web\Controller {
 
         public function actionCreate($id = NULL, $type = NULL) {
+
+                Yii::$app->session['user-password'] = '';
 
                 if ($id != '') {
                         $type = Yii::$app->EncryptDecrypt->Encrypt('decrypt', $type);
@@ -31,32 +34,59 @@ class EmployeeController extends \yii\web\Controller {
                 } else {
                         $placement_details = Employee::find()->where(['id' => Yii::$app->user->identity->id])->one();
                 }
-                $package_history = new EmployeePackage();
+
                 $model = new Employee();
+                $user_details = new EmployeeDetails();
                 $model->setScenario('create');
-                if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model)) {
+                $user_details->setScenario('create');
+                if ($model->load(Yii::$app->request->post()) && $model->validate() && $user_details->load(Yii::$app->request->post()) && $user_details->validate() && Yii::$app->SetValues->Attributes($model)) {
                         $epin = \common\models\PinRequestDetails::findOne($model->epin);
                         $model->user_name = $epin->epin;
-                        $model->dob = date('Y-m-d', strtotime($model->dob));
-                        $not_encrypted_password = $model->password;
+                        $user_details->dob = date('Y-m-d', strtotime($user_details->dob));
+                        Yii::$app->session['user-password'] = $model->password;
                         $model->password = Yii::$app->security->generatePasswordHash($model->password);
-                        if ($model->save()) {
-                                $epin->epin_status = 1;
-                                $epin->save();
-                                $package_history->employee_id = $model->id;
-                                $package_history->package_id = $epin->package_id;
-                                $package_history->package_date = date('Y-m-d');
-                                $package_history->save();
-                                $this->sendMail($model, $not_encrypted_password);
-                                $this->EmployeeTree($model);
-                                return $this->redirect(['site/index']);
-                                //  return $this->redirect(['purchase', 'id' => $model->id]);
+                        $model->status = 3;
+                        $transaction = Yii::$app->db->beginTransaction();
+                        try {
+                                if ($model->save() && $this->PackageHistory($model, $epin)) {
+                                        $transaction->commit();
+                                        $epin->status = 3;
+                                        $epin->save();
+                                        return $this->redirect(['purchase', 'id' => $model->id]);
+                                } else {
+                                        $transaction->rollBack();
+                                        Yii::$app->session->setFlash('error', "There was a problem creating new user. Please try again.");
+                                }
+                        } catch (Exception $e) {
+                                $transaction->rollBack();
+                                Yii::$app->session->setFlash('error', "There was a problem creating new user. Please try again.");
                         }
+                        // $this->sendMail($model);
+                        //  $this->EmployeeTree($model);
                 }
 
-                return $this->render('create', ['model' => $model,
+                return $this->render('create', [
+                            'model' => $model,
+                            'user_details' => $user_details,
                             'placement_details' => $placement_details,
                             'placement_arr' => $placement_arr,]);
+        }
+
+        public function PackageHistory($model, $epin) {
+
+                $package = \common\models\Packages::findOne($epin->package_id);
+                $package_history = new EmployeePackage();
+                $package_history->employee_id = $model->id;
+                $package_history->package_id = $epin->package_id;
+                $package_history->price = $package->amount;
+                $package_history->bv = $package->bv;
+                $package_history->package_date = date('Y-m-d');
+
+                if ($package_history->save()) {
+                        return TRUE;
+                } else {
+                        return FALSE;
+                }
         }
 
         public function actionPurchase($id = null) {
@@ -65,10 +95,23 @@ class EmployeeController extends \yii\web\Controller {
                 if (Yii::$app->request->post()) {
                         $data = Yii::$app->request->post();
                         $employee_id = Yii::$app->request->post('employee');
-                        $this->Create($data, $employee_id);
-                        Yii::$app->getSession()->setFlash('success', 'Customer added successfully');
-
-                        return $this->redirect('create');
+                        $employee = Employee::findOne($employee_id);
+                        $employee->status = 1;
+                        $transaction = Yii::$app->db->beginTransaction();
+                        try {
+                                if ($this->Create($data, $employee_id) && $employee->save()) {
+                                        $transaction->commit();
+                                        Yii::$app->getSession()->setFlash('success', 'Customer added successfully');
+                                        return $this->redirect(['tree']);
+                                } else {
+                                        die('else');
+                                        $transaction->rollBack();
+                                        Yii::$app->session->setFlash('error', "There was a problem creating new userr. Please try again.");
+                                }
+                        } catch (Exception $e) {
+                                $transaction->rollBack();
+                                Yii::$app->session->setFlash('error', "There was a problem creating new user. Please try again.");
+                        }
                 }
                 return $this->render('products', ['model' => $products, 'employee' => $id, 'employee_data' => $employee]);
         }
@@ -107,10 +150,15 @@ class EmployeeController extends \yii\web\Controller {
                         $arr[$i]['bv'] = $val;
                         $i++;
                 }
-                $this->AddProductDetails($arr, $employee_id);
+                if ($this->AddProductDetails($arr, $employee_id)) {
+                        return TRUE;
+                } else {
+                        return False;
+                }
         }
 
         public function AddProductDetails($arr, $employee_id) {
+                $flag = 0;
                 foreach ($arr as $val) {
                         if ($val['qty'] != '' && $val['amount'] != '') {
                                 $model = new \common\models\EmployeeProducts();
@@ -120,14 +168,24 @@ class EmployeeController extends \yii\web\Controller {
                                 $model->qty = $val['qty'];
                                 $model->total_amount = $val['amount'];
                                 $model->total_bv = $val['bv'];
-                                $model->save();
+                                if ($model->save()) {
+                                        $flag = 1;
+                                } else {
+                                        $flag = 0;
+                                }
                         }
+                }
+
+                if ($flag == 1) {
+                        return TRUE;
+                } else {
+                        return FALSE;
                 }
         }
 
-        public function sendMail($user, $not_encrypted_password) {
+        public function sendMail($user) {
                 if ($user->email != '') {
-                        $message = Yii::$app->mailer->compose('new-registration', ['model' => $user, 'user_password' => $not_encrypted_password])
+                        $message = Yii::$app->mailer->compose('new-registration', ['model' => $user, 'user_password' => Yii::$app->session['user-password']])
                                 ->setFrom('no-replay@smartway.in')
                                 ->setTo($user->email)
                                 ->setSubject('Registration successfull');
@@ -137,11 +195,11 @@ class EmployeeController extends \yii\web\Controller {
         }
 
         public function EmployeeTree($model) {
-
+                $flag = 0;
+                $flag1 = 0;
                 $employee_tree = new EmployeeTree;
                 $employee_tree->employee_id = $model->id;
                 $employee_tree->save();
-
 
                 $parent_details = EmployeeTree::find()->where(['employee_id' => $model->placement_name])->one(); /* new employee parent row exists */
                 if (!empty($parent_details)) {
@@ -162,12 +220,18 @@ class EmployeeController extends \yii\web\Controller {
                         }
                         $parentemployee_tree->save();
                 }
-                \Yii::$app->db->createCommand("update employee_tree set left_child = concat(left_child, ', ', '$model->id') WHERE FIND_IN_SET('$model->placement_name', left_child)")->execute();
-                \Yii::$app->db->createCommand("update employee_tree set right_child = concat(right_child, ', ', '$model->id') WHERE FIND_IN_SET('$model->placement_name', right_child)")->execute();
-        }
 
-        public function actionTest() {
-
+                $sql = \Yii::$app->db->createCommand("update employee_tree set left_child = concat(left_child,',$model->id') WHERE FIND_IN_SET('$model->placement_name', left_child)")->execute();
+                $sql1 = \Yii::$app->db->createCommand("update employee_tree set right_child = concat(right_child,',$model->id') WHERE FIND_IN_SET('$model->placement_name', right_child)")->execute();
+                if ($sql) {
+                        $flag = 1;
+                }
+                if ($sql1) {
+                        $flag1 = 1;
+                }
+                if ($flag == 1 && $flag1 == 1) {
+                        return TRUE;
+                }
         }
 
         public function actionEmployeeid() {

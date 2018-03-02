@@ -12,39 +12,19 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property string $placement_name
  * @property string $placement_id
+ * @property string $user_name
+ * @property string $password
  * @property string $distributor_name
  * @property int $placement
  * @property int $epin
- * @property string $epin_number
- * @property string $pin_price
- * @property int $bv
- * @property int $referal_id
- * @property string $father_name
- * @property string $dob
- * @property int $gender
+ * @property string $referal_id
  * @property string $mobile_number
- * @property int $pincode
- * @property string $post_office
- * @property int $state
- * @property string $city
- * @property string $house_name
- * @property string $taluk
- * @property string $address
  * @property string $email
- * @property string $nominee_name
- * @property int $nominee_relation
- * @property string $ifsc_code
- * @property string $account_no
- * @property string $bank_name
- * @property string $branch
- * @property string $pan_number
- * @property string $password
- * @property string $user_name
  * @property int $status
  * @property int $CB
  * @property int $UB
- * @property int $DOC
- * @property int $DOU
+ * @property string $DOC
+ * @property string $DOU
  */
 class Employee extends ActiveRecord implements IdentityInterface {
 
@@ -65,19 +45,16 @@ class Employee extends ActiveRecord implements IdentityInterface {
          */
         public function rules() {
                 return [
-                        [['placement', 'epin', 'gender', 'pincode', 'state', 'nominee_relation', 'status', 'CB', 'UB', 'prefered_dispatch', 'terms_conditions', 'language_terms'], 'integer'],
-                        [['pin_price', 'selected_price', 'mobile_number'], 'number'],
-                        [['dob'], 'safe'],
-                        [['DOC', 'DOU', 'bv',], 'safe'],
-                        [['address'], 'string'],
-                        [['email'], 'email'],
-                        [['placement_name', 'distributor_name', 'epin_number', 'father_name', 'post_office', 'taluk', 'email', 'nominee_name', 'ifsc_code', 'account_no', 'bank_name', 'branch', 'pan_number', 'user_name'], 'string', 'max' => 200],
-                        [['placement_id', 'city', 'house_name'], 'string', 'max' => 100],
-                        [['password', 'referal_id',], 'string', 'max' => 300],
+                        [['placement', 'epin', 'status', 'CB', 'UB'], 'integer'],
+                        [['DOC', 'DOU'], 'safe'],
+                        [['placement_name', 'user_name', 'distributor_name', 'email'], 'string', 'max' => 200],
+                        [['placement_id', 'referal_id'], 'string', 'max' => 100],
+                        [['password'], 'string', 'max' => 300],
+                        [['mobile_number'], 'string', 'max' => 15],
                         [['user_name', 'password'], 'required', 'on' => 'login'],
                         [['password'], 'validatePassword', 'on' => 'login'],
-                        [['pan_number'], 'unique', 'on' => 'create'],
-                        [['distributor_name', 'password', 'placement_id', 'mobile_number', 'pincode', 'state', 'city', 'house_name', 'epin'], 'required', 'on' => 'create'],
+                        [['email'], 'email'],
+                        [['distributor_name', 'password', 'placement_id', 'mobile_number', 'epin'], 'required', 'on' => 'create'],
                 ];
         }
 
@@ -89,34 +66,14 @@ class Employee extends ActiveRecord implements IdentityInterface {
                     'id' => 'ID',
                     'placement_name' => 'Placement Name',
                     'placement_id' => 'Placement ID',
+                    'user_name' => 'User Name',
+                    'password' => 'Password',
                     'distributor_name' => 'Distributor Name',
                     'placement' => 'Placement',
                     'epin' => 'Epin',
-                    'epin_number' => 'Epin Number',
-                    'pin_price' => 'Pin Price',
-                    'bv' => 'Bv',
                     'referal_id' => 'Referal ID',
-                    'father_name' => 'Father/Husband Name',
-                    'dob' => 'Date of birth',
-                    'gender' => 'Gender',
                     'mobile_number' => 'Mobile Number',
-                    'pincode' => 'Pincode',
-                    'post_office' => 'Post Office',
-                    'state' => 'State',
-                    'city' => 'City',
-                    'house_name' => 'Door No /House Name',
-                    'taluk' => 'Taluk',
-                    'address' => 'Address',
                     'email' => 'Email',
-                    'nominee_name' => 'Nominee Name',
-                    'nominee_relation' => 'Nominee Relation',
-                    'ifsc_code' => 'IFSC Code',
-                    'account_no' => 'Account No',
-                    'bank_name' => 'Bank Name',
-                    'branch' => 'Branch',
-                    'pan_number' => 'Pan Number',
-                    'password' => 'Password',
-                    'user_name' => 'User Name',
                     'status' => 'Status',
                     'CB' => 'Cb',
                     'UB' => 'Ub',
@@ -142,15 +99,6 @@ class Employee extends ActiveRecord implements IdentityInterface {
                 } else {
                         return false;
                 }
-        }
-
-        public function loginn() {
-
-                //   $user = static::find()->where('post_id = :post and status = :stat', ['post' => 1, 'stat' => '1'])->one();
-
-                $this->_user = static::find()->where('user_name = :uname and status = :stat', ['uname' => $user->user_name, 'stat' => '1'])->one();
-
-                return Yii::$app->user->login($this->getUser(), /* $this->rememberMe ? 3600 * 24 * 30 : */ 0);
         }
 
         protected function getUser() {

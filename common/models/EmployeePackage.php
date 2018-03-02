@@ -11,6 +11,8 @@ use Yii;
  * @property int $employee_id
  * @property int $package_id
  * @property string $package_date
+ * @property string $price
+ * @property string $bv
  */
 class EmployeePackage extends \yii\db\ActiveRecord
 {
@@ -30,6 +32,7 @@ class EmployeePackage extends \yii\db\ActiveRecord
         return [
             [['employee_id', 'package_id'], 'integer'],
             [['package_date'], 'safe'],
+            [['price', 'bv'], 'number'],
         ];
     }
 
@@ -43,6 +46,8 @@ class EmployeePackage extends \yii\db\ActiveRecord
             'employee_id' => 'Employee ID',
             'package_id' => 'Package ID',
             'package_date' => 'Package Date',
+            'price' => 'Price',
+            'bv' => 'Bv',
         ];
     }
 }
