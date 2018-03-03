@@ -103,6 +103,8 @@ $employee_package = \common\models\EmployeePackage::find()->where(['employee_id'
                                         var status = checkprice();
                                         if (status == 1) {
                                                 alert('Choosed product amount/bv exceeds your package amount/bv!!');
+                                                $("#productamount-" + count).val('');
+                                                $("#productbv-" + count).val('');
                                         }
                                 }
                         });

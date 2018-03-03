@@ -49,6 +49,7 @@ class EmployeeDetails extends \yii\db\ActiveRecord {
                         [['dob'], 'safe'],
                         [['address'], 'string'],
                         [['selected_price'], 'number'],
+                        [['pan_number'], 'unique'],
                         [['father_name', 'post_office', 'city', 'house_name', 'taluk', 'nominee_name', 'ifsc_code', 'account_no', 'bank_name', 'branch', 'pan_number'], 'string', 'max' => 200],
                         [['pincode', 'state', 'city', 'house_name'], 'required', 'on' => 'create']
                 ];

@@ -142,7 +142,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 success: function (data) {
                                         var res = $.parseJSON(data);
                                         $("#employee-epin_number").val(res['amount']);
-                                        $("#employee-selected_price").val(res['amount']);
+                                        $("#employeedetails-selected_price").val(res['amount']);
                                         $("#employee-pin_price").val(res['amount']);
                                         $("#employee-bv").val(res['bv']);
                                 }
