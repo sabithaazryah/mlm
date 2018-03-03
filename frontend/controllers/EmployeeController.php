@@ -48,7 +48,7 @@ class EmployeeController extends \yii\web\Controller {
                         $model->status = 3;
                         $transaction = Yii::$app->db->beginTransaction();
                         try {
-                                if ($model->save() && $this->PackageHistory($model, $epin)) {
+                                if ($model->save() && $user_details->save() && $this->PackageHistory($model, $epin)) {
                                         $transaction->commit();
                                         $epin->status = 3;
                                         $epin->save();
@@ -100,6 +100,8 @@ class EmployeeController extends \yii\web\Controller {
                         $transaction = Yii::$app->db->beginTransaction();
                         try {
                                 if ($this->Create($data, $employee_id) && $employee->save()) {
+                                        $package = EmployeePackage::find()->where(['employee_id' => $employee->id])->orderBy(['id' => SORT_DESC])->one();
+                                        $this->EmployeeTree($employee, $package);
                                         $transaction->commit();
                                         Yii::$app->getSession()->setFlash('success', 'Customer added successfully');
                                         return $this->redirect(['tree']);
@@ -194,9 +196,9 @@ class EmployeeController extends \yii\web\Controller {
                 }
         }
 
-        public function EmployeeTree($model) {
-                $flag = 0;
-                $flag1 = 0;
+        public function EmployeeTree($model, $package) {
+                $package_details = \common\models\Packages::findOne($package->package_id);
+
                 $employee_tree = new EmployeeTree;
                 $employee_tree->employee_id = $model->id;
                 $employee_tree->save();
@@ -221,17 +223,9 @@ class EmployeeController extends \yii\web\Controller {
                         $parentemployee_tree->save();
                 }
 
-                $sql = \Yii::$app->db->createCommand("update employee_tree set left_child = concat(left_child,',$model->id') WHERE FIND_IN_SET('$model->placement_name', left_child)")->execute();
-                $sql1 = \Yii::$app->db->createCommand("update employee_tree set right_child = concat(right_child,',$model->id') WHERE FIND_IN_SET('$model->placement_name', right_child)")->execute();
-                if ($sql) {
-                        $flag = 1;
-                }
-                if ($sql1) {
-                        $flag1 = 1;
-                }
-                if ($flag == 1 && $flag1 == 1) {
-                        return TRUE;
-                }
+
+                \Yii::$app->db->createCommand("update employee_tree set left_child = concat(left_child,',$model->id'), total_left_bv=total_left_bv + $package_details->bv  WHERE FIND_IN_SET('$model->placement_name', left_child)")->execute();
+                \Yii::$app->db->createCommand("update employee_tree set right_child = concat(right_child,',$model->id'),total_right_bv=total_right_bv + $package_details->bv  WHERE FIND_IN_SET('$model->placement_name', right_child)")->execute();
         }
 
         public function actionEmployeeid() {
