@@ -167,7 +167,7 @@ class SiteController extends Controller {
         $model->scenario = 'login';
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
-            return $this->redirect('index');
+            return $this->redirect(['dashboard/index']);
         } else {
             return $this->render('login', [
                         'model' => $model,
