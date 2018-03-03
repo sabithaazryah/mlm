@@ -9,7 +9,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\PinRequestDetails;
-use common\models\PinRequestDetailsSearch;
 
 /**
  * EpinRequestController implements the CRUD actions for EpinRequest model.
@@ -50,14 +49,10 @@ class EpinRequestController extends Controller {
      * @return mixed
      */
     public function actionView($id) {
-        $searchModel = new PinRequestDetailsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//        $pin_details = PinRequestDetails::find()->where(['master_id' => $id])->all();
+        $pin_details = PinRequestDetails::find()->where(['master_id' => $id])->all();
         return $this->render('view', [
                     'model' => $this->findModel($id),
-//                    'pin_details' => $pin_details,
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+                    'pin_details' => $pin_details,
         ]);
     }
 

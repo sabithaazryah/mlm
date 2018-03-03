@@ -10,7 +10,7 @@ use common\models\BankDetails;
 /* @var $searchModel common\models\EpinRequestSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Epin Requests List';
+$this->title = 'Epin Requests';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="epin-request-index">
@@ -36,17 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['class' => 'yii\grid\SerialColumn'],
 //                            'id',
                             'amount_deposited',
-                            [
-                                'attribute' => 'customer_id',
-                                'value' => function($data) {
-                                    if (isset($data->customer_id)) {
-                                        return \common\models\Employee::findOne($data->customer_id)->user_name;
-                                    } else {
-                                        return '';
-                                    }
-                                },
-                                'filter' => ArrayHelper::map(\common\models\Employee::find()->asArray()->all(), 'id', 'user_name'),
-                            ],
                             [
                                 'attribute' => 'bank_name',
                                 'value' => function($data) {

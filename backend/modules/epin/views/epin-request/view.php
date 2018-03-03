@@ -1,10 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\widgets\DetailView;
 use common\components\EpinDetailsWidget;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\EpinRequest */
@@ -28,84 +26,61 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="epin-request-master-view">
                         <?= EpinDetailsWidget::widget(['id' => $model->id]) ?>
                     </div>
-                    <?=
-                    GridView::widget([
-                        'dataProvider' => $dataProvider,
-                        'filterModel' => $searchModel,
-                        'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            [
-                                'attribute' => 'package_id',
-                                'value' => function($data) {
-                                    if (isset($data->package_id)) {
-                                        $package = common\models\Packages::findOne($data->package_id);
-                                        return $package->name . ' - ' . $package->amount;
-                                    } else {
-                                        return '';
-                                    }
-                                },
-                                'filter' => ArrayHelper::map(\common\models\Packages::find()->asArray()->all(), 'id', function($model) {
-                                            return $model['name'] . ' - ' . $model['amount'];
-                                        }),
-                            ],
-                            'epin',
-                            [
-                                'attribute' => 'status',
-                                'filter' => ['0' => 'Pending', '1' => 'Approved', '2' => 'Rejected', '3' => 'Used', '4' => 'Transfer'],
-                                'value' => function ($model) {
-                                    if ($model->status == 0) {
-                                        return 'Pending';
-                                    } elseif ($model->status == 1) {
-                                        return 'Approved';
-                                    } elseif ($model->status == 2) {
-                                        return 'Rejected';
-                                    } elseif ($model->status == 3) {
-                                        return 'Used';
-                                    } elseif ($model->status == 4) {
-                                        return 'Transfer';
-                                    }
-                                },
-                                'filter' => ['0' => 'Pending', '1' => 'Approved', '2' => 'Rejected', '3' => 'Used', '4' => 'Transfer'],
-                            ],
-                            [
-                                'class' => 'yii\grid\ActionColumn',
-                                'contentOptions' => ['style' => 'width:100px;'],
-                                'header' => 'Actions',
-                                'template' => '{approve}{reject}',
-                                'buttons' => [
-                                    'approve' => function ($url, $model) {
-                                        if ($model->status == 0) {
-                                            return Html::a('Approve', $url, [
-                                                        'title' => Yii::t('app', 'approve'),
-                                                        'class' => 'btn btn-secondary',
-                                                        'style' => 'padding: 4px 10px;border-radius: 5px;',
-                                            ]);
-                                        }
-                                    },
-                                    'reject' => function ($url, $model) {
-                                        if ($model->status == 0) {
-                                            return Html::a('Reject', $url, [
-                                                        'title' => Yii::t('app', 'reject'),
-                                                        'class' => 'btn btn-red',
-                                                        'style' => 'border-radius: 5px;padding: 4px 14px;',
-                                            ]);
-                                        }
-                                    },
-                                ],
-                                'urlCreator' => function ($action, $model) {
-                                    if ($action === 'approve') {
-                                        $url = Url::to(['approve', 'id' => $model->id]);
-                                        return $url;
-                                    }
-                                    if ($action === 'reject') {
-                                        $url = Url::to(['reject', 'id' => $model->id]);
-                                        return $url;
-                                    }
-                                }
-                            ],
-                        ],
-                    ]);
-                    ?>
+                    <div class="epin-request-view">
+                        <table class="table table-responsive table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Package Name</th>
+                                    <th>E-PIN</th>
+                                    <th style="width: 15%;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $i = 0;
+                                foreach ($pin_details as $value) {
+                                    $i++;
+                                    ?>
+                                    <tr>
+                                        <td><?= $i ?></td>
+                                        <td>
+                                            <?php
+                                            if (isset($value->package_id)) {
+                                                $package = common\models\Packages::findOne($value->package_id);
+                                                echo $package->name . ' - ' . $package->amount;
+                                            } else {
+                                                echo '';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            if (isset($value->epin)) {
+                                                echo $value->epin;
+                                            } else {
+                                                echo '';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($value->status == 0) { ?>
+                                                <?= Html::a('Approve', ['/epin/epin-request/approve', 'id' => $value->id], ['class' => 'btn btn-secondary', 'style' => 'padding: 4px 10px;border-radius: 5px;']) ?>
+                                                <?= Html::a('Reject', ['/epin/epin-request/reject', 'id' => $value->id], ['class' => 'btn btn-red', 'style' => 'border-radius: 5px;padding: 4px 14px;']) ?>
+                                                <?php
+                                            } elseif ($value->status == 1) {
+                                                echo '<h5 style="font-weight: 600;color: green;">Approved</h5>';
+                                            } elseif ($value->status == 2) {
+                                                echo '<h5 style="font-weight: 600;color: red;">Rejected</h5>';
+                                            }
+                                            ?>
+                                        </td>
+                                    </tr>
+
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

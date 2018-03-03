@@ -207,8 +207,12 @@ class EmployeeController extends \yii\web\Controller {
                 if (!empty($parent_details)) {
                         if ($model->placement == 1) { /* if new employee is parent right child */
                                 $parent_details->right_child = $parent_details->right_child . ',' . $model->id;
+                                $parent_details->total_right_bv = $parent_details->total_right_bv + $package_details->bv;
+                                $parent_details->current_right_bv = $parent_details->current_right_bv + $package_details->bv;
                         } else if ($model->placement == 2) { /* left child */
                                 $parent_details->left_child = $parent_details->left_child . ',' . $model->id;
+                                $parent_details->total_left_bv = $parent_details->total_left_bv + $package_details->bv;
+                                $parent_details->current_left_bv = $parent_details->current_left_bv + $package_details->bv;
                         }
                         $parent_details->save();
                 } else {
@@ -217,15 +221,18 @@ class EmployeeController extends \yii\web\Controller {
                         $parentemployee_tree->employee_id = $model->placement_name;
                         if ($model->placement == 1) {
                                 $parentemployee_tree->right_child = $model->id;
+                                $parentemployee_tree->total_right_bv = $parentemployee_tree->total_right_bv + $package_details->bv;
+                                $parentemployee_tree->current_right_bv = $parentemployee_tree->current_right_bv + $package_details->bv;
                         } else if ($model->placement == 2) {
                                 $parentemployee_tree->left_child = $model->id;
+                                $parentemployee_tree->total_left_bv = $parentemployee_tree->total_left_bv + $package_details->bv;
+                                $parentemployee_tree->current_left_bv = $parentemployee_tree->current_left_bv + $package_details->bv;
                         }
                         $parentemployee_tree->save();
                 }
 
-
-                \Yii::$app->db->createCommand("update employee_tree set left_child = concat(left_child,',$model->id'), total_left_bv=total_left_bv + $package_details->bv  WHERE FIND_IN_SET('$model->placement_name', left_child)")->execute();
-                \Yii::$app->db->createCommand("update employee_tree set right_child = concat(right_child,',$model->id'),total_right_bv=total_right_bv + $package_details->bv  WHERE FIND_IN_SET('$model->placement_name', right_child)")->execute();
+                \Yii::$app->db->createCommand("update employee_tree set left_child =  concat(left_child,',$model->id'), total_left_bv=total_left_bv + $package_details->bv,current_left_bv=current_left_bv + $package_details->bv   WHERE FIND_IN_SET('$model->placement_name', left_child)")->execute();
+                \Yii::$app->db->createCommand("update employee_tree set right_child = concat(right_child,',$model->id'),total_right_bv=total_right_bv + $package_details->bv,current_right_bv=current_right_bv + $package_details->bv   WHERE FIND_IN_SET('$model->placement_name', right_child)")->execute();
         }
 
         public function actionEmployeeid() {
@@ -284,6 +291,42 @@ class EmployeeController extends \yii\web\Controller {
                                 return $this->redirect(['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp->id)]);
                         }
                 } return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        public function actionCron() {
+
+                $users = EmployeeTree::find()->all();
+                foreach ($users as $user) {
+                        if ($user->current_left_bv > $user->current_right_bv) {
+                                $bv_match = $user->current_right_bv;
+                                $user->current_left_bv = $user->current_left_bv - $user->current_right_bv;
+                                $user->current_right_bv = 0;
+                                $previou_wallet = $user->wallet;
+                                $user->wallet = $user->wallet + ($bv_match * 15);
+                        } else if ($user->current_right_bv > $user->current_left_bv) {
+                                $bv_match = $user->current_left_bv;
+                                $user->current_right_bv = $user->current_right_bv - $user->current_left_bv;
+                                $user->current_left_bv = 0;
+                                $previou_wallet = $user->wallet;
+                                $user->wallet = $user->wallet + ($bv_match * 15);
+                        } else if ($user->current_right_bv == $user->current_left_bv) {
+                                $bv_match = $user->current_left_bv;
+                                $user->current_right_bv = 0;
+                                $user->current_left_bv = 0;
+                                $previou_wallet = $user->wallet;
+                                $user->wallet = $user->wallet + ($bv_match * 15);
+                        }
+                        $user->save();
+                        if ($user->wallet > 0) {
+                                $wallet_history = new \common\models\WalletHistory();
+                                $wallet_history->employee_id = $user->employee_id;
+                                $wallet_history->match_bv = $bv_match;
+                                $wallet_history->previous_wallet_amount = $previou_wallet;
+                                $wallet_history->current_wallet_amount = $user->wallet;
+                                $wallet_history->date = date('Y-m-d');
+                                $wallet_history->save();
+                        }
+                }
         }
 
 }
