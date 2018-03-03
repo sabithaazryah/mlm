@@ -44,6 +44,14 @@ AppAsset::register($this);
             if (isset(Yii::$app->user->id)) {
                 $menuItems = [
                     [
+                        'label' => 'Profile',
+                        'items' => [
+                            ['label' => 'Home', 'url' => ['/site/index']],
+                            ['label' => 'Change Mobile No', 'url' => ['/employee/change-mobile-no']],
+                            ['label' => 'Change Password', 'url' => ['/employee/change-password']],
+                        ],
+                    ],
+                    [
                         'label' => 'E-PIN',
                         'items' => [
                             ['label' => 'E-Pin History', 'url' => ['/epin-request/index']],
@@ -51,7 +59,7 @@ AppAsset::register($this);
                             ['label' => 'E-Pin Transfer', 'url' => ['/epin-request/epin-transfer']],
                         ],
                     ],
-                    ['label' => 'Customer Register', 'url' => ['/employee/create']],
+//                    ['label' => 'Customer Register', 'url' => ['/employee/create']],
                     ['label' => 'Tree', 'url' => ['/employee/tree']],
                 ];
             }
@@ -88,9 +96,9 @@ AppAsset::register($this);
 
         <!--                <footer class="footer">
                                 <div class="container">
-                                        <p class="pull-left">&copy; <?php // Html::encode(Yii::$app->name)                         ?> <?php // date('Y')                         ?></p>
+                                        <p class="pull-left">&copy; <?php // Html::encode(Yii::$app->name)                                  ?> <?php // date('Y')                                  ?></p>
 
-                                        <p class="pull-right"><?php // Yii::powered()                         ?></p>
+                                        <p class="pull-right"><?php // Yii::powered()                                  ?></p>
                                 </div>
                         </footer>-->
 

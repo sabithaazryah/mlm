@@ -14,6 +14,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 USE common\models\Employee;
+use common\models\EmployeePackage;
 
 /**
  * Site controller
@@ -29,12 +30,12 @@ class SiteController extends Controller {
                 'class' => AccessControl::className(),
                 'only' => ['logout', 'signup'],
                 'rules' => [
-                    [
+                        [
                         'actions' => ['signup'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
-                    [
+                        [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -71,7 +72,12 @@ class SiteController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        return $this->render('index');
+        $employee = Employee::findOne(Yii::$app->user->identity->id);
+        $employee_details = \common\models\EmployeeDetails::find()->where(['employee_id' => Yii::$app->user->identity->id])->one();
+        return $this->render('index', [
+                    'employee' => $employee,
+                    'employee_details' => $employee_details,
+        ]);
     }
 
     /**

@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Epin Requests', 'url' => ['index']
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="row">
+<div class="row" style="margin-top: 70px;">
     <div class="col-md-12">
 
         <div class="panel panel-default">
