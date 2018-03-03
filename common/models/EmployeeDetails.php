@@ -45,13 +45,14 @@ class EmployeeDetails extends \yii\db\ActiveRecord {
          */
         public function rules() {
                 return [
-                        [['employee_id', 'gender', 'pincode', 'state', 'nominee_relation', 'prefered_dispatch', 'terms_conditions', 'language_terms'], 'integer'],
-                        [['dob'], 'safe'],
+                        [['employee_id', 'gender', 'pincode', 'state', 'nominee_relation', 'prefered_dispatch', 'terms_conditions', 'language_terms', 'previlage_card_no'], 'integer'],
+                        [['dob', 'date_of_join'], 'safe'],
                         [['address'], 'string'],
                         [['selected_price'], 'number'],
                         [['pan_number'], 'unique'],
-                        [['father_name', 'post_office', 'city', 'house_name', 'taluk', 'nominee_name', 'ifsc_code', 'account_no', 'bank_name', 'branch', 'pan_number'], 'string', 'max' => 200],
-                        [['pincode', 'state', 'city', 'house_name'], 'required', 'on' => 'create']
+                        [['father_name', 'post_office', 'city', 'house_name', 'taluk', 'nominee_name', 'ifsc_code', 'account_no', 'bank_name', 'branch', 'pan_number', 'rank'], 'string', 'max' => 200],
+                        [['pincode', 'state', 'city', 'house_name'], 'required', 'on' => 'create'],
+                        [['pincode', 'state', 'city', 'house_name'], 'required', 'on' => 'update']
                 ];
         }
 

@@ -11,10 +11,9 @@ use common\models\PinRequestDetails;
 use yii\helpers\ArrayHelper;
 use common\models\State;
 
-$this->title = 'Register';
+$this->title = 'Modify Profile';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
 <div class="row" style="margin-top: 70px;">
         <div class="col-md-12">
 
@@ -28,34 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <div class="site-signup">
 
 
-
                                                         <?= common\widgets\Alert::widget(); ?>
                                                         <div class="row">
-
-                                                                <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+                                                                <label></label>
+                                                                <?php $form = ActiveForm::begin(['id' => 'signup-update']); ?>
                                                                 <div class="col-md-4">
-                                                                        <div class="form-group field-employee-placement_name">
-                                                                                <label class="control-label" for="employee-placement_name">Placement Name</label>
-                                                                                <input type="hidden" id="employee-placement_name" class="form-control" name="Employee[placement_name]" aria-required="true" aria-invalid="true" value="<?= $placement_details->id ?>">
-                                                                                <input type="text" id="" class="form-control" name="" aria-required="true" aria-invalid="true" value="<?= $placement_details->distributor_name ?>" readonly>
-                                                                                <p class="help-block help-block-error"></p>
-                                                                        </div>
+                                                                        <?= $form->field($model, 'display_name')->textInput() ?>
                                                                 </div><div class="col-md-4">
-                                                                        <?= $form->field($model, 'placement_id')->textInput(['readonly' => true, 'value' => $placement_details->user_name]) ?>
-                                                                </div><div class="col-md-4">
-                                                                        <?= $form->field($model, 'distributor_name')->textInput() ?>
-                                                                </div><div class="col-md-4">
-                                                                        <?= $form->field($model, 'placement')->dropDownList($placement_arr) ?>
-                                                                </div><div class="col-md-2">
-                                                                        <?php $epin = PinRequestDetails::find()->where(['parent_id' => Yii::$app->user->id, 'status' => 1])->all() ?>
-                                                                        <?= $form->field($model, 'epin')->dropDownList(ArrayHelper::map($epin, 'id', 'epin'), ['prompt' => '--Select--']) ?>
-                                                                </div><div class="col-md-2">
-                                                                        <div class="form-group field-employee-placement_name">
-                                                                                <label class="control-label" for="employee-placement_name"></label>
-                                                                                <input type="text" id="employee-epin_number" class="form-control" name="" aria-required="true" aria-invalid="true"  readonly style="margin-top:12px">
-                                                                                <p class="help-block help-block-error"></p>
-                                                                        </div>
-
+                                                                        <?= $form->field($model, 'distributor_name')->textInput(['readonly' => true]) ?>
                                                                 </div>
 
                                                                 <div class="col-md-4">
@@ -63,6 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                 </div><div class="col-md-4">
                                                                         <?= $form->field($user_details, 'father_name')->textInput() ?>
                                                                 </div><div class="col-md-4">
+                                                                        <?php
+                                                                        if (isset($user_details->dob) && $user_details->dob != '0000-00-00') {
+                                                                                $user_details->dob = date('d-m-Y', strtotime($user_details->dob));
+                                                                        } else {
+                                                                                $user_details->dob = '';
+                                                                        }
+                                                                        ?>
+
                                                                         <?=
                                                                         DatePicker::widget([
                                                                             'model' => $user_details,
@@ -101,28 +88,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                 </div><div class="col-md-4">
                                                                         <?= $form->field($user_details, 'nominee_relation')->dropDownList(['' => '--Select--', '1' => 'Brother', '2' => 'Daughter', '3' => 'Father', '4' => 'Husband', '5' => 'Mother', '6' => 'Son', '7' => 'Sister', '8' => 'Wife']) ?>
                                                                 </div><div class="col-md-4">
-                                                                        <?= $form->field($user_details, 'ifsc_code')->textInput() ?>
+                                                                        <?= $form->field($user_details, 'ifsc_code')->textInput(['readonly' => true]) ?>
                                                                 </div><div class="col-md-4">
-                                                                        <?= $form->field($user_details, 'account_no')->textInput() ?>
+                                                                        <?= $form->field($user_details, 'account_no')->textInput(['readonly' => true]) ?>
                                                                 </div><div class="col-md-4">
-                                                                        <?= $form->field($user_details, 'bank_name')->textInput() ?>
+                                                                        <?= $form->field($user_details, 'bank_name')->textInput(['readonly' => true]) ?>
                                                                 </div><div class="col-md-4">
-                                                                        <?= $form->field($user_details, 'branch')->textInput() ?>
+                                                                        <?= $form->field($user_details, 'branch')->textInput(['readonly' => true]) ?>
                                                                 </div><div class="col-md-4">
-                                                                        <?= $form->field($user_details, 'pan_number')->textInput() ?>
-                                                                </div><div class="col-md-4">
-                                                                        <?= $form->field($model, 'password')->passwordInput() ?>
-                                                                </div><div class="col-md-4">
-                                                                        <?= $form->field($user_details, 'prefered_dispatch')->dropDownList(['1' => 'Courier']) ?>
-                                                                </div><div class="col-md-4">
-                                                                        <?= $form->field($user_details, 'selected_price')->textInput(['readonly' => true]) ?>
+                                                                        <?= $form->field($user_details, 'pan_number')->textInput(['readonly' => true]) ?>
                                                                 </div>
                                                         </div>
 
                                                         <div class="row">
                                                                 <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                                <?= Html::submitButton('Submit', ['class' => 'btn btn-success', 'style' => 'float:right;']) ?>
+                                                                                <?= Html::submitButton('Update', ['class' => 'btn btn-primary', 'style' => 'float:right;']) ?>
                                                                         </div>
                                                                 </div>
                                                                 <?php ActiveForm::end(); ?>
@@ -138,38 +119,10 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 
-
-
-
 <script>
         $(document).ready(function () {
-                $('#employee-placement_name').change(function () {
-                        $.ajax({
-                                type: 'POST',
-                                cache: false,
-                                data: {employee: $(this).val()},
-                                url: homeUrl + 'employee/employeeid',
-                                success: function (data) {
-                                        $("#employee-placement_id").val(data);
-                                }
-                        });
-                });
 
-                $('#employee-epin').change(function () {
-                        $.ajax({
-                                type: 'POST',
-                                cache: false,
-                                data: {epin: $(this).val()},
-                                url: homeUrl + 'employee/epin',
-                                success: function (data) {
-                                        var res = $.parseJSON(data);
-                                        $("#employee-epin_number").val(res['amount']);
-                                        $("#employeedetails-selected_price").val(res['amount']);
-                                        $("#employee-pin_price").val(res['amount']);
-                                        $("#employee-bv").val(res['bv']);
-                                }
-                        });
-                });
+
 
                 $(document).on('blur', '#employee-referal_id', function (e) {
                         var member_id = $(this).val();
@@ -197,7 +150,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                 });
 
-                $(document).on('submit', '#form-signup', function (e) {
+                $(document).on('submit', '#signup-update', function (e) {
                         var member_id = $('#employee-referal_id').val();
 
                         if (member_id != '') {
@@ -226,7 +179,4 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                 });
         });
-
-
-
 </script>

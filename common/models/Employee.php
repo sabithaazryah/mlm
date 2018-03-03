@@ -47,7 +47,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
                 return [
                         [['placement', 'epin', 'status', 'CB', 'UB'], 'integer'],
                         [['DOC', 'DOU'], 'safe'],
-                        [['placement_name', 'user_name', 'distributor_name', 'email'], 'string', 'max' => 200],
+                        [['placement_name', 'user_name', 'distributor_name', 'email', 'display_name'], 'string', 'max' => 200],
                         [['placement_id', 'referal_id'], 'string', 'max' => 100],
                         [['password'], 'string', 'max' => 300],
                         [['mobile_number'], 'string', 'max' => 15],
@@ -55,6 +55,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
                         [['password'], 'validatePassword', 'on' => 'login'],
                         [['email'], 'email'],
                         [['distributor_name', 'password', 'placement_id', 'mobile_number', 'epin'], 'required', 'on' => 'create'],
+                        [['distributor_name', 'mobile_number',], 'required', 'on' => 'update'],
                 ];
         }
 
