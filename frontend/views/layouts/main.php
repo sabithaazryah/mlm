@@ -47,6 +47,7 @@ AppAsset::register($this);
                         'label' => 'Profile',
                         'items' => [
                             ['label' => 'Home', 'url' => ['/site/index']],
+                            ['label' => 'Modify Profile', 'url' => ['/employee/update']],
                             ['label' => 'Change Mobile No', 'url' => ['/employee/change-mobile-no']],
                             ['label' => 'Change Password', 'url' => ['/employee/change-password']],
                             ['label' => 'Upload KYC', 'url' => ['/employee/upload-kyc']],
@@ -97,9 +98,9 @@ AppAsset::register($this);
 
         <!--                <footer class="footer">
                                 <div class="container">
-                                        <p class="pull-left">&copy; <?php // Html::encode(Yii::$app->name)                                   ?> <?php // date('Y')                                   ?></p>
+                                        <p class="pull-left">&copy; <?php // Html::encode(Yii::$app->name)                                     ?> <?php // date('Y')                                     ?></p>
 
-                                        <p class="pull-right"><?php // Yii::powered()                                   ?></p>
+                                        <p class="pull-right"><?php // Yii::powered()                                     ?></p>
                                 </div>
                         </footer>-->
 
