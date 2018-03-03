@@ -10,6 +10,8 @@ use yii\db\Expression;
 use common\models\EmployeeTree;
 use common\models\EmployeeDetails;
 use common\models\ChangeMobile;
+use common\models\ProfileUploads;
+use yii\web\UploadedFile;
 
 class EmployeeController extends \yii\web\Controller {
 
@@ -401,6 +403,46 @@ class EmployeeController extends \yii\web\Controller {
         } else {
             return $this->RandomOtp();
         }
+    }
+
+    public function actionUploadKyc() {
+        $file_exist = ProfileUploads::find()->where(['customer_id' => Yii::$app->user->identity->id])->one();
+        if (empty($file_exist)) {
+            $model = new ProfileUploads();
+        } else {
+            $model = ProfileUploads::find()->where(['customer_id' => Yii::$app->user->identity->id])->one();
+        }
+        $model->setScenario('kycupload');
+        if ($model->load(Yii::$app->request->post())) {
+            $model->customer_id = Yii::$app->user->identity->id;
+            $model->type = 4;
+            $files = UploadedFile::getInstance($model, 'photo');
+            if (!empty($files)) {
+                $model->photo = $files->extension;
+            }
+            if ($model->validate() && $model->save()) {
+                if (!empty($files)) {
+                    $path = Yii::$app->basePath . '/../uploads/profile_uploads/kyc_document/';
+                    $this->upload($model, $files, $path);
+                }
+                Yii::$app->session->setFlash('succes', 'KYC Document Upload successfully.');
+            }
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+        return $this->render('upload_kyc', [
+                    'model' => $model,
+        ]);
+    }
+
+    /**
+     * Upload Material photos.
+     * @return mixed
+     */
+    public function Upload($model, $files, $path) {
+        if (isset($files) && !empty($files)) {
+            $files->saveAs($path . $model->id . '.' . $files->extension);
+        }
+        return TRUE;
     }
 
 }

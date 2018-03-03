@@ -24,13 +24,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
                 <div class="panel-body">
                     <div class="employee-create">
-                        <div class="col-lg-12" style="padding: 0px;">
-                            <?php if (Yii::$app->session->hasFlash('succes')): ?>
-                                <div class="alert alert-success" role="alert">
-                                    <?= Yii::$app->session->getFlash('succes') ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                        <?= \common\widgets\Alert::widget(); ?>
                         <?php
                         $form = ActiveForm::begin(
                                         [

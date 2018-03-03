@@ -30,12 +30,12 @@ class SiteController extends Controller {
                 'class' => AccessControl::className(),
                 'only' => ['logout', 'signup'],
                 'rules' => [
-                        [
+                    [
                         'actions' => ['signup'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
-                        [
+                    [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -74,9 +74,11 @@ class SiteController extends Controller {
     public function actionIndex() {
         $employee = Employee::findOne(Yii::$app->user->identity->id);
         $employee_details = \common\models\EmployeeDetails::find()->where(['employee_id' => Yii::$app->user->identity->id])->one();
+        $employee_package = \common\models\EmployeePackage::find()->where(['employee_id' => Yii::$app->user->identity->id])->one();
         return $this->render('index', [
                     'employee' => $employee,
                     'employee_details' => $employee_details,
+                    'employee_package' => $employee_package,
         ]);
     }
 

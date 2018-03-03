@@ -68,19 +68,19 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
                                     </tr>
                                     <tr>
                                         <th>Full Name</th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: <?= $employee->distributor_name ?></td>
                                     </tr>
                                     <tr>
                                         <th>Mobile No.</th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: <?= $employee->mobile_number ?></td>
                                     </tr>
                                     <tr>
                                         <th>Email ID</th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: <?= $employee->email ?></td>
                                     </tr>
                                     <tr>
                                         <th>Privilege Card No </th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: </td>
                                     </tr>
                                 </table>
                             </div>
@@ -93,23 +93,23 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
                                 <table class="table table-borderless table-rmbrder">
                                     <tr>
                                         <th>Bank Name</th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: <?= $employee_details->bank_name ?></td>
                                     </tr>
                                     <tr>
                                         <th>Branch Name</th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: <?= $employee_details->branch ?></td>
                                     </tr>
                                     <tr>
                                         <th>Account No</th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: <?= $employee_details->account_no ?></td>
                                     </tr>
                                     <tr>
                                         <th>IFSC / Code </th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: <?= $employee_details->ifsc_code ?></td>
                                     </tr>
                                     <tr>
                                         <th>Pan Card</th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: <?= $employee_details->pan_number ?></td>
                                     </tr>
                                 </table>
                             </div>
@@ -122,23 +122,23 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
                                 <table class="table table-borderless table-rmbrder">
                                     <tr>
                                         <th>Rank</th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: </td>
                                     </tr>
                                     <tr>
                                         <th>DOB </th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: <?= $employee_details->dob ?></td>
                                     </tr>
                                     <tr>
                                         <th>Date of Join</th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: </td>
                                     </tr>
                                     <tr>
-                                        <th>oining Amt / BV</th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <th>Joining Amt / BV</th>
+                                        <td>: <?= $employee_package->price . ' / ' . $employee_package->bv ?></td>
                                     </tr>
                                     <tr>
                                         <th>Status </th>
-                                        <td>: <?= $employee->user_name ?></td>
+                                        <td>: <?= $employee->status == 1 ? 'Active' : '' ?></td>
                                     </tr>
                                 </table>
                             </div>
