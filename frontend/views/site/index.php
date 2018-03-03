@@ -2,6 +2,7 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
 
 $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
 ?>
@@ -36,19 +37,46 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
                     <div class="row" style="margin-bottom: 40px;">
                         <div class="col-md-8">
                             <div class="col-md-4">
-                                <img src="<?= Yii::$app->homeUrl; ?>images/user-4.png"/>
-                                <input type="file"/>
-                                <button type="submit">Upload Photo</button>
+                                <?php if ($model_profile->photo != '') { ?>
+                                    <img src="<?= Yii::$app->homeUrl; ?>uploads/profile_uploads/profile_picture/<?= $model_profile->id ?>.<?= $model_profile->photo ?>" width="100" height="100"/>
+                                <?php } else { ?>
+                                    <img src="<?= Yii::$app->homeUrl; ?>images/user-4.png"width="100" height="100"/>
+                                <?php }
+                                ?>
+                                <?php
+                                $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]);
+                                ?>
+                                <?= $form->field($model_profile, 'photo')->fileInput()->label(FALSE) ?>
+                                <?= Html::submitButton('Upload Photo', ['class' => 'btn btn-info', 'name' => 'profile-button', 'style' => 'float:left;border-radius: 5px;margin-top: 15px;']) ?>
+                                <?php ActiveForm::end(); ?>
                             </div>
                             <div class="col-md-4">
-                                <img src="<?= Yii::$app->homeUrl; ?>images/user-4.png"/>
-                                <input type="file"/>
-                                <button type="submit">Upload Photo</button>
+                                <?php if ($model_pan->photo != '') { ?>
+                                    <img src="<?= Yii::$app->homeUrl; ?>uploads/profile_uploads/pancard/<?= $model_pan->id ?>.<?= $model_pan->photo ?>" width="100" height="100"/>
+                                <?php } else { ?>
+                                    <img src="<?= Yii::$app->homeUrl; ?>images/user-4.png"width="100" height="100"/>
+                                <?php }
+                                ?>
+                                <?php
+                                $form = ActiveForm::begin();
+                                ?>
+                                <?= $form->field($model_pan, 'photo')->fileInput()->label(FALSE) ?>
+                                <?= Html::submitButton('Upload Pan Card', ['class' => 'btn btn-info', 'name' => 'pan-button', 'style' => 'float:left;border-radius: 5px;margin-top: 15px;']) ?>
+                                <?php ActiveForm::end(); ?>
                             </div>
                             <div class="col-md-4">
-                                <img src="<?= Yii::$app->homeUrl; ?>images/user-4.png"/>
-                                <input type="file"/>
-                                <button type="submit">Upload Photo</button>
+                                <?php if ($model_bank->photo != '') { ?>
+                                    <img src="<?= Yii::$app->homeUrl; ?>uploads/profile_uploads/bank_details/<?= $model_bank->id ?>.<?= $model_bank->photo ?>" width="100" height="100"/>
+                                <?php } else { ?>
+                                    <img src="<?= Yii::$app->homeUrl; ?>images/user-4.png"width="100" height="100"/>
+                                <?php }
+                                ?>
+                                <?php
+                                $form = ActiveForm::begin();
+                                ?>
+                                <?= $form->field($model_bank, 'photo')->fileInput()->label(FALSE) ?>
+                                <?= Html::submitButton('Upload Bank Details', ['class' => 'btn btn-info', 'name' => 'bank-button', 'style' => 'float:left;border-radius: 5px;margin-top: 15px;']) ?>
+                                <?php ActiveForm::end(); ?>
                             </div>
                         </div>
                         <div class="col-md-4">
