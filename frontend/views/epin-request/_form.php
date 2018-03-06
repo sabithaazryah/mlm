@@ -10,54 +10,65 @@ use common\models\BankDetails;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="epin-request-form">
+<div class="form_wrapper">
     <?= \common\widgets\Alert::widget(); ?>
     <?php $form = ActiveForm::begin(['id' => 'epin-submit']); ?>
-    <div class="row">
-        <div class="col-md-4">
-            <?= $form->field($model, 'amount_deposited')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-4">
-            <?php $banks = ArrayHelper::map(BankDetails::findAll(['status' => 1]), 'id', 'bank_name'); ?>
-            <?= $form->field($model, 'bank_name')->dropDownList($banks, ['prompt' => '-Choose a Bank-']) ?>
-        </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'type')->dropDownList(['1' => 'RTGS', '2' => 'NEFT', '3' => 'Cash Deposit', '4' => 'IMPS']) ?>
-        </div>
+    <div class="form_header">
+        <?= Html::encode($this->title) ?>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <?= $form->field($model, 'transaction_id')->textInput(['maxlength' => true]) ?>
+
+    <div class="form_content">
+        <div class="row">
+            <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <?= $form->field($model, 'amount_deposited')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <?php $banks = ArrayHelper::map(BankDetails::findAll(['status' => 1]), 'id', 'bank_name'); ?>
+                <?= $form->field($model, 'bank_name')->dropDownList($banks, ['prompt' => '-Choose a Bank-']) ?>
+            </div>
         </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <?= $form->field($model, 'type')->dropDownList(['1' => 'RTGS', '2' => 'NEFT', '3' => 'Cash Deposit', '4' => 'IMPS']) ?>
+            </div>
+            <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <?= $form->field($model, 'transaction_id')->textInput(['maxlength' => true]) ?>
+            </div>
         </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'phone_number')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <?= $form->field($model, 'phone_number')->textInput(['maxlength' => true]) ?>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <?php
-            $numbers = Yii::$app->SetValues->Number();
-            ?>
-            <?= $form->field($model, 'number_of_pin')->dropDownList($numbers, ['prompt' => '- select -']) ?>
-        </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'slip')->fileInput() ?>
-        </div>
-    </div>
-    <div class="row" id="package-details-content" style="margin-bottom: 15px;">
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <?= Html::submitButton('Send', ['class' => 'btn btn-success', 'style' => 'float:right;']) ?>
+        <div class="row">
+            <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <?php
+                $numbers = Yii::$app->SetValues->Number();
+                ?>
+                <?= $form->field($model, 'number_of_pin')->dropDownList($numbers, ['prompt' => '- select -']) ?>
+            </div>
+            <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <?= $form->field($model, 'slip')->fileInput() ?>
             </div>
         </div>
     </div>
-    <?php ActiveForm::end(); ?>
+    <div class="form_footer">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12">
 
+            </div>
+
+            <div class="col-md-6 col-sm-12 col-xs-12 button-container">
+                <?= Html::submitButton('Send', ['class' => 'btn-common btn-form', 'name' => 'login', 'style' => '']) ?>
+                <?= Html::a('Clear', ['/epin-request/create'], ['class' => 'btn-common btn-form']) ?>
+            </div>
+
+        </div>
+    </div>
+    <?php ActiveForm::end(); ?>
 </div>
 <script>
     $(document).ready(function () {

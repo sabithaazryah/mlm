@@ -200,19 +200,18 @@ class EpinRequestController extends Controller {
     public function actionEpinTransfer() {
         $model = new EpinTransfer();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->customer_id = Yii::$app->user->id;
-            $old_pindetails = PinRequestDetails::find()->where(['epin' => $model->epin, 'parent_id' => $model->customer_id])->one();
-            $new_pindetails = new PinRequestDetails();
-            $new_pindetails->master_id = $old_pindetails->master_id;
-            $new_pindetails->parent_id = $old_pindetails->parent_id;
-            $new_pindetails->package_id = $old_pindetails->package_id;
-            $new_pindetails->epin = $old_pindetails->epin;
-            $new_pindetails->status = 1;
-            $old_pindetails->status = 4;
+            $model->transfer_from = Yii::$app->user->id;
+            $old_pindetails = PinRequestDetails::find()->where(['epin' => $model->epin, 'parent_id' => $model->transfer_from])->one();
+            $model->epin_details_id = $old_pindetails->id;
+            $model->DOC = date('Y-m-d');
             if ($this->CheckExist($model)) {
+                $transfer_person = \common\models\Employee::find()->where(['user_name' => $model->member_id])->one();
+                $model->transfer_to = $transfer_person->id;
+                $old_pindetails->parent_id = $transfer_person->id;
+                $old_pindetails->transer_id = Yii::$app->user->id;
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
-                    if ($model->save() && $new_pindetails->save() && $old_pindetails->update()) {
+                    if ($model->save() && $old_pindetails->update()) {
                         $transaction->commit();
                         Yii::$app->session->setFlash('success', "Pin Transfered Successfully");
                         $model = new EpinTransfer();

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use common\models\PinRequestDetails;
 ?>
-<div style="border: 1px solid #b9b9b9;padding: 0px 10px;margin: 8px 0px;">
+<div class="table-responsive" style="border: 1px solid #b9b9b9;padding: 0px 10px;margin: 8px 0px;">
     <div class="epin-request-master-view">
         <?= common\components\EpinDetailsWidget::widget(['id' => $model->id]) ?>
     </div>

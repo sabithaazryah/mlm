@@ -41,9 +41,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             <div class="hv-item-parent">
                                 <div class="person">
+
+                                    <div class="detail">
+                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                    </div>
+
                                     <div class="person_img_wrapper">
                                         <img src="<?= Yii::$app->homeUrl; ?>dash/images/placeholder-img.png" alt="" class="img-responsive">
+
+
+
                                     </div>
+
+
                                     <p class="name">
                                         MAHESH H<b>SW53848</b>
                                     </p>
@@ -58,6 +70,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                         <div class="hv-item-parent">
                                             <div class="person">
+                                                <div class="detail">
+                                                    <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                    <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                    <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                </div>
+
                                                 <div class="person_img_wrapper gold">
                                                     <img src="<?= Yii::$app->homeUrl; ?>dash/images/placeholder-img.png" alt="" class="img-responsive">
                                                 </div>
@@ -71,6 +89,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                             <div class="hv-item-child">
                                                 <div class="person">
+                                                    <div class="detail">
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                    </div>
+
                                                     <div class="person_img_wrapper platinum">
                                                         <img src="<?= Yii::$app->homeUrl; ?>dash/images/placeholder-img.png" alt="" class="img-responsive">
                                                     </div>
@@ -83,6 +107,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                             <div class="hv-item-child">
                                                 <div class="person">
+
+                                                    <div class="detail">
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                    </div>
+
                                                     <div class="person_img_wrapper">
                                                         <img src="<?= Yii::$app->homeUrl; ?>dash/images/placeholder-img.png" alt="" class="img-responsive">
                                                     </div>
@@ -104,6 +135,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                         <div class="hv-item-parent">
                                             <div class="person">
+
+                                                <div class="detail">
+                                                    <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                    <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                    <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                </div>
+
                                                 <div class="person_img_wrapper">
                                                     <img src="<?= Yii::$app->homeUrl; ?>dash/images/placeholder-img.png" alt="" class="img-responsive">
                                                 </div>
@@ -117,6 +155,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                             <div class="hv-item-child">
                                                 <div class="person">
+
+                                                    <div class="detail">
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                    </div>
+
                                                     <div class="person_img_wrapper">
                                                         <img src="<?= Yii::$app->homeUrl; ?>dash/images/placeholder-img.png" alt="" class="img-responsive">
                                                     </div>
@@ -129,6 +174,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                             <div class="hv-item-child">
                                                 <div class="person">
+
+                                                    <div class="detail">
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                        <p>Lorem ipsum dolor Lorem ipsum dolor</p>
+                                                    </div>
+
                                                     <div class="person_img_wrapper">
                                                         <img src="<?= Yii::$app->homeUrl; ?>dash/images/placeholder-img.png" alt="" class="img-responsive">
                                                     </div>
@@ -153,13 +205,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         <ul>
                             <li>
                                 <div class="person_img_wrapper gold">
-                                    <img src="images/placeholder-img.png" alt="" class="img-responsive">
+                                    <img src="<?= Yii::$app->homeUrl; ?>dash/images/placeholder-img.png" alt="" class="img-responsive">
                                 </div>
                                 <label>GOLD</label>
                             </li>
                             <li>
                                 <div class="person_img_wrapper platinum">
-                                    <img src="images/placeholder-img.png" alt="" class="img-responsive">
+                                    <img src="<?= Yii::$app->homeUrl; ?>dash/images/placeholder-img.png" alt="" class="img-responsive">
                                 </div>
                                 <label>platinum</label></li>
                             <li>

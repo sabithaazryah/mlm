@@ -17,7 +17,7 @@ class PinRequestDetailsSearch extends PinRequestDetails {
      */
     public function rules() {
         return [
-            [['id', 'master_id', 'parent_id', 'package_id', 'status', 'epin_status', 'CB', 'UB'], 'integer'],
+            [['id', 'master_id', 'parent_id', 'package_id', 'status', 'epin_status', 'CB', 'UB', 'transer_id'], 'integer'],
             [['epin', 'DOC', 'DOU'], 'safe'],
         ];
     }
@@ -62,6 +62,7 @@ class PinRequestDetailsSearch extends PinRequestDetails {
             'package_id' => $this->package_id,
             'status' => $this->status,
             'epin_status' => $this->epin_status,
+            'transer_id' => $this->transer_id,
             'CB' => $this->CB,
             'UB' => $this->UB,
             'DOC' => $this->DOC,

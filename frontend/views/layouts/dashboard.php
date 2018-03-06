@@ -69,9 +69,9 @@ DashboardAsset::register($this);
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class=""><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-profile.png" alt="" class="img-responsive"></i> PROFILE <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                              <!--  <li>
-                                    <?= Html::a('Modify Profile', ['/employee/update'], ['class' => '']) ?>
-                                </li>-->
+                                <!--  <li>
+                                <?= Html::a('Modify Profile', ['/employee/update'], ['class' => '']) ?>
+                                  </li>-->
                                 <li>
                                     <?= Html::a('Change Mobile No', ['/employee/change-mobile-no'], ['class' => '']) ?>
                                 </li>
@@ -100,9 +100,9 @@ DashboardAsset::register($this);
                                 </li>
                             </ul>
                         </li>
-                        <!--                        <li>
-                        <?php // Html::a('<img src="' . Yii::$app->homeUrl . 'dash/images/icon-profit.png" alt="" class="img-responsive">profit club', ['/employee/genealogy-view'], ['class' => '']) ?>
-                                                </li>-->
+                        <li>
+                            <?= Html::a('<img src="' . Yii::$app->homeUrl . 'dash/images/icon-profit.png" alt="" class="img-responsive">profit club', ['/employee/genealogy-view'], ['class' => '']) ?>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->

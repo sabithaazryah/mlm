@@ -31,8 +31,8 @@ class EpinTransfer extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['epin', 'member_id'], 'required'],
-            [['customer_id', 'status', 'CB', 'UB'], 'integer'],
+            [['epin', 'transfer_from'], 'required'],
+            [['transfer_from', 'status', 'CB', 'UB', 'transfer_to', 'epin_details_id'], 'integer'],
             [['DOC', 'DOU'], 'safe'],
             [['epin', 'member_id'], 'string', 'max' => 100],
         ];
@@ -44,7 +44,7 @@ class EpinTransfer extends \yii\db\ActiveRecord {
     public function attributeLabels() {
         return [
             'id' => 'ID',
-            'customer_id' => 'Customer ID',
+            'transfer_from' => 'Transfer From',
             'epin' => 'Epin',
             'member_id' => 'Member ID',
             'status' => 'Status',

@@ -9,25 +9,15 @@ $this->title = 'Create Epin Request';
 $this->params['breadcrumbs'][] = ['label' => 'Epin Requests', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
-<div class="row">
-    <div class="col-md-12">
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-
-            </div>
-            <div class="panel-body">
-                <div class="panel-body"><div class="epin-request-create">
-                        <?=
-                        $this->render('_form', [
-                            'model' => $model,
-                        ])
-                        ?>
-                    </div>
-                </div>
-            </div>
+<div class="container-fluid dashbord_content_wrapper">
+    <div class="row">
+        <div class="form_wrapper">
+            <?= \common\widgets\Alert::widget(); ?>
+            <?=
+            $this->render('_form', [
+                'model' => $model,
+            ])
+            ?>
         </div>
     </div>
 </div>

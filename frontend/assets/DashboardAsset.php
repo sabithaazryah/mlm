@@ -17,7 +17,7 @@ class DashboardAsset extends AssetBundle {
         'dash/css/admin.css',
         'dash/css/morris.css',
         'https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,900',
-        'dash/css/font-awesome.min.css',
+        'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
         'dash/css/custom.css',
         'dash/css/responsive.css',
     ];

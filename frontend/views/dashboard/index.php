@@ -1,10 +1,11 @@
 <?php
+//
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
+//$this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
 ?>
 <div class="container-fluid dashbord_content_wrapper dashboard-index">
     <div class="row">
@@ -38,7 +39,7 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
                         ?>
                         <label>Choose File<?= $form->field($model_profile, 'photo')->fileInput(['style' => 'display:none;'])->label(FALSE) ?></label>
                         <?= Html::submitButton('Upload Photo', ['class' => 'btn-common btn-profile', 'name' => 'profile-button', 'style' => '']) ?>
-                        <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
                     </li>
                     <li class="">
                         <?php
@@ -46,7 +47,7 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
                         ?>
                         <label>Choose File<?= $form->field($model_pan, 'photo')->fileInput(['style' => 'display:none;'])->label(FALSE) ?></label>
                         <?= Html::submitButton('Upload Pancard', ['class' => 'btn-common', 'name' => 'pan-button', 'style' => '']) ?>
-                        <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
                     </li>
                     <li class="">
                         <?php
@@ -54,7 +55,7 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
                         ?>
                         <label>Choose File<?= $form->field($model_bank, 'photo')->fileInput(['style' => 'display:none;'])->label(FALSE) ?></label>
                         <?= Html::submitButton('Upload Bank Details', ['class' => 'btn-common btn-bank', 'name' => 'bank-button', 'style' => '']) ?>
-                        <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
                     </li>
                 </ul>
             </div>

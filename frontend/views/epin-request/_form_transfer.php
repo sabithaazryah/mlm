@@ -13,38 +13,42 @@ $this->params['breadcrumbs'][] = ['label' => 'Epin Requests', 'url' => ['index']
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="row">
-    <div class="col-md-12">
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-
+<div class="container-fluid dashbord_content_wrapper">
+    <div class="row">
+        <div class="form_wrapper">
+            <?php
+            $form = ActiveForm::begin();
+            ?>
+            <div class="form_header">
+                <?= Html::encode($this->title) ?>
             </div>
-            <div class="panel-body">
-                <div class="panel-body">
-                    <div class="epin-request-create">
-                        <?= \common\widgets\Alert::widget(); ?>
-                        <?php $form = ActiveForm::begin(['id' => 'epin-submit']); ?>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <?= $form->field($model, 'member_id')->textInput(['maxlength' => true]) ?>
-                                <?= $form->field($model, 'customer_id')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->user->id])->label(FALSE) ?>
-                            </div>
-                            <div class="col-md-3">
-                                <?php $e_pins = ArrayHelper::map(PinRequestDetails::findAll(['status' => 1, 'parent_id' => Yii::$app->user->id]), 'epin', 'epin'); ?>
-                                <?= $form->field($model, 'epin')->dropDownList($e_pins, ['prompt' => 'Choose a E-Pin']) ?>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <?= Html::submitButton('Transfer', ['class' => 'btn btn-success', 'style' => 'float:left;padding: 8px 15px;margin-top: 22px;']) ?>
-                                </div>
-                            </div>
-                        </div>
-                        <?php ActiveForm::end(); ?>
+
+            <div class="form_content">
+                <div class="row">
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <?= $form->field($model, 'member_id')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'transfer_from')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->user->id])->label(FALSE) ?>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <?php $e_pins = ArrayHelper::map(PinRequestDetails::findAll(['status' => 1, 'parent_id' => Yii::$app->user->id]), 'epin', 'epin'); ?>
+                        <?= $form->field($model, 'epin')->dropDownList($e_pins, ['prompt' => 'Choose a E-Pin']) ?>
                     </div>
                 </div>
             </div>
+            <div class="form_footer">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-xs-12 button-container">
+                        <?= Html::submitButton('Transfer', ['class' => 'btn-common btn-form', 'name' => 'login', 'style' => '']) ?>
+                        <?= Html::a('Clear', ['/epin-request/epin-transfer'], ['class' => 'btn-common btn-form']) ?>
+                    </div>
+
+                </div>
+            </div>
+            <?php ActiveForm::end(); ?>
         </div>
     </div>
 </div>
