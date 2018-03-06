@@ -35,7 +35,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'columns' => [
                                                     ['class' => 'yii\grid\SerialColumn'],
                                                 'label',
-                                                'value',
+                                                //'value',
+                                                [
+                                                    'attribute' => 'value',
+                                                    'value' => function($model) {
+                                                            $end = '';
+                                                            if ($model->id == '1' || $model->id == '2') {
+                                                                    $end = '(%)';
+                                                            }
+                                                            return $model->value . ' ' . $end;
+                                                    }
+                                                ],
                                                     [
                                                     'class' => 'yii\grid\ActionColumn',
                                                     'header' => 'Actions',
