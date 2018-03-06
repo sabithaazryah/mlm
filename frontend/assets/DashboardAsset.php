@@ -18,13 +18,17 @@ class DashboardAsset extends AssetBundle {
         'dash/css/morris.css',
         'https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,900',
         'dash/css/font-awesome.min.css',
+        'dash/css/custom.css',
+        'dash/css/responsive.css',
     ];
     public $js = [
-        'dash/js/jquery.js',
+//        'dash/js/jquery.js',
+        'dash/js/jquery.matchHeight-min.js',
         'dash/js/bootstrap.min.js',
-        'dash/js/raphael.min.js',
-        'dash/js/morris.min.js',
-        'dash/js/morris-data.js',
+//        'dash/js/raphael.min.js',
+//        'dash/js/morris.min.js',
+//        'dash/js/morris-data.js',
+        'dash/js/custom.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

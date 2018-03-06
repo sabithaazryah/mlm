@@ -3,11 +3,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use frontend\assets\DashboardAsset;
-use common\widgets\Alert;
 
 DashboardAsset::register($this);
 ?>
@@ -20,6 +16,7 @@ DashboardAsset::register($this);
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
+        <script src="<?= Yii::$app->homeUrl; ?>dash/js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript">
             var homeUrl = '<?= Yii::$app->homeUrl; ?>';
         </script>
@@ -51,21 +48,17 @@ DashboardAsset::register($this);
 
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle user_dropdown" data-toggle="dropdown"><span class="img_wrapper"><img src="<?= Yii::$app->homeUrl; ?>dash/images/user-1.jpg" alt="" class="img-responsive"></span><span>Hello</span> John Smith <b class="caret"></b></a>
+                        <a href="" class="dropdown-toggle user_dropdown" data-toggle="dropdown"><span class="img_wrapper"><img src="<?= Yii::$app->homeUrl; ?>dash/images/user-1.jpg" alt="" class="img-responsive"></span><span>Hello</span> <?= Yii::$app->user->identity->user_name ?> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                            </li>
+                            <?php
+                            echo '<li>'
+                            . Html::beginForm(['/site/logout'], 'post', ['style' => 'margin-bottom: 0px;']) . '<a>'
+                            . Html::submitButton(
+                                    'Sign out', ['class' => 'btn btn-white', 'style' => '']
+                            ) . '</a>'
+                            . Html::endForm()
+                            . '</li>';
+                            ?>
                         </ul>
                     </li>
                 </ul>
@@ -73,31 +66,43 @@ DashboardAsset::register($this);
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav side-nav">
 
-                        <li>
-                            <a href="charts.html"><i class=""><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-profile.png" alt="" class="img-responsive"></i> PROFILE</a>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class=""><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-profile.png" alt="" class="img-responsive"></i> PROFILE <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                              <!--  <li>
+                                    <?= Html::a('Modify Profile', ['/employee/update'], ['class' => '']) ?>
+                                </li>-->
+                                <li>
+                                    <?= Html::a('Change Mobile No', ['/employee/change-mobile-no'], ['class' => '']) ?>
+                                </li>
+                                <li>
+                                    <?= Html::a('Change Password', ['/employee/change-password'], ['class' => '']) ?>
+                                </li>
+                                <li>
+                                    <?= Html::a('Upload KYC', ['/employee/upload-kyc'], ['class' => '']) ?>
+                                </li>
+                                <li>
+                                    <?= Html::a('Tree View', ['/employee/tree'], ['class' => '']) ?>
+                                </li>
+                            </ul>
                         </li>
-                        <li>
-                            <a href="tables.html"><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-pin.png" alt="" class="img-responsive"></i>  E-pin</a>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class=""><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-pin.png" alt="" class="img-responsive"></i> EPIN <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <?= Html::a('E-Pin History', ['/epin-request/index'], ['class' => '']) ?>
+                                </li>
+                                <li>
+                                    <?= Html::a('New E-Pin Request', ['/epin-request/create'], ['class' => '']) ?>
+                                </li>
+                                <li>
+                                    <?= Html::a('E-Pin Transfer', ['/epin-request/epin-transfer'], ['class' => '']) ?>
+                                </li>
+                            </ul>
                         </li>
-                        <li>
-                            <a href="forms.html"><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-smart.png" alt="" class="img-responsive"></i>  smart club</a>
-                        </li>
-                        <li>
-                            <a href="bootstrap-elements.html"><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-profit.png" alt="" class="img-responsive"></i>  profit club</a>
-                        </li>
-                        <li>
-                            <a href="bootstrap-grid.html"><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-achievement.png" alt="" class="img-responsive"></i>  Achievement</a>
-                        </li>
-
-                        <li>
-                            <a href="blank-page.html"><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-payment.png" alt="" class="img-responsive"></i>payments</a>
-                        </li>
-                        <li>
-                            <a href="index-rtl.html"><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-tool.png" alt="" class="img-responsive"></i>tools</a>
-                        </li>
-                        <li>
-                            <a href="index-rtl.html"><img src="<?= Yii::$app->homeUrl; ?>dash/images/icon-repurchase.png" alt="" class="img-responsive"></i> Repurchase</a>
-                        </li>
+                        <!--                        <li>
+                        <?php // Html::a('<img src="' . Yii::$app->homeUrl . 'dash/images/icon-profit.png" alt="" class="img-responsive">profit club', ['/employee/genealogy-view'], ['class' => '']) ?>
+                                                </li>-->
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->

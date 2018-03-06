@@ -44,9 +44,6 @@ class PathsFilterTest extends FilterTest
 
         $filter = new PathsFilter(array($fixtures . 'full_path'));
         $this->assertTrue($filter->isFeatureMatch($feature));
-        
-        $filter = new PathsFilter(array($fixtures . 'ful._path')); // Don't accept regexp
-        $this->assertFalse($filter->isFeatureMatch($feature));
     }
 
     public function testItDoesNotMatchIfFileWithSameNameButNotPathExistsInFolder()

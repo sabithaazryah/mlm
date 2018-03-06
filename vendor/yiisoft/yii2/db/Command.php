@@ -111,6 +111,7 @@ class Command extends Component
      */
     private $_retryHandler;
 
+
     /**
      * Enables query cache for this command.
      * @param int $duration the number of seconds that query result of this command can remain valid in the cache.
@@ -358,7 +359,10 @@ class Command extends Component
 
         $schema = $this->db->getSchema();
         foreach ($values as $name => $value) {
-            if ($value instanceof PdoValue) {
+            if (is_array($value)) { // TODO: Drop in Yii 2.1
+                $this->_pendingParams[$name] = $value;
+                $this->params[$name] = $value[0];
+            } elseif ($value instanceof PdoValue) {
                 $this->_pendingParams[$name] = [$value->getValue(), $value->getType()];
                 $this->params[$name] = $value->getValue();
             } else {
@@ -499,9 +503,11 @@ class Command extends Component
             return $this->db->quoteSql($column);
         }, $columns);
 
-        $sql = $this->db->getQueryBuilder()->batchInsert($table, $columns, $rows);
+        $params = [];
+        $sql = $this->db->getQueryBuilder()->batchInsert($table, $columns, $rows, $params);
 
         $this->setRawSql($sql);
+        $this->bindValues($params);
 
         return $this;
     }

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ */
 
 namespace yii\db\pgsql;
 
@@ -19,6 +24,7 @@ class ArrayExpressionBuilder implements ExpressionBuilderInterface
 {
     use ExpressionBuilderTrait;
 
+
     /**
      * {@inheritdoc}
      * @param ArrayExpression|ExpressionInterface $expression the expression to be built
@@ -26,6 +32,9 @@ class ArrayExpressionBuilder implements ExpressionBuilderInterface
     public function build(ExpressionInterface $expression, array &$params = [])
     {
         $value = $expression->getValue();
+        if ($value === null) {
+            return 'NULL';
+        }
 
         if ($value instanceof Query) {
             list ($sql, $params) = $this->queryBuilder->build($value, $params);
@@ -33,9 +42,6 @@ class ArrayExpressionBuilder implements ExpressionBuilderInterface
         }
 
         $placeholders = $this->buildPlaceholders($expression, $params);
-        if (empty($placeholders)) {
-            return "'{}'";
-        }
 
         return 'ARRAY[' . implode(', ', $placeholders) . ']' . $this->getTypehint($expression);
     }

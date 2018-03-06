@@ -1,0 +1,12 @@
+@media screen and (max-width: 1350px) {
+    .dashboard-index .btn-common {
+    font-size: 10px;
+    padding: 12px 25px;
+}
+.dashboard-index .btn-bank{
+    padding: 12px 14px;
+}
+.dashboard-index .btn-profile{
+    padding: 12px 32px;
+}
+}

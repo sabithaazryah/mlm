@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ */
 
 namespace yii\db\conditions;
 
@@ -27,7 +32,7 @@ use yii\db\Query;
  * );
  *
  * // Will be built to:
- * // NOW() BETWEEN (SELECT time FROM log ORDER BY id ASC LIMIT 1) AND update_time
+ * // NOW() NOT BETWEEN (SELECT time FROM log ORDER BY id ASC LIMIT 1) AND update_time
  * ```
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
@@ -51,6 +56,7 @@ class BetweenColumnsCondition implements ConditionInterface
      * @var string|ExpressionInterface|Query the column name or expression that is an end of the interval
      */
     private $intervalEndColumn;
+
 
     /**
      * Creates a condition with the `BETWEEN` operator.

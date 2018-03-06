@@ -6,7 +6,7 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
 ?>
-<div class="container-fluid dashbord_content_wrapper">
+<div class="container-fluid dashbord_content_wrapper dashboard-index">
     <div class="row">
 
         <div class="col-md-4 col-sm-6 col-xs-12">
@@ -22,7 +22,7 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="block_wrapper">
                 <ul class="dashbord_list member_info">
-                    <li>SW53848<span class="label">Member ID</span></li>
+                    <li><?= Yii::$app->user->identity->user_name ?><span class="label">Member ID</span></li>
                     <li class="button_wrapper"><a href="#" class="btn-common">ID Card Download</a></li>
                     <li class="button_wrapper"><a href="#" class="btn-common">ID Card Download</a></li>
                 </ul>
@@ -32,12 +32,30 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="block_wrapper">
                 <ul class="dashbord_list upload_list">
-                    <li class=""><label>Choose File</label><a href="#" class="btn-common">Upload Photo
-                            <input type="file"></a></li>
-                    <li class=""><label>Choose File</label><a href="#" class="btn-common">Upload Pancard
-                            <input type="file"></a></li>
-                    <li class=""><label>Choose File</label><a href="#" class="btn-common">Upload Pancard
-                            <input type="file"></a></li>
+                    <li class="">
+                        <?php
+                        $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]);
+                        ?>
+                        <label>Choose File<?= $form->field($model_profile, 'photo')->fileInput(['style' => 'display:none;'])->label(FALSE) ?></label>
+                        <?= Html::submitButton('Upload Photo', ['class' => 'btn-common btn-profile', 'name' => 'profile-button', 'style' => '']) ?>
+                        <?php ActiveForm::end(); ?>
+                    </li>
+                    <li class="">
+                        <?php
+                        $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]);
+                        ?>
+                        <label>Choose File<?= $form->field($model_pan, 'photo')->fileInput(['style' => 'display:none;'])->label(FALSE) ?></label>
+                        <?= Html::submitButton('Upload Pancard', ['class' => 'btn-common', 'name' => 'pan-button', 'style' => '']) ?>
+                        <?php ActiveForm::end(); ?>
+                    </li>
+                    <li class="">
+                        <?php
+                        $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]);
+                        ?>
+                        <label>Choose File<?= $form->field($model_bank, 'photo')->fileInput(['style' => 'display:none;'])->label(FALSE) ?></label>
+                        <?= Html::submitButton('Upload Bank Details', ['class' => 'btn-common btn-bank', 'name' => 'bank-button', 'style' => '']) ?>
+                        <?php ActiveForm::end(); ?>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -50,7 +68,7 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
                     <li class=""><span>Full Name :</span> <?= $employee->distributor_name ?></li>
                     <li class=""><span>Mobile No :</span> <?= $employee->mobile_number ?></li>
                     <li class=""><span>Email ID :</span> <?= $employee->email ?></li>
-                    <li class=""><span>Privilege Card No :</span> 7617504338486904</li>
+                    <li class=""><span>Privilege Card No :</span></li>
                 </ul>
             </div>
         </div>
@@ -72,7 +90,7 @@ $this->title = 'Display Name : ' . Yii::$app->user->identity->user_name;
             <div class="block_wrapper">
                 <div class="header_wrapper"><span class="icon_wrapper"><img src="images/icon-membership.png" alt="" class="img-responsive"></span>Membership Details<a href="" class="actions"><span></span> <span></span> <span></span></a></div>
                 <ul class="dashbord_list">
-                    <li class=""><span>Rank :</span> SMART DISTRIBUTOR</li>
+                    <li class=""><span>Rank :</span></li>
                     <li class=""><span>DOB :</span> <?= $employee_details->dob ?></li>
                     <li class=""><span>Date of Join :</span> Sep 28 2016 6:45PM</li>
                     <li class=""><span>Joining Amt / BV :</span> <?= $employee_package->price . ' / ' . $employee_package->bv ?></li>

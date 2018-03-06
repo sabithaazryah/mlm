@@ -9,51 +9,52 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Change Mobile Number';
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="row" style="margin-top: 90px;">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-
-
+<div class="container-fluid dashbord_content_wrapper">
+    <div class="row">
+        <div class="form_wrapper">
+            <?= \common\widgets\Alert::widget(); ?>
+            <?php
+            $form = ActiveForm::begin();
+            ?>
+            <div class="form_header">
+                <?= Html::encode($this->title) ?>
             </div>
-            <div class="panel-body">
-                <?php // Html::a('<i class="fa-th-list"></i><span> Manage Admin Users</span>', ['index'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
 
-                <div class="panel-body">
-                    <div class="employee-create">
-                        <?= \common\widgets\Alert::widget(); ?>
-                        <?php
-                        $form = ActiveForm::begin(
-                                        [
-                                            'id' => 'change mobile no',
-                                            'method' => 'post',
-                                            'options' => [
-                                                'class' => 'login-form fade-in-effect'
-                                            ]
-                                        ]
-                        );
-                        ?><button class="btn btn-info" style="border-radius: 5px;float:right;" id="get-otp">GET OTP</button>
-                        <?= $form->field($model, 'old_mobile_no')->textInput() ?>
-
-                        <?= $form->field($model, 'new_mobile_no')->textInput() ?>
-
-                        <?= $form->field($model, 'otp')->textInput()->label('OTP') ?>
-
-                        <div class="form-group">
-                            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'login-button', 'style' => 'float:right;']) ?>
-                        </div>
-
-                        <?php ActiveForm::end(); ?>
-
+            <div class="form_content">
+                <div class="row">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                        <button class="btn btn-info" style="border-radius: 5px;float:right;font-weight: 600;" id="get-otp">GET OTP</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                        <?= $form->field($model, 'old_mobile_no')->textInput()->label('Old Mobile No *') ?>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                        <?= $form->field($model, 'new_mobile_no')->textInput()->label('New Mobile No *') ?>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                        <?= $form->field($model, 'otp')->textInput()->label('OTP *') ?>
                     </div>
                 </div>
             </div>
+            <div class="form_footer">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-xs-12 button-container">
+                        <?= Html::submitButton('Submit', ['class' => 'btn-common btn-form', 'name' => 'login', 'style' => '']) ?>
+                        <?= Html::a('Clear', ['/employee/change-mobile-no'], ['class' => 'btn-common btn-form']) ?>
+                    </div>
+
+                </div>
+            </div>
+            <?php ActiveForm::end(); ?>
         </div>
     </div>
-    <div class="col-md-3"></div>
 </div>
 <script>
     $(document).ready(function () {
@@ -64,6 +65,7 @@ $this->params['breadcrumbs'][] = 'Update';
          */
 
         $(document).on('click', '#get-otp', function (e) {
+            e.preventDefault();
             $.ajax({
                 type: 'POST',
                 cache: false,

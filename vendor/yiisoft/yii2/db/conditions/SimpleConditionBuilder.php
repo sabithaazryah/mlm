@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ */
 
 namespace yii\db\conditions;
 
@@ -16,6 +21,7 @@ use yii\db\Query;
 class SimpleConditionBuilder implements ExpressionBuilderInterface
 {
     use ExpressionBuilderTrait;
+
 
     /**
      * Method builds the raw SQL from the $expression that will not be additionally
@@ -40,10 +46,6 @@ class SimpleConditionBuilder implements ExpressionBuilderInterface
         }
         if ($value instanceof ExpressionInterface) {
             return "$column $operator {$this->queryBuilder->buildExpression($value, $params)}";
-        }
-        if ($value instanceof Query) {
-            list($sql, $params) = $this->queryBuilder->build($value, $params);
-            return "$column $operator ($sql)";
         }
 
         $phName = $this->queryBuilder->bindParam($value, $params);

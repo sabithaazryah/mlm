@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ */
 
 namespace yii\db\conditions;
 
@@ -15,11 +20,11 @@ class BetweenCondition implements ConditionInterface
     /**
      * @var string $operator the operator to use (e.g. `BETWEEN` or `NOT BETWEEN`)
      */
-    protected $operator;
+    private $operator;
     /**
      * @var mixed the column name to the left of [[operator]]
      */
-    protected $column;
+    private $column;
     /**
      * @var mixed beginning of the interval
      */
@@ -28,6 +33,7 @@ class BetweenCondition implements ConditionInterface
      * @var mixed end of the interval
      */
     private $intervalEnd;
+
 
     /**
      * Creates a condition with the `BETWEEN` operator.

@@ -46,6 +46,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
         Schema::TYPE_MONEY => 'decimal(19,4)',
     ];
 
+
     /**
      * {@inheritdoc}
      */
@@ -177,7 +178,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function addDefaultValue($name, $table, $column, $value)
     {
@@ -187,7 +188,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function dropDefaultValue($name, $table)
     {
@@ -353,7 +354,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      * @see https://docs.microsoft.com/en-us/sql/t-sql/statements/merge-transact-sql
      * @see http://weblogs.sqlteam.com/dang/archive/2009/01/31/UPSERT-Race-Condition-With-MERGE.aspx
      */
@@ -379,7 +380,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
         list(, $placeholders, $values, $params) = $this->prepareInsertValues($table, $insertColumns, $params);
         $mergeSql = 'MERGE ' . $this->db->quoteTableName($table) . ' WITH (HOLDLOCK) '
             . 'USING (' . (!empty($placeholders) ? 'VALUES (' . implode(', ', $placeholders) . ')' : ltrim($values, ' ')) . ') AS [EXCLUDED] (' . implode(', ', $insertNames) . ') '
-            . 'ON ' . $on;
+            . "ON ($on)";
         $insertValues = [];
         foreach ($insertNames as $name) {
             $quotedName = $this->db->quoteColumnName($name);

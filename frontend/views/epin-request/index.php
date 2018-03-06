@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="epin-request-index">
 
-    <div class="row" style="margin-top: 70px;">
+    <div class="row">
         <div class="col-md-12">
 
             <div class="panel panel-default">

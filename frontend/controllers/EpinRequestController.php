@@ -18,6 +18,8 @@ use common\models\EpinTransfer;
  */
 class EpinRequestController extends Controller {
 
+    public $layout = '@app/views/layouts/dashboard';
+
     /**
      * {@inheritdoc}
      */

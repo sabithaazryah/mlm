@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Epin Requests', 'url' => ['index']
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="row" style="margin-top: 70px;">
+<div class="row">
     <div class="col-md-12">
 
         <div class="panel panel-default">
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <?= Html::submitButton('Transfer', ['class' => 'btn btn-success', 'style' => 'float:left;padding: 8px 15px;margin-top: 32px;']) ?>
+                                    <?= Html::submitButton('Transfer', ['class' => 'btn btn-success', 'style' => 'float:left;padding: 8px 15px;margin-top: 22px;']) ?>
                                 </div>
                             </div>
                         </div>

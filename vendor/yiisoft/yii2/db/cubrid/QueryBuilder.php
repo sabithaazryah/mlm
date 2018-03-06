@@ -48,6 +48,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
         Schema::TYPE_MONEY => 'decimal(19,4)',
     ];
 
+
     /**
      * {@inheritdoc}
      */
@@ -59,7 +60,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      * @see https://www.cubrid.org/manual/en/9.3.0/sql/query/merge.html
      */
     public function upsert($table, $insertColumns, $updateColumns, &$params)
@@ -84,7 +85,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
         list(, $placeholders, $values, $params) = $this->prepareInsertValues($table, $insertColumns, $params);
         $mergeSql = 'MERGE INTO ' . $this->db->quoteTableName($table) . ' '
             . 'USING (' . (!empty($placeholders) ? 'VALUES (' . implode(', ', $placeholders) . ')' : ltrim($values, ' ')) . ') AS "EXCLUDED" (' . implode(', ', $insertNames) . ') '
-            . 'ON ' . $on;
+            . "ON ($on)";
         $insertValues = [];
         foreach ($insertNames as $name) {
             $quotedName = $this->db->quoteColumnName($name);
@@ -175,7 +176,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      * @see http://www.cubrid.org/manual/93/en/sql/schema/table.html#drop-index-clause
      */
     public function dropIndex($name, $table)
@@ -192,7 +193,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      * @throws NotSupportedException this is not supported by CUBRID.
      */
     public function addCheck($name, $table, $expression)
@@ -201,7 +202,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      * @throws NotSupportedException this is not supported by CUBRID.
      */
     public function dropCheck($name, $table)

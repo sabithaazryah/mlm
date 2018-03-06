@@ -27,6 +27,7 @@ use yii\helpers\StringHelper;
  * @property QueryBuilder $queryBuilder The query builder for this connection. This property is read-only.
  * @property string[] $schemaNames All schema names in the database, except system schemas. This property is
  * read-only.
+ * @property string $serverVersion Server version as a string. This property is read-only.
  * @property string[] $tableNames All table names in the database. This property is read-only.
  * @property TableSchema[] $tableSchemas The metadata for all tables in the database. Each array element is an
  * instance of [[TableSchema]] or its child class. This property is read-only.
@@ -86,7 +87,7 @@ abstract class Schema extends BaseObject
         'SQLSTATE[23' => 'yii\db\IntegrityException',
     ];
     /**
-     * @var string column schema class
+     * @var string|array column schema class or class config
      * @since 2.0.11
      */
     public $columnSchemaClass = 'yii\db\ColumnSchema';

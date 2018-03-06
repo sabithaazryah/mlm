@@ -32,12 +32,12 @@ class SiteController extends Controller {
                 'class' => AccessControl::className(),
                 'only' => ['logout', 'signup'],
                 'rules' => [
-                    [
+                        [
                         'actions' => ['signup'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
-                    [
+                        [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -74,50 +74,21 @@ class SiteController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        $profile_exist = ProfileUploads::find()->where(['customer_id' => Yii::$app->user->identity->id, 'type' => 1])->one();
-        if (empty($profile_exist)) {
-            $model_profile = new ProfileUploads();
+        if (!Yii::$app->user->isGuest) {
+             return $this->redirect(['dashboard/index']);
+        }
+
+        $this->layout = 'login';
+        $model = new Employee();
+        $model->scenario = 'login';
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+            return $this->redirect(['dashboard/index']);
         } else {
-            $model_profile = ProfileUploads::find()->where(['customer_id' => Yii::$app->user->identity->id, 'type' => 1])->one();
+            return $this->render('login', [
+                        'model' => $model,
+            ]);
         }
-        $pan_exist = ProfileUploads::find()->where(['customer_id' => Yii::$app->user->identity->id, 'type' => 2])->one();
-        if (empty($pan_exist)) {
-            $model_pan = new ProfileUploads();
-        } else {
-            $model_pan = ProfileUploads::find()->where(['customer_id' => Yii::$app->user->identity->id, 'type' => 2])->one();
-        }
-        $bank_exist = ProfileUploads::find()->where(['customer_id' => Yii::$app->user->identity->id, 'type' => 3])->one();
-        if (empty($bank_exist)) {
-            $model_bank = new ProfileUploads();
-        } else {
-            $model_bank = ProfileUploads::find()->where(['customer_id' => Yii::$app->user->identity->id, 'type' => 3])->one();
-        }
-        $model_profile->setScenario('create');
-        $model_pan->setScenario('create');
-        $model_bank->setScenario('create');
-        $employee = Employee::findOne(Yii::$app->user->identity->id);
-        $employee_details = \common\models\EmployeeDetails::find()->where(['employee_id' => Yii::$app->user->identity->id])->one();
-        $employee_package = \common\models\EmployeePackage::find()->where(['employee_id' => Yii::$app->user->identity->id])->one();
-        if (isset($_POST['profile-button'])) {
-            $files = UploadedFile::getInstance($model_profile, 'photo');
-            $this->UploadImages($model_profile, 1, $files);
-        }
-        if (isset($_POST['pan-button'])) {
-            $files = UploadedFile::getInstance($model_pan, 'photo');
-            $this->UploadImages($model_pan, 2, $files);
-        }
-        if (isset($_POST['bank-button'])) {
-            $files = UploadedFile::getInstance($model_bank, 'photo');
-            $this->UploadImages($model_bank, 3, $files);
-        }
-        return $this->render('index', [
-                    'employee' => $employee,
-                    'employee_details' => $employee_details,
-                    'employee_package' => $employee_package,
-                    'model_pan' => $model_pan,
-                    'model_bank' => $model_bank,
-                    'model_profile' => $model_profile,
-        ]);
     }
 
     public function UploadImages($model, $type, $files) {
@@ -159,10 +130,10 @@ class SiteController extends Controller {
      */
     public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+             return $this->redirect(['dashboard/index']);
         }
 
-        //$this->layout/ = 'login';
+        $this->layout = 'login';
         $model = new Employee();
         $model->scenario = 'login';
         if ($model->load(Yii::$app->request->post()) && $model->login()) {

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ */
 
 namespace yii\db\conditions;
 
@@ -15,7 +20,8 @@ class NotCondition implements ConditionInterface
     /**
      * @var mixed the condition to be negated
      */
-    protected $condition;
+    private $condition;
+
 
     /**
      * NotCondition constructor.

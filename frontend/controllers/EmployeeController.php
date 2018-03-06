@@ -15,6 +15,8 @@ use yii\web\UploadedFile;
 
 class EmployeeController extends \yii\web\Controller {
 
+    public $layout = '@app/views/layouts/dashboard';
+
     public function actionCreate($id = NULL, $type = NULL) {
 
         Yii::$app->session['user-password'] = '';
@@ -44,8 +46,7 @@ class EmployeeController extends \yii\web\Controller {
         $user_details->setScenario('create');
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $user_details->load(Yii::$app->request->post()) && $user_details->validate() && Yii::$app->SetValues->Attributes($model)) {
             $epin = \common\models\PinRequestDetails::findOne($model->epin);
-            $model->user_name = $epin->epin;
-            $model->display_name = $model->user_name;
+           
             $user_details->dob = date('Y-m-d', strtotime($user_details->dob));
             Yii::$app->session['user-password'] = $model->password;
             $model->password = Yii::$app->security->generatePasswordHash($model->password);
@@ -58,7 +59,13 @@ class EmployeeController extends \yii\web\Controller {
                     $transaction->commit();
                     $epin->status = 3;
                     $epin->save();
-                    return $this->redirect(['purchase', 'id' => $model->id]);
+                    $model->user_name = 'MLM' . (sprintf('%05d', $model->id));
+                    $model->display_name = $model->user_name;
+                    $model->save();
+                    $package = EmployeePackage::find()->where(['employee_id' => $model->id])->orderBy(['id' => SORT_DESC])->one();
+                                        $this->EmployeeTree($model, $package);
+                                        return $this->redirect(['tree']);
+                  //  return $this->redirect(['purchase', 'id' => $model->id]);
                 } else {
                     $transaction->rollBack();
                     Yii::$app->session->setFlash('error', "There was a problem creating new user. Please try again.");
@@ -105,7 +112,7 @@ class EmployeeController extends \yii\web\Controller {
             $employee->status = 1;
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                if ($this->Create($data, $employee_id) && $employee->save()) {
+                 if ($employee->save()) {
                     $package = EmployeePackage::find()->where(['employee_id' => $employee->id])->orderBy(['id' => SORT_DESC])->one();
                     $this->EmployeeTree($employee, $package);
                     $transaction->commit();
@@ -128,6 +135,7 @@ class EmployeeController extends \yii\web\Controller {
 
         $arr = [];
         $create = $data['create'];
+         if (!empty($create)) {
         $i = 0;
 
         foreach ($create['product'] as $val) {
@@ -163,6 +171,7 @@ class EmployeeController extends \yii\web\Controller {
         } else {
             return False;
         }
+         }
     }
 
     public function AddProductDetails($arr, $employee_id) {
@@ -308,6 +317,18 @@ class EmployeeController extends \yii\web\Controller {
         ]);
     }
 
+    public function actionGenealogyView($id = NULL) {
+        if ($id != NULL) {
+            $id = Yii::$app->EncryptDecrypt->Encrypt('decrypt', $id);
+            $emp_details = Employee::find()->where(['id' => $id])->one();
+        } else {
+            $emp_details = Employee::find()->where(['id' => Yii::$app->user->identity->id])->one();
+        }
+        return $this->render('genealogy-view', [
+                    'emp_details' => $emp_details,
+        ]);
+    }
+
     public function actionTreeSearch() {
         if (Yii::$app->request->post()) {
             $distributor = $_POST['distributor_name'];
@@ -383,6 +404,8 @@ class EmployeeController extends \yii\web\Controller {
         $user = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            echo'hai';
+            exit;
             $user->mobile_number = $model->new_mobile_no;
             if ($user->save()) {
                 $otp_data = \common\models\OtpRequest::find()->where(['customer_id' => Yii::$app->user->identity->id])->one();

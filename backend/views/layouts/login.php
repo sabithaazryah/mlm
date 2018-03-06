@@ -21,7 +21,7 @@ AppAssetLogin::register($this);
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Pride Of Kerala Admin Panel" />
-        <link rel="shortcut icon" href="<?= Yii::$app->homeUrl; ?>images/fav.png"/>
+        <!--<link rel="shortcut icon" href="<?= Yii::$app->homeUrl; ?>images/fav.png"/>-->
         <meta name="author" content="" />
         <title><?= Html::encode($this->title) ?></title>
 

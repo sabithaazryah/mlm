@@ -1,0 +1,48 @@
+.dashboard-index .btn-common{
+    display: inline-block;
+    background-color: #00aeef;
+    border: 1px solid #00aeef;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+}
+.dashboard-index .btn-bank{
+    padding: 15px 14px;
+}
+.dashboard-index .btn-profile{
+    padding: 15px 38px;
+}
+.btn-common {
+    border: 1px solid #00aeef;
+    display: inline-block;
+    background-color: #00aeef;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+}
+.help-block {
+    color: #f70707 !important;
+    font-size: 10px !important;
+}
+/******************** Login Layout Start ****************************************/
+#login-form .btn-common{
+    width: 100%;
+    display: inline-block;
+    background-color: #00aeef;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+}
+/******************** Login Layout End ****************************************/

@@ -9,49 +9,45 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Change Password';
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="row" style="margin-top: 90px;">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-
-
+<div class="container-fluid dashbord_content_wrapper">
+    <div class="row">
+        <div class="form_wrapper">
+            <?= \common\widgets\Alert::widget(); ?>
+            <?php
+            $form = ActiveForm::begin();
+            ?>
+            <div class="form_header">
+                <?= Html::encode($this->title) ?>
             </div>
-            <div class="panel-body">
-                <?php // Html::a('<i class="fa-th-list"></i><span> Manage Admin Users</span>', ['index'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
 
-                <div class="panel-body">
-                    <div class="employee-create">
-                        <?= \common\widgets\Alert::widget(); ?>
-                        <?php
-                        $form = ActiveForm::begin(
-                                        [
-                                            'id' => 'change-password',
-                                            'method' => 'post',
-                                            'options' => [
-                                                'class' => 'login-form fade-in-effect'
-                                            ]
-                                        ]
-                        );
-                        ?>
-                        <?= $form->field($model, 'password')->passwordInput()->label('Old Password') ?>
-
-                        <?= $form->field($model, 'new_password')->passwordInput() ?>
-
-                        <?= $form->field($model, 'confirm_password')->passwordInput() ?>
-
-                        <div class="form-group">
-                            <?= Html::submitButton('Reset Password', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-                        </div>
-
-                        <?php ActiveForm::end(); ?>
-
+            <div class="form_content">
+                <div class="row">
+                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                        <?= $form->field($model, 'password')->passwordInput()->label('Old Password *') ?>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                        <?= $form->field($model, 'new_password')->passwordInput()->label('new_password *') ?>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                        <?= $form->field($model, 'confirm_password')->passwordInput()->label('confirm_password *') ?>
                     </div>
                 </div>
             </div>
+            <div class="form_footer">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-xs-12 button-container">
+                        <?= Html::submitButton('Reset Password', ['class' => 'btn-common btn-form', 'name' => 'login', 'style' => '']) ?>
+                        <?= Html::a('Clear', ['/employee/change-password'], ['class' => 'btn-common btn-form']) ?>
+                    </div>
+
+                </div>
+            </div>
+            <?php ActiveForm::end(); ?>
         </div>
     </div>
-    <div class="col-md-3"></div>
 </div>

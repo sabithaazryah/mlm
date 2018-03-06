@@ -22,6 +22,9 @@ use yii\helpers\StringHelper;
  *
  * For more details and usage information on QueryBuilder, see the [guide article on query builders](guide:db-query-builder).
  *
+ * @property string[] $expressionBuilders Array of builders that should be merged with the pre-defined ones in
+ * [[expressionBuilders]] property. This property is write-only.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
@@ -51,10 +54,9 @@ class QueryBuilder extends \yii\base\BaseObject
     /**
      * @var array map of query condition to builder methods.
      * These methods are used by [[buildCondition]] to build SQL conditions from array syntax.
-     * @deprecated since 2.0.14. Is not used, will be dropped in 2.1.0
+     * @deprecated since 2.0.14. Is not used, will be dropped in 2.1.0.
      */
     protected $conditionBuilders = [];
-
     /**
      * @var array map of condition aliases to condition classes. For example:
      *
@@ -74,7 +76,6 @@ class QueryBuilder extends \yii\base\BaseObject
      * @since 2.0.14
      */
     protected $conditionClasses = [];
-
     /**
      * @var string[]|ExpressionBuilderInterface[] maps expression class to expression builder class.
      * For example:
@@ -100,6 +101,7 @@ class QueryBuilder extends \yii\base\BaseObject
      * @since 2.0.14
      */
     protected $expressionBuilders = [];
+
 
     /**
      * Constructor.
@@ -161,6 +163,7 @@ class QueryBuilder extends \yii\base\BaseObject
     protected function defaultExpressionBuilders()
     {
         return [
+            'yii\db\Query' => 'yii\db\QueryExpressionBuilder',
             'yii\db\PdoValue' => 'yii\db\PdoValueBuilder',
             'yii\db\Expression' => 'yii\db\ExpressionBuilder',
             'yii\db\conditions\ConjunctionCondition' => 'yii\db\conditions\ConjunctionConditionBuilder',
@@ -180,13 +183,31 @@ class QueryBuilder extends \yii\base\BaseObject
     /**
      * Setter for [[expressionBuilders]] property.
      *
-     * @param string[] $builders array of builder that should be merged with [[expressionBuilders]]
+     * @param string[] $builders array of builders that should be merged with the pre-defined ones
+     * in [[expressionBuilders]] property.
      * @since 2.0.14
      * @see expressionBuilders
      */
     public function setExpressionBuilders($builders)
     {
         $this->expressionBuilders = array_merge($this->expressionBuilders, $builders);
+    }
+
+    /**
+     * Setter for [[conditionClasses]] property.
+     *
+     * @param string[] $classes map of condition aliases to condition classes. For example:
+     *
+     * ```php
+     * ['LIKE' => yii\db\condition\LikeCondition::class]
+     * ```
+     *
+     * @since 2.0.14.2
+     * @see conditionClasses
+     */
+    public function setConditionClasses($classes)
+    {
+        $this->conditionClasses = array_merge($this->conditionClasses, $classes);
     }
 
     /**
@@ -285,6 +306,10 @@ class QueryBuilder extends \yii\base\BaseObject
             if (!isset($this->expressionBuilders[$className])) {
                 throw new InvalidArgumentException('Expression of class ' . $className . ' can not be built in ' . get_class($this));
             }
+        }
+
+        if ($this->expressionBuilders[$className] === __CLASS__) {
+            return $this;
         }
 
         if (!is_object($this->expressionBuilders[$className])) {
@@ -413,9 +438,10 @@ class QueryBuilder extends \yii\base\BaseObject
      * @param string $table the table that new rows will be inserted into.
      * @param array $columns the column names
      * @param array|\Generator $rows the rows to be batch inserted into the table
+     * @param array $params the binding parameters. This parameter exists since 2.0.14
      * @return string the batch INSERT SQL statement
      */
-    public function batchInsert($table, $columns, $rows)
+    public function batchInsert($table, $columns, $rows, &$params = [])
     {
         if (empty($rows)) {
             return '';
@@ -444,6 +470,8 @@ class QueryBuilder extends \yii\base\BaseObject
                     $value = 0;
                 } elseif ($value === null) {
                     $value = 'NULL';
+                } elseif ($value instanceof ExpressionInterface) {
+                    $value = $this->buildExpression($value, $params);
                 }
                 $vs[] = $value;
             }
@@ -613,15 +641,15 @@ class QueryBuilder extends \yii\base\BaseObject
         $columnSchemas = $tableSchema !== null ? $tableSchema->columns : [];
         $sets = [];
         foreach ($columns as $name => $value) {
+
+            $value = isset($columnSchemas[$name]) ? $columnSchemas[$name]->dbTypecast($value) : $value;
             if ($value instanceof ExpressionInterface) {
-                $sets[] = $this->db->quoteColumnName($name) . '=' . $this->buildExpression($value, $params);
+                $placeholder = $this->buildExpression($value, $params);
             } else {
-                $phName = $this->bindParam(
-                    isset($columnSchemas[$name]) ? $columnSchemas[$name]->dbTypecast($value) : $value,
-                    $params
-                );
-                $sets[] = $this->db->quoteColumnName($name) . '=' . $phName;
+                $placeholder = $this->bindParam($value, $params);
             }
+
+            $sets[] = $this->db->quoteColumnName($name) . '=' . $placeholder;
         }
         return [$sets, $params];
     }
@@ -1486,15 +1514,17 @@ class QueryBuilder extends \yii\base\BaseObject
     public function buildCondition($condition, &$params)
     {
         if (is_array($condition)) {
+            if (empty($condition)) {
+                return '';
+            }
+
             $condition = $this->createConditionFromArray($condition);
         }
 
         if ($condition instanceof ExpressionInterface) {
             return $this->buildExpression($condition, $params);
         }
-        if (empty($condition)) {
-            return '';
-        }
+
         return (string) $condition;
     }
 
