@@ -88,6 +88,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
                 if (!$this->hasErrors()) {
 
                         $user = $this->getUser();
+
                         if (!$user || !Yii::$app->security->validatePassword($this->password, $user->password)) {
                                 $this->addError($attribute, 'Incorrect username or password.');
                         }

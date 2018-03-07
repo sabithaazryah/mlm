@@ -260,14 +260,19 @@ class EmployeeController extends \yii\web\Controller {
                 }
                 $package = EmployeePackage::find()->where(['employee_id' => $model->id])->one();
                 $package_amount = \common\models\Packages::findOne($package->package_id)->amount;
+                $tax = \common\models\Settings::findOne(5)->value;
+                $service = \common\models\Settings::findOne(6)->value;
                 if (!empty($referrer)) {
                         $commission = \common\models\Settings::findOne(2)->value;
                         $pdv_amount = ($package_amount * $commission) / 100;
                         $employee_wallet = EmployeeTree::find()->where(['employee_id' => $referrer->id])->one();
                         $previou_wallet = $employee_wallet->wallet;
+                        $tax_amount = ($pdv_amount * $tax) / 100;
+                        $service_amount = ($pdv_amount * $service) / 100;
+                        $commission_sent = $pdv_amount - $tax_amount - $service_amount;
                         $employee_wallet->wallet = $employee_wallet->wallet + $pdv_amount;
                         $employee_wallet->save();
-                        $this->WalletHistory(2, $employee_wallet, $previou_wallet, $commission, 0, 0, 0, 0, $pdv_amount);
+                        $this->WalletHistory(2, $employee_wallet, $previou_wallet, $commission_sent, 0, $tax_amount, 0, $service_amount, $pdv_amount);
                 }
         }
 
@@ -405,8 +410,8 @@ class EmployeeController extends \yii\web\Controller {
 
                                 $bv_amount = $bv_match * $bv_commission;
                                 $company_commission = ($bv_amount * $company_percent) / 100;
-                                $tax_amount = ($company_commission * $tax) / 100;
-                                $service_amount = ($company_commission * $service) / 100;
+                                $tax_amount = ($bv_amount * $tax) / 100;
+                                $service_amount = ($bv_amount * $service) / 100;
                                 $user_wallet = $bv_amount - $company_commission;
 
                                 $user->wallet = $user->wallet + $user_wallet;
@@ -562,6 +567,34 @@ class EmployeeController extends \yii\web\Controller {
                         }
                 }
                 return $data;
+        }
+
+        public function actionWallet() {
+                $id = Yii::$app->user->id;
+                $employee = Employee::findOne($id);
+                $employee_package = EmployeePackage::find()->where(['employee_id' => $id])->one();
+                $employee_wallet = EmployeeTree::find()->where(['employee_id' => $id])->one();
+                $commission_amount = \common\models\WalletHistory::find()->where(['employee_id' => $id, 'type' => 2])->sum('commision');
+                $service_charge = \common\models\WalletHistory::find()->where(['employee_id' => $id])->sum('service_charge_amount');
+                $tax = \common\models\WalletHistory::find()->where(['employee_id' => $id])->sum('tax_amount');
+                $user_bv_matched = \common\models\WalletHistory::find()->where(['employee_id' => $id, 'type' => 1])->all();
+                $matched_amount = 0;
+                foreach ($user_bv_matched as $value) {
+                        $matchamount = 0;
+                        $matchamount = $value->current_wallet_amount - $value->previous_wallet_amount;
+                        $deducted_amount = $matchamount + $value->company_amount;
+                        $matched_amount += $deducted_amount;
+                }
+
+                return $this->render('wallet', [
+                            'employee' => $employee,
+                            'employee_package' => $employee_package,
+                            'employee_wallet' => $employee_wallet,
+                            'commission_amount' => $commission_amount,
+                            'service_charge' => $service_charge,
+                            'matched_amount' => $matched_amount,
+                            'tax' => $tax,
+                ]);
         }
 
 }

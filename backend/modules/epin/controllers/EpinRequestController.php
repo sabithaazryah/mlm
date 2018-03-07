@@ -142,7 +142,7 @@ class EpinRequestController extends Controller {
          * Generate Random E-PIN.
          */
         public function RandomEpin() {
-                $firstPart = 'Sw';
+                $firstPart = 'MLM';
                 $digits = 4;
                 $nrRand = rand(pow(10, $digits - 1), pow(10, $digits) - 1);
                 $epin = trim($firstPart) . trim($nrRand);
