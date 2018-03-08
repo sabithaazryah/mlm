@@ -59,12 +59,12 @@ class EmployeeController extends \yii\web\Controller {
                                         $transaction->commit();
                                         $epin->status = 3;
                                         $epin->save();
-                                        $model->user_name = 'ARM' . (sprintf('%05d', $model->id));
+                                        $model->user_name = 'MLM' . (sprintf('%05d', $model->id));
                                         $model->display_name = $model->user_name;
                                         $model->save();
                                         $package = EmployeePackage::find()->where(['employee_id' => $model->id])->orderBy(['id' => SORT_DESC])->one();
 
-                                        return $this->redirect(['genealogy-view']);
+                                        return $this->redirect(['tree']);
                                         //  return $this->redirect(['purchase', 'id' => $model->id]);
                                 } else {
                                         $transaction->rollBack();

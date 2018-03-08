@@ -112,6 +112,7 @@ class EpinRequestController extends Controller {
             $pin_details->master_id = $model->id;
             $pin_details->parent_id = $model->customer_id;
             $pin_details->package_id = $value;
+              $pin_details->DOC = date('Y-m-d');
             if ($pin_details->save()) {
                 $flag = 1;
             } else {

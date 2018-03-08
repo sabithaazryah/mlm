@@ -101,7 +101,7 @@ DashboardAsset::register($this);
                             </ul>
                         </li>
                         <li>
-                            <?= Html::a('<img src="' . Yii::$app->homeUrl . 'dash/images/icon-profit.png" alt="" class="img-responsive">profit club', ['/employee/genealogy-view'], ['class' => '']) ?>
+                            <?= Html::a('<img src="' . Yii::$app->homeUrl . 'dash/images/icon-profit.png" alt="" class="img-responsive">GENEALOGY View', ['/employee/genealogy-view'], ['class' => '']) ?>
                         </li>
                     </ul>
                 </div>

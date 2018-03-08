@@ -18,7 +18,7 @@ class PinRequestDetailsSearch extends PinRequestDetails {
     public function rules() {
         return [
             [['id', 'master_id', 'parent_id', 'package_id', 'status', 'epin_status', 'CB', 'UB', 'transer_id'], 'integer'],
-            [['epin', 'DOC', 'DOU'], 'safe'],
+            [['epin', 'DOC', 'DOU','approved_date'], 'safe'],
         ];
     }
 
@@ -67,6 +67,7 @@ class PinRequestDetailsSearch extends PinRequestDetails {
             'UB' => $this->UB,
             'DOC' => $this->DOC,
             'DOU' => $this->DOU,
+            'approved_date' => $this->approved_date,
         ]);
 
         $query->andFilterWhere(['like', 'epin', $this->epin]);

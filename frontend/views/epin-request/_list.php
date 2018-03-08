@@ -17,6 +17,8 @@ use common\models\PinRequestDetails;
                     <th>#</th>
                     <th>Package Name</th>
                     <th>E-PIN</th>
+                    <th>Applied Date</th>
+                    <th>Approved Date</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -47,6 +49,8 @@ use common\models\PinRequestDetails;
                             }
                             ?>
                         </td>
+                         <td><?= $value->DOC ?></td>
+                          <td><?= $value->approved_date ?></td>
                         <td>
                             <?php
                             if ($value->status == 0) {

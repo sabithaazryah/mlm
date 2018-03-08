@@ -131,6 +131,7 @@ class EpinRequestController extends Controller {
                 $e_pin = $this->RandomEpin();
                 $model = PinRequestDetails::findOne($id);
                 if (!empty($model)) {
+                    $model->approved_date = date('Y-m-d H:i:s');
                         $model->status = 1;
                         $model->epin = $e_pin;
                         $model->update();
@@ -142,7 +143,7 @@ class EpinRequestController extends Controller {
          * Generate Random E-PIN.
          */
         public function RandomEpin() {
-                $firstPart = 'MLM';
+                $firstPart = 'ARM';
                 $digits = 4;
                 $nrRand = rand(pow(10, $digits - 1), pow(10, $digits) - 1);
                 $epin = trim($firstPart) . trim($nrRand);

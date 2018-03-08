@@ -73,19 +73,19 @@ AppAsset::register($this);
 
                     <ul id="main-menu" class="main-menu">
 
-                        <li>
-                            <a href="">
-                                <i class="fa fa-tree"></i>
-                                <span class="title">Tree View</span>
-                            </a>
-                            <ul>
+                        <!--                        <li>
+                                                    <a href="">
+                                                        <i class="fa fa-tree"></i>
+                                                        <span class="title">Tree View</span>
+                                                    </a>
+                                                    <ul>
 
-                                <li>
-                                    <?= Html::a('Tree View', ['/treeview/tree-structure/index'], ['class' => 'title']) ?>
-                                </li>
+                                                        <li>
+                        <?php // Html::a('Tree View', ['/treeview/tree-structure/index'], ['class' => 'title']) ?>
+                                                        </li>
 
-                            </ul>
-                        </li>
+                                                    </ul>
+                                                </li>-->
                         <li>
                             <a href="">
                                 <i class="fa fa-bell-slash-o"></i>
@@ -113,19 +113,19 @@ AppAsset::register($this);
                             </ul>
                         </li>
 
-                        <li>
-                            <a href="">
-                                <i class="fa fa-user"></i>
-                                <span class="title">Users</span>
-                            </a>
-                            <ul>
+                        <!--                        <li>
+                                                    <a href="">
+                                                        <i class="fa fa-user"></i>
+                                                        <span class="title">Users</span>
+                                                    </a>
+                                                    <ul>
 
-                                <li>
-                                    <?= Html::a('Users', ['/employee/employee/index'], ['class' => 'title']) ?>
-                                </li>
+                                                        <li>
+                        <?php // Html::a('Users', ['/employee/employee/index'], ['class' => 'title']) ?>
+                                                        </li>
 
-                            </ul>
-                        </li>
+                                                    </ul>
+                                                </li>-->
                         <li>
                             <a href="">
                                 <i class="fa fa-database"></i>
@@ -228,7 +228,7 @@ AppAsset::register($this);
                                 <li class="user-footer" style="background: #eeeeee;">
                                     <div class="row">
                                         <div class="pull-left">
-                                            <?= Html::a('Profile', ['/admin/employee/update?id=' . Yii::$app->user->identity->id], ['class' => 'btn btn-white', 'style' => 'padding: 9px 20px;border: 1px solid #a09f9f;']) ?>
+                                            <?= Html::a('Change Password', ['/admin/admin-users/change-password'], ['class' => 'btn btn-white', 'style' => 'padding: 9px 20px;border: 1px solid #a09f9f;']) ?>
                                         </div>
                                         <div class="pull-right">
                                             <?php

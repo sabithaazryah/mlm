@@ -34,7 +34,7 @@ class PinRequestDetails extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['master_id', 'parent_id', 'package_id', 'status', 'epin_status', 'CB', 'UB', 'transer_id'], 'integer'],
-            [['DOC', 'DOU'], 'safe'],
+            [['DOC', 'DOU','approved_date'], 'safe'],
             [['epin'], 'string', 'max' => 100],
         ];
     }
@@ -56,6 +56,7 @@ class PinRequestDetails extends \yii\db\ActiveRecord {
             'UB' => 'Ub',
             'DOC' => 'Doc',
             'DOU' => 'Dou',
+            'approved_date' => 'Approved Date',
         ];
     }
 
