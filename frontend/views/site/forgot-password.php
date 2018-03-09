@@ -6,14 +6,13 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="login_container">
     <div class="login_wrapper_container">
         <div class="login_wrapper">
             <div class="left_wrapper">
-                <h3>Sign In <span>Armnet Lifestyle sign in to access your account</span></h3>
+                <h3>Forgot Password<span>Let us help you<br>Type your username / email ID in the field below to receive your validation code by email</span></h3>
 
                 <div class="logo_wrapper"><img src="<?= Yii::$app->homeUrl; ?>dash/images/login-logo.png" alt="" class="img-responsive"></div>
             </div>
@@ -22,19 +21,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="field_wrapper">
                     <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-                    <?= $form->field($model, 'user_name')->textInput(['autofocus' => true]) ?>
+                    <div class="form-group field-employee-user_name">
+                        <label class="control-label" for="employee-user_name">Enter User Name / Email</label>
+                        <input type="text" id="employee-user_name" class="form-control" name="Employee[user_name]" autofocus="">
 
-                    <?= $form->field($model, 'password')->passwordInput() ?>
-
-
-
-
+                        <p class="help-block help-block-error"></p>
+                    </div>
                     <div class="form-group">
-                        <?= Html::submitButton('LOGIN', ['class' => 'button_wrapper btn-common', 'name' => 'login-button']) ?>
+                        <?= Html::submitButton('Submit', ['class' => 'button_wrapper btn-common', 'name' => 'login-button']) ?>
                     </div>
                     <div class="login_info">
-                        <a href="<?= Yii::$app->homeUrl; ?>site/forgot">Forgot Password</a>
-                        <a href="#">Terms Of Policy</a>
+                        <a href="<?= Yii::$app->homeUrl; ?>site/index">Login to your account ?</a>
                     </div>
                     <?php ActiveForm::end(); ?>
                 </div>

@@ -49,25 +49,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ?>
                                 <?php
                                 $emp_details_bv = \common\models\EmployeeTree::find()->where(['employee_id' => $emp_details->id])->one();
-                                if (isset($emp_details_bv)) {
-                                    $emp_details_bv_total_left_bv = $emp_details_bv->total_left_bv;
-                                    $emp_details_bv_current_left_bv = $emp_details_bv->current_left_bv;
-                                    $emp_details_bv_total_right_bv = $emp_details_bv->total_right_bv;
-                                    $emp_details_bv_current_right_bv = $emp_details_bv->current_right_bv;
-                                } else {
-                                    $emp_details_bv_total_left_bv = 0.00;
-                                    $emp_details_bv_current_left_bv = 0.00;
-                                    $emp_details_bv_total_right_bv = 0.00;
-                                    $emp_details_bv_current_right_bv = 0.00;
-                                }
                                 ?>
                                 <div class="hv-item-parent">
                                     <div class="person">
                                         <div class="detail">
-                                            <p>Total Left BV : <?= $emp_details_bv_total_left_bv ?></p>
-                                            <p>Total Right BV : <?= $emp_details_bv_total_right_bv ?></p>
-                                            <p>Current Left BV : <?= $emp_details_bv_current_left_bv ?></p>
-                                            <p>Current Right BV : <?= $emp_details_bv_current_right_bv ?></p>
+                                            <p>Total Left BV : <?= number_format($emp_details_bv->total_left_bv, 2) ?></p>
+                                            <p>Total Right BV : <?= number_format($emp_details_bv->total_right_bv, 2) ?></p>
+                                            <p>Current Left BV : <?= number_format($emp_details_bv->current_left_bv, 2) ?></p>
+                                            <p>Current Right BV : <?= number_format($emp_details_bv->current_right_bv, 2) ?></p>
                                         </div>
                                         <div class="person_img_wrapper">
                                             <?= Html::a('<img src="' . Yii::$app->homeUrl . 'dash/images/placeholder-img.png" alt="" class="img-responsive">', ['genealogy-view', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp_details->id)], ['class' => '', 'style' => '']) ?>
@@ -88,17 +77,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ?>
                                         <?php
                                         $total_bv = \common\models\EmployeeTree::find()->where(['employee_id' => $emp_child1_left->id])->one();
-                                        if (isset($total_bv)) {
-                                            $total_bv_total_left_bv = $total_bv->total_left_bv;
-                                            $total_bv_current_left_bv = $total_bv->current_left_bv;
-                                            $total_bv_total_right_bv = $total_bv->total_right_bv;
-                                            $total_bv_current_right_bv = $total_bv->current_right_bv;
-                                        } else {
-                                            $total_bv_total_left_bv = 0.00;
-                                            $total_bv_current_left_bv = 0.00;
-                                            $total_bv_total_right_bv = 0.00;
-                                            $total_bv_current_right_bv = 0.00;
-                                        }
                                         ?>
                                         <div class="hv-item-child">
                                             <!-- Key component -->
@@ -107,10 +85,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <div class="hv-item-parent">
                                                     <div class="person">
                                                         <div class="detail">
-                                                            <p>Total Left BV : <?= $total_bv_total_left_bv ?></p>
-                                                            <p>Total Right BV : <?= $total_bv_total_right_bv ?></p>
-                                                            <p>Current Left BV : <?= $emp_details_bv_current_left_bv ?></p>
-                                                            <p>Current Right BV : <?= $total_bv_current_right_bv ?></p>
+                                                            <p>Total Left BV : <?= number_format($total_bv->total_left_bv, 2) ?></p>
+                                                            <p>Total Right BV : <?= number_format($total_bv->total_right_bv, 2) ?></p>
+                                                            <p>Current Left BV : <?= number_format($total_bv->current_left_bv, 2) ?></p>
+                                                            <p>Current Right BV : <?= number_format($total_bv->current_right_bv, 2) ?></p>
                                                         </div>
 
                                                         <div class="person_img_wrapper">
@@ -135,10 +113,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             <div class="hv-item-parent">
                                                                 <div class="person">
                                                                     <div class="detail">
-                                                                        <p>Total Left BV : <?= $emp_subchild1_left_bv->total_left_bv ?></p>
-                                                                        <p>Total Right BV : <?= $emp_subchild1_left_bv->total_right_bv ?></p>
-                                                                        <p>Current Left BV : <?= $emp_subchild1_left_bv->current_left_bv ?></p>
-                                                                        <p>Current Right BV : <?= $emp_subchild1_left_bv->current_right_bv ?></p>
+                                                                        <p>Total Left BV : <?= number_format($emp_subchild1_left_bv->total_left_bv, 2) ?></p>
+                                                                        <p>Total Right BV : <?= number_format($emp_subchild1_left_bv->total_right_bv, 2) ?></p>
+                                                                        <p>Current Left BV : <?= number_format($emp_subchild1_left_bv->current_left_bv, 2) ?></p>
+                                                                        <p>Current Right BV : <?= number_format($emp_subchild1_left_bv->current_right_bv, 2) ?></p>
                                                                     </div>
 
                                                                     <div class="person_img_wrapper">
@@ -161,10 +139,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                     <div class="hv-item-child">
                                                                         <div class="person">
                                                                             <div class="detail">
-                                                                                <p>Total Left BV : <?= $emp_subchild3_left_bv->total_left_bv ?></p>
-                                                                                <p>Total Right BV : <?= $emp_subchild3_left_bv->total_right_bv ?></p>
-                                                                                <p>Current Left BV : <?= $emp_subchild3_left_bv->current_left_bv ?></p>
-                                                                                <p>Current Right BV : <?= $emp_subchild3_left_bv->current_right_bv ?></p>
+                                                                                <p>Total Left BV : <?= number_format($emp_subchild3_left_bv->total_left_bv, 2) ?></p>
+                                                                                <p>Total Right BV : <?= number_format($emp_subchild3_left_bv->total_right_bv, 2) ?></p>
+                                                                                <p>Current Left BV : <?= number_format($emp_subchild3_left_bv->current_left_bv, 2) ?></p>
+                                                                                <p>Current Right BV : <?= number_format($emp_subchild3_left_bv->current_right_bv, 2) ?></p>
                                                                             </div>
 
                                                                             <div class="person_img_wrapper">
@@ -198,10 +176,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                     <div class="hv-item-child">
                                                                         <div class="person">
                                                                             <div class="detail">
-                                                                                <p>Total Left BV : <?= $emp_subchild3_right_bv->total_left_bv ?></p>
-                                                                                <p>Total Right BV : <?= $emp_subchild3_right_bv->total_right_bv ?></p>
-                                                                                <p>Current Left BV : <?= $emp_subchild3_right_bv->current_left_bv ?></p>
-                                                                                <p>Current Right BV : <?= $emp_subchild3_right_bv->current_right_bv ?></p>
+                                                                                <p>Total Left BV : <?= number_format($emp_subchild3_right_bv->total_left_bv, 2) ?></p>
+                                                                                <p>Total Right BV : <?= number_format($emp_subchild3_right_bv->total_right_bv, 2) ?></p>
+                                                                                <p>Current Left BV : <?= number_format($emp_subchild3_right_bv->current_left_bv, 2) ?></p>
+                                                                                <p>Current Right BV : <?= number_format($emp_subchild3_right_bv->current_right_bv, 2) ?></p>
                                                                             </div>
 
                                                                             <div class="person_img_wrapper">
@@ -279,10 +257,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             <div class="hv-item-parent">
                                                                 <div class="person">
                                                                     <div class="detail">
-                                                                        <p>Total Left BV : <?= $emp_subchild1_right_bv->total_left_bv ?></p>
-                                                                        <p>Total Right BV : <?= $emp_subchild1_right_bv->total_right_bv ?></p>
-                                                                        <p>Current Left BV : <?= $emp_subchild1_right_bv->current_left_bv ?></p>
-                                                                        <p>Current Right BV : <?= $emp_subchild1_right_bv->current_right_bv ?></p>
+                                                                        <p>Total Left BV : <?= number_format($emp_subchild1_right_bv->total_left_bv, 2) ?></p>
+                                                                        <p>Total Right BV : <?= number_format($emp_subchild1_right_bv->total_right_bv, 2) ?></p>
+                                                                        <p>Current Left BV : <?= number_format($emp_subchild1_right_bv->current_left_bv, 2) ?></p>
+                                                                        <p>Current Right BV : <?= number_format($emp_subchild1_right_bv->current_right_bv, 2) ?></p>
                                                                     </div>
 
                                                                     <div class="person_img_wrapper">
@@ -305,10 +283,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                     <div class="hv-item-child">
                                                                         <div class="person">
                                                                             <div class="detail">
-                                                                                <p>Total Left BV : <?= $emp_subchild4_left_bv->total_left_bv ?></p>
-                                                                                <p>Total Right BV : <?= $emp_subchild4_left_bv->total_right_bv ?></p>
-                                                                                <p>Current Left BV : <?= $emp_subchild4_left_bv->current_left_bv ?></p>
-                                                                                <p>Current Right BV : <?= $emp_subchild4_left_bv->current_right_bv ?></p>
+                                                                                <p>Total Left BV : <?= number_format($emp_subchild4_left_bv->total_left_bv, 2) ?></p>
+                                                                                <p>Total Right BV : <?= number_format($emp_subchild4_left_bv->total_right_bv, 2) ?></p>
+                                                                                <p>Current Left BV : <?= number_format($emp_subchild4_left_bv->current_left_bv, 2) ?></p>
+                                                                                <p>Current Right BV : <?= number_format($emp_subchild4_left_bv->current_right_bv, 2) ?></p>
                                                                             </div>
 
                                                                             <div class="person_img_wrapper">
@@ -341,10 +319,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                     <div class="hv-item-child">
                                                                         <div class="person">
                                                                             <div class="detail">
-                                                                                <p>Total Left BV : <?= $emp_subchild4_right_bv->total_left_bv ?></p>
-                                                                                <p>Total Right BV : <?= $emp_subchild4_right_bv->total_right_bv ?></p>
-                                                                                <p>Current Left BV : <?= $emp_subchild4_right_bv->current_left_bv ?></p>
-                                                                                <p>Current Right BV : <?= $emp_subchild4_right_bv->current_right_bv ?></p>
+                                                                                <p>Total Left BV : <?= number_format($emp_subchild4_right_bv->total_left_bv, 2) ?></p>
+                                                                                <p>Total Right BV : <?= number_format($emp_subchild4_right_bv->total_right_bv, 2) ?></p>
+                                                                                <p>Current Left BV : <?= number_format($emp_subchild4_right_bv->current_left_bv, 2) ?></p>
+                                                                                <p>Current Right BV : <?= number_format($emp_subchild4_right_bv->current_right_bv, 2) ?></p>
                                                                             </div>
 
                                                                             <div class="person_img_wrapper">
@@ -524,10 +502,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <div class="hv-item-parent">
                                                     <div class="person">
                                                         <div class="detail">
-                                                            <p>Total Left BV : <?= $emp_child1_right_bv->total_left_bv ?></p>
-                                                            <p>Total Right BV : <?= $emp_child1_right_bv->total_right_bv ?></p>
-                                                            <p>Current Left BV : <?= $emp_child1_right_bv->current_left_bv ?></p>
-                                                            <p>Current Right BV : <?= $emp_child1_right_bv->current_right_bv ?></p>
+                                                            <p>Total Left BV : <?= number_format($emp_child1_right_bv->total_left_bv, 2) ?></p>
+                                                            <p>Total Right BV : <?= number_format($emp_child1_right_bv->total_right_bv, 2) ?></p>
+                                                            <p>Current Left BV : <?= number_format($emp_child1_right_bv->current_left_bv, 2) ?></p>
+                                                            <p>Current Right BV : <?= number_format($emp_child1_right_bv->current_right_bv, 2) ?></p>
                                                         </div>
 
                                                         <div class="person_img_wrapper">
@@ -547,15 +525,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     if (!empty($emp_subchild2_left)) {
                                                         $subchild3_left = 1;
                                                         ?>
-                                                        <?php $emp_subchild1_left_bv = \common\models\EmployeeTree::find()->where(['employee_id' => $emp_subchild1_left->id])->one() ?>
+                                                        <?php $emp_subchild1_left_bv = \common\models\EmployeeTree::find()->where(['employee_id' => $emp_subchild2_left->id])->one() ?>
                                                         <div class="hv-item-child">
                                                             <div class="hv-item-parent">
                                                                 <div class="person">
                                                                     <div class="detail">
-                                                                        <p>Total Left BV : <?= $emp_subchild1_left_bv->total_left_bv ?></p>
-                                                                        <p>Total Right BV : <?= $emp_subchild1_left_bv->total_right_bv ?></p>
-                                                                        <p>Current Left BV : <?= $emp_subchild1_left_bv->current_left_bv ?></p>
-                                                                        <p>Current Right BV : <?= $emp_subchild1_left_bv->current_right_bv ?></p>
+                                                                        <p>Total Left BV : <?= number_format($emp_subchild1_left_bv->total_left_bv, 2) ?></p>
+                                                                        <p>Total Right BV : <?= number_format($emp_subchild1_left_bv->total_right_bv, 2) ?></p>
+                                                                        <p>Current Left BV : <?= number_format($emp_subchild1_left_bv->current_left_bv, 2) ?></p>
+                                                                        <p>Current Right BV : <?= number_format($emp_subchild1_left_bv->current_right_bv, 2) ?></p>
                                                                     </div>
 
                                                                     <div class="person_img_wrapper">
@@ -578,10 +556,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                     <div class="hv-item-child">
                                                                         <div class="person">
                                                                             <div class="detail">
-                                                                                <p>Total Left BV : <?= $emp_subchild5_left_bv->total_left_bv ?></p>
-                                                                                <p>Total Right BV : <?= $emp_subchild5_left_bv->total_right_bv ?></p>
-                                                                                <p>Current Left BV : <?= $emp_subchild5_left_bv->current_left_bv ?></p>
-                                                                                <p>Current Right BV : <?= $emp_subchild5_left_bv->current_right_bv ?></p>
+                                                                                <p>Total Left BV : <?= number_format($emp_subchild5_left_bv->total_left_bv, 2) ?></p>
+                                                                                <p>Total Right BV : <?= number_format($emp_subchild5_left_bv->total_right_bv, 2) ?></p>
+                                                                                <p>Current Left BV : <?= number_format($emp_subchild5_left_bv->current_left_bv, 2) ?></p>
+                                                                                <p>Current Right BV : <?= number_format($emp_subchild5_left_bv->current_right_bv, 2) ?></p>
                                                                             </div>
 
                                                                             <div class="person_img_wrapper">
@@ -614,10 +592,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                     <div class="hv-item-child">
                                                                         <div class="person">
                                                                             <div class="detail">
-                                                                                <p>Total Left BV : <?= $emp_subchild5_right_bv->total_left_bv ?></p>
-                                                                                <p>Total Right BV : <?= $emp_subchild5_right_bv->total_right_bv ?></p>
-                                                                                <p>Current Left BV : <?= $emp_subchild5_right_bv->current_left_bv ?></p>
-                                                                                <p>Current Right BV : <?= $emp_subchild5_right_bv->current_right_bv ?></p>
+                                                                                <p>Total Left BV : <?= number_format($emp_subchild5_right_bv->total_left_bv, 2) ?></p>
+                                                                                <p>Total Right BV : <?= number_format($emp_subchild5_right_bv->total_right_bv, 2) ?></p>
+                                                                                <p>Current Left BV : <?= number_format($emp_subchild5_right_bv->current_left_bv, 2) ?></p>
+                                                                                <p>Current Right BV : <?= number_format($emp_subchild5_right_bv->current_right_bv, 2) ?></p>
                                                                             </div>
 
                                                                             <div class="person_img_wrapper">
@@ -695,10 +673,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             <div class="hv-item-parent">
                                                                 <div class="person">
                                                                     <div class="detail">
-                                                                        <p>Total Left BV : <?= $emp_subchild2_right_bv->total_left_bv ?></p>
-                                                                        <p>Total Right BV : <?= $emp_subchild2_right_bv->total_right_bv ?></p>
-                                                                        <p>Current Left BV : <?= $emp_subchild2_right_bv->current_left_bv ?></p>
-                                                                        <p>Current Right BV : <?= $emp_subchild2_right_bv->current_right_bv ?></p>
+                                                                        <p>Total Left BV : <?= number_format($emp_subchild2_right_bv->total_left_bv, 2) ?></p>
+                                                                        <p>Total Right BV : <?= number_format($emp_subchild2_right_bv->total_right_bv, 2) ?></p>
+                                                                        <p>Current Left BV : <?= number_format($emp_subchild2_right_bv->current_left_bv, 2) ?></p>
+                                                                        <p>Current Right BV : <?= number_format($emp_subchild2_right_bv->current_right_bv, 2) ?></p>
                                                                     </div>
 
                                                                     <div class="person_img_wrapper">
@@ -721,10 +699,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                     <div class="hv-item-child">
                                                                         <div class="person">
                                                                             <div class="detail">
-                                                                                <p>Total Left BV : <?= $emp_subchild6_left_bv->total_left_bv ?></p>
-                                                                                <p>Total Right BV : <?= $emp_subchild6_left_bv->total_right_bv ?></p>
-                                                                                <p>Current Left BV : <?= $emp_subchild6_left_bv->current_left_bv ?></p>
-                                                                                <p>Current Right BV : <?= $emp_subchild6_left_bv->current_right_bv ?></p>
+                                                                                <p>Total Left BV : <?= number_format($emp_subchild6_left_bv->total_left_bv, 2) ?></p>
+                                                                                <p>Total Right BV : <?= number_format($emp_subchild6_left_bv->total_right_bv, 2) ?></p>
+                                                                                <p>Current Left BV : <?= number_format($emp_subchild6_left_bv->current_left_bv, 2) ?></p>
+                                                                                <p>Current Right BV : <?= number_format($emp_subchild6_left_bv->current_right_bv, 2) ?></p>
                                                                             </div>
 
                                                                             <div class="person_img_wrapper">
@@ -757,10 +735,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                     <div class="hv-item-child">
                                                                         <div class="person">
                                                                             <div class="detail">
-                                                                                <p>Total Left BV : <?= $emp_subchild6_right_bv->total_left_bv ?></p>
-                                                                                <p>Total Right BV : <?= $emp_subchild6_right_bv->total_right_bv ?></p>
-                                                                                <p>Current Left BV : <?= $emp_subchild6_right_bv->current_left_bv ?></p>
-                                                                                <p>Current Right BV : <?= $emp_subchild6_right_bv->current_right_bv ?></p>
+                                                                                <p>Total Left BV : <?= number_format($emp_subchild6_right_bv->total_left_bv, 2) ?></p>
+                                                                                <p>Total Right BV : <?= number_format($emp_subchild6_right_bv->total_right_bv, 2) ?></p>
+                                                                                <p>Current Left BV : <?= number_format($emp_subchild6_right_bv->current_left_bv, 2) ?></p>
+                                                                                <p>Current Right BV : <?= number_format($emp_subchild6_right_bv->current_right_bv, 2) ?></p>
                                                                             </div>
 
                                                                             <div class="person_img_wrapper">

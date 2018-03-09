@@ -237,7 +237,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 </div>
                         </div>
-
+<input type="hidden" name="token" value="<?php echo rand(10000, 100000); ?>">
                         <div class="form_footer">
                                 <div class="row">
                                         <div class="col-md-6 col-sm-12 col-xs-12">

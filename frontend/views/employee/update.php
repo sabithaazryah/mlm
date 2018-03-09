@@ -22,6 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 Registration Details
                         </div>
                         <?= common\widgets\Alert::widget(); ?>
+                        <?php // $form->errorSummary($model); ?>
+                        <?php // $form->errorSummary($user_details); ?>
                         <div class="form_content">
 
                                 <div class="row">
@@ -30,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </div>
 
                                         <div class="form-group col-md-6 col-sm-6 col-xs-12">
-                                                <?= $form->field($model, 'distributor_name')->textInput(['readonly' => true]) ?>
+                                                <?= $form->field($model, 'distributor_name')->textInput() ?>
                                         </div>
                                 </div>
 
@@ -145,25 +147,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="row">
 
                                         <div class="form-group col-md-6 col-sm-6 col-xs-12">
-                                                <?= $form->field($user_details, 'ifsc_code')->textInput(['readonly' => true]) ?>
+                                                <?= $form->field($user_details, 'ifsc_code')->textInput() ?>
                                         </div>
 
                                         <div class="form-group col-md-6 col-sm-6 col-xs-12">
-                                                <?= $form->field($user_details, 'account_no')->textInput(['readonly' => true]) ?>
+                                                <?= $form->field($user_details, 'account_no')->textInput() ?>
                                         </div>
                                 </div>
                                 <div class="row">
                                         <div class="form-group col-md-6 col-sm-6 col-xs-12">
-                                                <?= $form->field($user_details, 'bank_name')->textInput(['readonly' => true]) ?>
+                                                <?= $form->field($user_details, 'bank_name')->textInput() ?>
                                         </div>
 
                                         <div class="form-group col-md-6 col-sm-6 col-xs-12">
-                                                <?= $form->field($user_details, 'branch')->textInput(['readonly' => true]) ?>
+                                                <?= $form->field($user_details, 'branch')->textInput() ?>
                                         </div>
                                 </div>
                                 <div class="row">
                                         <div class="form-group col-md-6 col-sm-6 col-xs-12">
-                                                <?= $form->field($user_details, 'pan_number')->textInput(['readonly' => true]) ?>
+                                                <?= $form->field($user_details, 'pan_number')->textInput() ?>
                                         </div>
 
 
@@ -191,66 +193,4 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
         </div>
 </div>
-<script>
-        $(document).ready(function () {
-
-
-
-                $(document).on('blur', '#employee-referal_id', function (e) {
-                        var member_id = $(this).val();
-
-                        if (member_id != '') {
-                                $.ajax({
-                                        type: 'POST',
-                                        cache: false,
-                                        async: false,
-                                        data: {member_id: member_id},
-                                        url: '<?= Yii::$app->homeUrl; ?>employee/check-member-exist',
-                                        success: function (data) {
-                                                if (data == 0) {
-                                                        if ($("#employee-referal_id").parent().next(".validation").length == 0) // only add if not added
-                                                        {
-                                                                $("#employee-referal_id").parent().after("<div class='validation' style='color:#cc3f44;margin-left: 4px;font-size: 11px;'>This member doesn't exist.</div>");
-                                                        }
-
-                                                } else {
-                                                        $('.validation').remove();
-                                                }
-
-                                        }
-                                });
-                        }
-                });
-
-                $(document).on('submit', '#signup-update', function (e) {
-                        var member_id = $('#employee-referal_id').val();
-
-                        if (member_id != '') {
-                                $.ajax({
-                                        type: 'POST',
-                                        cache: false,
-                                        async: false,
-                                        data: {member_id: member_id},
-                                        url: '<?= Yii::$app->homeUrl; ?>employee/check-member-exist',
-                                        success: function (data) {
-                                                if (data == 0) {
-                                                        if ($("#employee-referal_id").parent().next(".validation").length == 0) // only add if not added
-                                                        {
-                                                                $("#employee-referal_id").parent().after("<div class='validation' style='color:#cc3f44;margin-left: 4px;font-size: 11px;'>This member doesn't exist.</div>");
-                                                        }
-                                                        e.preventDefault();
-                                                        return false;
-
-                                                } else {
-                                                        $('.validation').remove();
-                                                        return true;
-                                                }
-
-                                        }
-                                });
-                        }
-                });
-        });
-</script>
-
 

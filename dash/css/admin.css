@@ -574,7 +574,7 @@
     right: 50%;
     left: 50%;
     transform: translateX(-50%);
-    bottom: -90%;
+    top: 60px;
     margin: 0 auto;
     transition: .3s;
     display: none;

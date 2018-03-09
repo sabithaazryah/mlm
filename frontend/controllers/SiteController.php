@@ -17,6 +17,7 @@ USE common\models\Employee;
 use common\models\EmployeePackage;
 Use common\models\ProfileUploads;
 use yii\web\UploadedFile;
+use common\models\ForgotPasswordTokens;
 
 /**
  * Site controller
@@ -30,15 +31,15 @@ class SiteController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'forgot', 'new-password'],
                 'rules' => [
-                        [
-                        'actions' => ['signup'],
+                    [
+                        'actions' => ['signup', 'forgot', 'new-password'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
-                        [
-                        'actions' => ['logout'],
+                    [
+                        'actions' => ['logout', 'forgot', 'new-password'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -75,7 +76,7 @@ class SiteController extends Controller {
      */
     public function actionIndex() {
         if (!Yii::$app->user->isGuest) {
-             return $this->redirect(['dashboard/index']);
+            return $this->redirect(['dashboard/index']);
         }
 
         $this->layout = 'login';
@@ -130,7 +131,7 @@ class SiteController extends Controller {
      */
     public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
-             return $this->redirect(['dashboard/index']);
+            return $this->redirect(['dashboard/index']);
         }
 
         $this->layout = 'login';
@@ -253,6 +254,111 @@ class SiteController extends Controller {
         return $this->render('resetPassword', [
                     'model' => $model,
         ]);
+    }
+
+    public function actionForgot() {
+        date_default_timezone_set("Asia/Dubai");
+        $this->layout = 'login';
+        $model = new Employee();
+        if ($model->load(Yii::$app->request->post())) {
+            $check_exists = Employee::find()->where(['user_name' => $model->user_name])->orWhere(['email' => $model->user_name])->one();
+            if (!empty($check_exists)) {
+                $token_value = $this->tokenGenerator();
+                $token = $check_exists->id . '_' . $token_value;
+                $val = base64_encode($token);
+                $token_model = new ForgotPasswordTokens();
+                $token_model->user_id = $check_exists->id;
+                $token_model->token = $token_value;
+                $token_model->date = date('Y-m-d h:m:s');
+                $token_model->save();
+                $this->sendMail($val, $check_exists->email);
+                $msg = "Reset password link has been sent to your email ID(" . $check_exists->email . "). The link will expire in 15 minutes. If you couldn't find the mail in your inbox check you spam box.";
+                Yii::$app->getSession()->setFlash('success', $msg);
+            } else {
+                Yii::$app->getSession()->setFlash('error', 'Invalid username or email');
+            }
+            return $this->render('forgot-password', [
+                        'model' => $model,
+            ]);
+        } else {
+            return $this->render('forgot-password', [
+                        'model' => $model,
+            ]);
+        }
+    }
+
+    public function tokenGenerator() {
+
+        $length = rand(1, 1000);
+        $chars = array_merge(range(0, 9));
+        shuffle($chars);
+        $token = implode(array_slice($chars, 0, $length));
+        return $token;
+    }
+
+    public function sendMail($val, $email) {
+
+//        echo '<a href="' . Yii::$app->homeUrl . 'site/new-password?token=' . $val . '">Click here change password</a>';
+//        exit;
+        $to = $email;
+
+// subject
+        $subject = 'Change password';
+
+// message
+        echo
+        $message = '
+<html>
+<head>
+  <title>Forgot Password</title>
+</head>
+<body>
+  <p>As requested, here is a link to allow you to select a new password:</p>
+  <table>
+
+     <tr>
+      <td><a href="' . Yii::$app->homeUrl . 'site/new-password?token=' . $val . '">Click here for reset your password</a></td>
+    </tr>
+
+  </table>
+</body>
+</html>
+';
+
+        exit;
+// To send HTML mail, the Content-type header must be set
+        $headers = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= "Content-type: text/html; charset=iso-8859-1" . "\r\n" .
+                "From: 'no-reply@emperor.ae";
+        mail($to, $subject, $message, $headers);
+    }
+
+    public function actionNewPassword($token) {
+        date_default_timezone_set("Asia/Dubai");
+        $this->layout = 'login';
+        $data = base64_decode($token);
+        $values = explode('_', $data);
+        $token_exist = ForgotPasswordTokens::find()->where("user_id = " . $values[0] . " AND token = " . $values[1])->one();
+        if (!empty($token_exist)) {
+            $model = Employee::find()->where("id = " . $token_exist->user_id)->one();
+            if (Yii::$app->request->post()) {
+                if (Yii::$app->request->post('new-password') == Yii::$app->request->post('confirm-password')) {
+                    $model->password = Yii::$app->security->generatePasswordHash(Yii::$app->request->post('confirm-password'));
+                    if ($model->update()) {
+                        Yii::$app->session['change-pwd-success-msg'] = 'password changed successfully';
+                    }
+                    $token_exist->delete();
+                    $this->redirect('index');
+                } else {
+                    Yii::$app->getSession()->setFlash('error', 'password mismatch  ');
+                }
+            }
+            return $this->render('new-password', [
+            ]);
+        } else {
+            Yii::$app->session['change-pwd-error-msg'] = "This password reset link is expired. Please try again.";
+            $this->redirect('index');
+        }
     }
 
 }

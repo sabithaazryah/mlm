@@ -61,11 +61,13 @@ class EmployeeController extends \yii\web\Controller {
                                         $epin->save();
                                         $model->user_name = 'ARM' . (sprintf('%05d', $model->id));
                                         $model->display_name = $model->user_name;
-                                        $model->save();
+                                        $model->update();
+                                       // $this->sendMail($model);
                                         $package = EmployeePackage::find()->where(['employee_id' => $model->id])->orderBy(['id' => SORT_DESC])->one();
 
                                         return $this->redirect(['genealogy-view']);
                                         //  return $this->redirect(['purchase', 'id' => $model->id]);
+                                        
                                 } else {
                                         $transaction->rollBack();
                                         Yii::$app->session->setFlash('error', "There was a problem creating new user. Please try again.");
@@ -74,7 +76,7 @@ class EmployeeController extends \yii\web\Controller {
                                 $transaction->rollBack();
                                 Yii::$app->session->setFlash('error', "There was a problem creating new user. Please try again.");
                         }
-                        // $this->sendMail($model);
+                        // 
                         //  $this->EmployeeTree($model);
                 }
 
@@ -190,7 +192,7 @@ class EmployeeController extends \yii\web\Controller {
                         $tax_amount = ($pdv_amount * $tax) / 100;
                         $service_amount = ($pdv_amount * $service) / 100;
                         $commission_sent = $pdv_amount - $tax_amount - $service_amount;
-                        $employee_wallet->wallet = $employee_wallet->wallet + $pdv_amount;
+                        $employee_wallet->wallet = $employee_wallet->wallet + $commission_sent;
                         $employee_wallet->save();
                         if ($this->WalletHistory(2, $employee_wallet, $previou_wallet, $commission, 0, $tax_amount, 0, $service_amount, $pdv_amount))
                                 $flag = 1;
@@ -221,7 +223,7 @@ class EmployeeController extends \yii\web\Controller {
                         if ($user->current_left_bv > $user->current_right_bv) {
 
                                 if ($user->current_right_bv > 0) {
-                                        echo 'if_';
+                                        
                                         $bv_match = $user->current_right_bv;
                                         $user->current_left_bv = $user->current_left_bv - $user->current_right_bv;
                                         $user->current_right_bv = 0;
@@ -229,7 +231,7 @@ class EmployeeController extends \yii\web\Controller {
                                 }
                         } else if ($user->current_right_bv > $user->current_left_bv) {
                                 if ($user->current_left_bv > 0) {
-                                        echo 'else if_';
+                                       
                                         $bv_match = $user->current_left_bv;
                                         $user->current_right_bv = $user->current_right_bv - $user->current_left_bv;
                                         $user->current_left_bv = 0;
@@ -398,13 +400,16 @@ class EmployeeController extends \yii\web\Controller {
         public function sendMail($user) {
                 if ($user->email != '') {
                         $message = Yii::$app->mailer->compose('new-registration', ['model' => $user, 'user_password' => Yii::$app->session['user-password']])
-                                ->setFrom('no-replay@smartway.in')
+                                ->setFrom('no-replay@armnetlifestyle.com')
                                 ->setTo($user->email)
                                 ->setSubject('Registration successfull');
                         $message->send();
                         return TRUE;
                 }
         }
+
+
+
 
         public function actionUpdate() {
                 $id = \Yii::$app->user->id;
@@ -490,7 +495,7 @@ class EmployeeController extends \yii\web\Controller {
                         $distributor = $_POST['distributor_name'];
                         $emp = Employee::find()->where(['user_name' => $distributor])->one();
                         if (!empty($emp)) {
-                                return $this->redirect(['tree', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp->id)]);
+                                return $this->redirect(['genealogy-view', 'id' => Yii::$app->EncryptDecrypt->Encrypt('encrypt', $emp->id)]);
                         }
                 } return $this->redirect(Yii::$app->request->referrer);
         }
@@ -623,31 +628,41 @@ class EmployeeController extends \yii\web\Controller {
         }
 
         public function actionWallet() {
-                $id = Yii::$app->user->id;
+                  $id = Yii::$app->user->id;
                 $employee = Employee::findOne($id);
                 $employee_package = EmployeePackage::find()->where(['employee_id' => $id])->one();
                 $employee_wallet = EmployeeTree::find()->where(['employee_id' => $id])->one();
                 $commission_amount = \common\models\WalletHistory::find()->where(['employee_id' => $id, 'type' => 2])->sum('commision');
-                $service_charge = \common\models\WalletHistory::find()->where(['employee_id' => $id])->sum('service_charge_amount');
-                $tax = \common\models\WalletHistory::find()->where(['employee_id' => $id])->sum('tax_amount');
+                $commission_tax_amount = \common\models\WalletHistory::find()->where(['employee_id' => $id, 'type' => 2])->sum('tax_amount');
+                $commission_service_amount = \common\models\WalletHistory::find()->where(['employee_id' => $id, 'type' => 2])->sum('service_charge_amount');
+                $service_charge = \common\models\WalletHistory::find()->where(['employee_id' => $id, 'type' => 1])->sum('service_charge_amount');
+                $tax = \common\models\WalletHistory::find()->where(['employee_id' => $id, 'type' => 1])->sum('tax_amount');
                 $user_bv_matched = \common\models\WalletHistory::find()->where(['employee_id' => $id, 'type' => 1])->all();
                 $matched_amount = 0;
                 foreach ($user_bv_matched as $value) {
-                        $matchamount = 0;
+                        $deducted_amount = 0;
                         $matchamount = $value->current_wallet_amount - $value->previous_wallet_amount;
                         $deducted_amount = $matchamount + $value->company_amount;
                         $matched_amount += $deducted_amount;
                 }
-
                 return $this->render('wallet', [
-                            'employee' => $employee,
-                            'employee_package' => $employee_package,
-                            'employee_wallet' => $employee_wallet,
-                            'commission_amount' => $commission_amount,
-                            'service_charge' => $service_charge,
-                            'matched_amount' => $matched_amount,
-                            'tax' => $tax,
+                            'employee' => $employee, 'employee_wallet' => $employee_wallet, 'commission_amount' => $commission_amount, 'service_charge' => $service_charge,
+                            'matched_amount' => $matched_amount, 'tax' => $tax, 'commission_tax_amount' => $commission_tax_amount, 'commission_service_amount' => $commission_service_amount,
                 ]);
         }
+        
+        public function actionWalletHistory() {
+
+        $searchModel = new \common\models\WalletHistorySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andWhere(['employee_id' => Yii::$app->user->identity->id]);
+
+        return $this->render('wallet-history', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+        
+   
 
 }

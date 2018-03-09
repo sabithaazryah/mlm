@@ -15,68 +15,71 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="form_wrapper">
                         <div class="form_header">
                                 <?= Html::encode($this->title) ?>
+                             <?= Html::a('<i class="fa fa-plus"></i><span> Wallet History</span>', ['wallet-history'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone', 'style' => 'float: right']) ?>
                         </div>
                         <div class="panel-body table-responsive">
 
 
-
+                            
                                 <div class="epin-request-view">
-                                        <div class="row" style="margin-left: 0">
-                                                <div class="col-md-3">
-                                                        Name   &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $employee->distributor_name ?>
+                                    <div class="col-md-12">
+                                        <div class="row" >
+                                                <div class="col-md-12">
+                                                    <label>  Name   </label> :    <?= $employee->distributor_name ?>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                        Username   &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $employee->user_name ?>
-                                                </div>
-                                        </div>
-
-                                        <div class="row" style="margin-left: 0;margin-top: 15px">
-                                                <div class="col-md-3">
-                                                        Total Left BV   &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $employee_wallet->total_left_bv ?>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                        Total Right BV   &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $employee_wallet->total_right_bv ?>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                        Current Left BV   &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $employee_wallet->current_left_bv ?>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                        Current Right BV   &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $employee_wallet->current_right_bv ?>
+                                                <div class="col-md-12">
+                                                    <label> Username   </label> :   <?= $employee->user_name ?>
                                                 </div>
                                         </div>
 
-                                        <div class="row" style="margin-left: 0;margin-top: 15px">
-                                                <div class="col-md-3">
-                                                        Sponsorship Bonous   &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $commission_amount ?>
+                                        <div class="row" >
+                                                <div class="col-md-12">
+                                                    <label>   Total Left BV </label>   :    <?= $employee_wallet->total_left_bv ?>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                        Commission Amount  &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $matched_amount ?>
+                                                <div class="col-md-12">
+                                                    <label>Total Right BV </label>  :   <?= $employee_wallet->total_right_bv ?>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                        Serviice Charge Deducted   &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $service_charge ?>
+                                                <div class="col-md-12">
+                                                    <label> Current Left BV </label>  :   <?= $employee_wallet->current_left_bv ?>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                        Tax  Deducted   &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $tax ?>
+                                                <div class="col-md-12">
+                                                    <label> Current Right BV</label>   :   <?= $employee_wallet->current_right_bv ?>
+                                                </div>
+                                        </div>
+
+                                        <div class="row" >
+                                                <div class="col-md-12">
+                                                    <label>Sponsorship Bonous </label>  :   <?= $commission_amount ?>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <label> Commission Amount </label> :   <?= $matched_amount ?>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <label> Serviice Charge Deducted </label>  :   <?= $service_charge+$commission_service_amount ?>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <label>Tax  Deducted  </label> :   <?= $tax+$commission_tax_amount ?>
                                                 </div>
 
 
                                         </div>
 
-                                        <div class="row" style="margin-left: 0;margin-top: 15px">
-                                                <div class="col-md-3">
-                                                        Total  Wallet  Amount  &nbsp; &nbsp; :   &nbsp; &nbsp; <?= $employee_wallet->wallet ?>
+                                        <div class="row">
+                                                <div class="col-md-12">
+                                                    <label> Total  Wallet  Amount </label> :   <?= $employee_wallet->wallet ?>
                                                 </div>
                                         </div>
 
 
                                 </div>
+                            </div>
 
                         </div>
                 </div>

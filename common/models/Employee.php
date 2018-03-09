@@ -56,6 +56,8 @@ class Employee extends ActiveRecord implements IdentityInterface {
                         [['email'], 'email'],
                         [['distributor_name', 'password', 'placement_id', 'mobile_number', 'epin'], 'required', 'on' => 'create'],
                         [['distributor_name', 'mobile_number',], 'required', 'on' => 'update'],
+                        [['epin', 'mobile_number'], 'unique', 'on' => 'create'],
+                        [['mobile_number'], 'unique', 'on' => 'update'],
                 ];
         }
 
